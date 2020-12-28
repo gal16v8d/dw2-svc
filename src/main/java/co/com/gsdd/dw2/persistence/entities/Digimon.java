@@ -43,5 +43,9 @@ public class Digimon {
 	@ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "digimonTypeId", referencedColumnName = "digimonTypeId", foreignKey = @ForeignKey(name = "Fk_type"))
 	private DigimonType digimonType;
+	
+	@ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "elementId", referencedColumnName = "elementId", foreignKey = @ForeignKey(name = "Fk_element"))
+	private Element element;
 
 }

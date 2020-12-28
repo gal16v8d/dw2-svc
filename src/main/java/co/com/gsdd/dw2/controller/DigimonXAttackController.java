@@ -47,11 +47,15 @@ public class DigimonXAttackController {
 
 	private DigimonXAttackModel defineModelWithLinks(DigimonXAttack entity) {
 		DigimonXAttackModel model = digimonXAttackConverter.convertToDomain(entity);
-		Link link = WebMvcLinkBuilder
+		Link selfLink = WebMvcLinkBuilder
+				.linkTo(WebMvcLinkBuilder.methodOn(AttackController.class).getById(model.getAttackId())).withSelfRel();
+		Link linkAttack = WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder.methodOn(AttackController.class).getById(model.getAttackId()))
 				.withRel("attack");
-		// TODO add digimon link here
-		model.add(link);
+		Link linkDigimon = WebMvcLinkBuilder
+				.linkTo(WebMvcLinkBuilder.methodOn(DigimonController.class).getById(model.getDigimonId()))
+				.withRel("digimon");
+		model.add(selfLink, linkAttack, linkDigimon);
 		return model;
 	}
 
@@ -64,6 +68,15 @@ public class DigimonXAttackController {
 		Link link = WebMvcLinkBuilder.linkTo(DigimonXAttackController.class).withSelfRel();
 		CollectionModel<DigimonXAttackModel> result = CollectionModel.of(digimonXAttacks, link);
 		return ResponseEntity.ok(result);
+	}
+	
+	@GetMapping("digimons/{digimonId:[0-9]+}/attacks/{attackId:[0-9]+}")
+	public ResponseEntity<DigimonXAttackModel> getById(@PathVariable("digimonId") Long digimonId,
+			@PathVariable("attackId") Long attackId) {
+		DigimonXAttack dxa = digimonXAttackConverter
+				.convertToEntity(DigimonXAttackModel.builder().attackId(attackId).digimonId(digimonId).build());
+		return Optional.ofNullable(dxa).map(this::defineModelWithLinks).map(ResponseEntity::ok)
+				.orElseGet(() -> ResponseEntity.badRequest().build());
 	}
 
 	@PostMapping("digimons/{digimonId:[0-9]+}/attacks/{attackId:[0-9]+}")

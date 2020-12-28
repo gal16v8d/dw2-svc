@@ -1,22 +1,14 @@
 package co.com.gsdd.dw2.controller;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.data.domain.Sort;
-import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +22,7 @@ import co.com.gsdd.dw2.repository.DigimonTypeRepository;
 @RefreshScope
 @RestController
 @RequestMapping("v1/digimonTypes")
-public class DigimonTypeController {
+public class DigimonTypeController extends AbstractController<DigimonType, DigimonTypeModel> {
 
 	private final DigimonTypeRepository digimonTypeRepository;
 	private final GenericConverter<DigimonType, DigimonTypeModel> digimonTypeConverter;
@@ -41,38 +33,27 @@ public class DigimonTypeController {
 		this.digimonTypeConverter = digimonTypeConverter;
 		this.digimonTypeRepository = digimonTypeRepository;
 	}
-
-	private DigimonTypeModel defineModelWithLinks(DigimonType entity) {
-		DigimonTypeModel model = digimonTypeConverter.convertToDomain(entity);
-		Link link = WebMvcLinkBuilder
-				.linkTo(WebMvcLinkBuilder.methodOn(DigimonTypeController.class).getById(model.getDigimonTypeId()))
-				.withSelfRel();
-		model.add(link);
-		return model;
+	
+	@Override
+	public String getSortArg() {
+		return "digimonTypeId";
 	}
 
-	@GetMapping
-	public ResponseEntity<CollectionModel<DigimonTypeModel>> getAll() {
-		List<DigimonTypeModel> digimonTypes = digimonTypeRepository.findAll(Sort.by("digimonTypeId")).stream()
-				.map(this::defineModelWithLinks).collect(Collectors.toList());
-		Link link = WebMvcLinkBuilder.linkTo(DigimonTypeController.class).withSelfRel();
-		CollectionModel<DigimonTypeModel> result = CollectionModel.of(digimonTypes, link);
-		return ResponseEntity.ok(result);
+	@Override
+	public Long getId(DigimonType entity) {
+		return entity.getDigimonTypeId();
 	}
 
-	@GetMapping("{digimonTypeId:[0-9]+}")
-	public ResponseEntity<DigimonTypeModel> getById(@PathVariable("digimonTypeId") Long digimonTypeId) {
-		return digimonTypeRepository.findById(digimonTypeId).map(this::defineModelWithLinks).map(ResponseEntity::ok)
-				.orElseGet(() -> ResponseEntity.notFound().build());
+	@Override
+	public JpaRepository<DigimonType, Long> getRepo() {
+		return digimonTypeRepository;
 	}
 
-	@PostMapping
-	public ResponseEntity<DigimonTypeModel> save(@Valid @RequestBody DigimonTypeModel model) {
-		return Optional.ofNullable(model).map(digimonTypeConverter::convertToEntity)
-				.map(digimonTypeRepository::saveAndFlush).map(this::defineModelWithLinks).map(ResponseEntity::ok)
-				.orElseGet(() -> ResponseEntity.badRequest().build());
+	@Override
+	public GenericConverter<DigimonType, DigimonTypeModel> getConverter() {
+		return digimonTypeConverter;
 	}
-
+	
 	@PutMapping("{digimonTypeId:[0-9]+}")
 	public ResponseEntity<DigimonTypeModel> update(@PathVariable("digimonTypeId") Long digimonTypeId,
 			@Valid @RequestBody DigimonTypeModel model) {
@@ -83,14 +64,6 @@ public class DigimonTypeController {
 				return digimonTypeRepository.saveAndFlush(a);
 			}).orElse(null);
 		}).map(this::defineModelWithLinks).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-	}
-
-	@DeleteMapping("{digimonTypeId:[0-9]+}")
-	public ResponseEntity<Object> delete(@PathVariable("digimonTypeId") Long digimonTypeId) {
-		return digimonTypeRepository.findById(digimonTypeId).map((DigimonType atk) -> {
-			digimonTypeRepository.delete(atk);
-			return ResponseEntity.noContent().build();
-		}).orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
 }

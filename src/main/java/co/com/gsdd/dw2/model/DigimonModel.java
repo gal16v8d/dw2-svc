@@ -29,5 +29,9 @@ public class DigimonModel extends RepresentationModel<DigimonModel> {
 	@PositiveOrZero(message = "digimonTypeId should be positive")
 	@NotNull(message = "digimon type (digimonTypeId) should not be null")
 	private Long digimonTypeId;
+	
+	@PositiveOrZero(message = "elementId should be positive")
+	@NotNull(message = "digimon element (element) should not be null")
+	private Long elementId;
 
 }

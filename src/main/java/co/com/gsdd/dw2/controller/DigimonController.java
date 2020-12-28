@@ -1,22 +1,16 @@
 package co.com.gsdd.dw2.controller;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.data.domain.Sort;
-import org.springframework.hateoas.CollectionModel;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +24,7 @@ import co.com.gsdd.dw2.repository.DigimonRepository;
 @RefreshScope
 @RestController
 @RequestMapping("v1/digimons")
-public class DigimonController {
+public class DigimonController extends AbstractController<Digimon, DigimonModel> {
 
 	private final DigimonRepository digimonRepository;
 	private final GenericConverter<Digimon, DigimonModel> digimonConverter;
@@ -42,35 +36,36 @@ public class DigimonController {
 		this.digimonRepository = digimonRepository;
 	}
 
-	private DigimonModel defineModelWithLinks(Digimon entity) {
-		DigimonModel model = digimonConverter.convertToDomain(entity);
-		Link link = WebMvcLinkBuilder
-				.linkTo(WebMvcLinkBuilder.methodOn(DigimonController.class).getById(model.getDigimonId()))
-				.withSelfRel();
-		model.add(link);
+	@Override
+	public String getSortArg() {
+		return "digimonId";
+	}
+
+	@Override
+	public Long getId(Digimon entity) {
+		return entity.getDigimonId();
+	}
+
+	@Override
+	public JpaRepository<Digimon, Long> getRepo() {
+		return digimonRepository;
+	}
+
+	@Override
+	public GenericConverter<Digimon, DigimonModel> getConverter() {
+		return digimonConverter;
+	}
+
+	@Override
+	public DigimonModel defineModelWithLinks(Digimon entity) {
+		DigimonModel model = super.defineModelWithLinks(entity);
+		Link levelLink = WebMvcLinkBuilder
+				.linkTo(WebMvcLinkBuilder.methodOn(LevelController.class).getById(model.getLevelId())).withRel("level");
+		Link typeLink = WebMvcLinkBuilder
+				.linkTo(WebMvcLinkBuilder.methodOn(DigimonTypeController.class).getById(model.getDigimonTypeId()))
+				.withRel("type");
+		model.add(levelLink, typeLink);
 		return model;
-	}
-
-	@GetMapping
-	public ResponseEntity<CollectionModel<DigimonModel>> getAll() {
-		List<DigimonModel> models = digimonRepository.findAll(Sort.by("digimonId")).stream()
-				.map(this::defineModelWithLinks).collect(Collectors.toList());
-		Link link = WebMvcLinkBuilder.linkTo(DigimonController.class).withSelfRel();
-		CollectionModel<DigimonModel> result = CollectionModel.of(models, link);
-		return ResponseEntity.ok(result);
-	}
-
-	@GetMapping("{digimonId:[0-9]+}")
-	public ResponseEntity<DigimonModel> getById(@PathVariable("digimonId") Long digimonId) {
-		return digimonRepository.findById(digimonId).map(this::defineModelWithLinks).map(ResponseEntity::ok)
-				.orElseGet(() -> ResponseEntity.notFound().build());
-	}
-
-	@PostMapping
-	public ResponseEntity<DigimonModel> save(@Valid @RequestBody DigimonModel model) {
-		return Optional.ofNullable(model).map(digimonConverter::convertToEntity).map(digimonRepository::saveAndFlush)
-				.map(this::defineModelWithLinks).map(ResponseEntity::ok)
-				.orElseGet(() -> ResponseEntity.badRequest().build());
 	}
 
 	@PutMapping("{digimonId:[0-9]+}")
@@ -83,14 +78,6 @@ public class DigimonController {
 				return digimonRepository.saveAndFlush(d);
 			}).orElse(null);
 		}).map(this::defineModelWithLinks).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
-	}
-
-	@DeleteMapping("{digimonId:[0-9]+}")
-	public ResponseEntity<Object> delete(@PathVariable("digimonId") Long digimonId) {
-		return digimonRepository.findById(digimonId).map((Digimon dig) -> {
-			digimonRepository.delete(dig);
-			return ResponseEntity.noContent().build();
-		}).orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
 }
