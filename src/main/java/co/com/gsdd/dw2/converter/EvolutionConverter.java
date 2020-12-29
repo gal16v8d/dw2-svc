@@ -24,7 +24,8 @@ public class EvolutionConverter implements GenericConverter<Evolution, Evolution
 	public EvolutionModel convertToDomain(Evolution entity) {
 		return Optional.ofNullable(entity)
 				.map(e -> EvolutionModel.builder().baseDigimonId(e.getBaseDigimon().getDigimonId())
-						.evolvedDigimonId(e.getEvolvedDigimon().getDigimonId()).dnaTimes(e.getDnaTimes()).build())
+						.evolvedDigimonId(e.getEvolvedDigimon().getDigimonId()).dnaTimes(e.getDnaTimes())
+						.evolutionId(entity.getEvolutionId()).build())
 				.orElse(null);
 	}
 

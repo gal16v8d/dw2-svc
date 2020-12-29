@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import co.com.gsdd.dw2.converter.GenericConverter;
@@ -28,6 +29,8 @@ public abstract class AbstractController<T, D extends RepresentationModel<D>> {
 	public abstract String getSortArg();
 
 	public abstract Long getId(T entity);
+	
+	public abstract T replaceId(T entityNew, T entityOrig);
 
 	public abstract JpaRepository<T, Long> getRepo();
 
@@ -57,7 +60,7 @@ public abstract class AbstractController<T, D extends RepresentationModel<D>> {
 	public ResponseEntity<CollectionModel<D>> getAll() {
 		List<D> models = getRepo().findAll(Sort.by(getSortArg())).stream().map(this::defineModelWithLinks)
 				.collect(Collectors.toList());
-		Link link = WebMvcLinkBuilder.linkTo(LevelController.class).withSelfRel();
+		Link link = WebMvcLinkBuilder.linkTo(this.getClass()).withSelfRel();
 		CollectionModel<D> result = CollectionModel.of(models, link);
 		return ResponseEntity.ok(result);
 	}
@@ -73,6 +76,18 @@ public abstract class AbstractController<T, D extends RepresentationModel<D>> {
 		return Optional.ofNullable(model).map(getConverter()::convertToEntity).map(getRepo()::saveAndFlush)
 				.map(this::defineModelWithLinks).map(ResponseEntity::ok)
 				.orElseGet(() -> ResponseEntity.badRequest().build());
+	}
+	
+	@PutMapping("{id:[0-9]+}")
+	public ResponseEntity<D> update(@PathVariable("id") Long id,
+			@Valid @RequestBody D model) {
+		return getRepo().findById(id).map((T dbEntity) -> {
+			T ent = getConverter().convertToEntity(model);
+			return Optional.ofNullable(ent).map((T e) -> {
+				e = replaceId(e, dbEntity);
+				return getRepo().saveAndFlush(e);
+			}).orElse(null);
+		}).map(this::defineModelWithLinks).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
 	@DeleteMapping("{id:[0-9]+}")
