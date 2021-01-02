@@ -2,7 +2,6 @@ package co.com.gsdd.dw2.converter;
 
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import co.com.gsdd.dw2.model.DigimonXAttackModel;
@@ -12,18 +11,14 @@ import co.com.gsdd.dw2.persistence.entities.DigimonXAttack;
 import co.com.gsdd.dw2.persistence.entities.DigimonXAttackPK;
 import co.com.gsdd.dw2.repository.AttackRepository;
 import co.com.gsdd.dw2.repository.DigimonRepository;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 @Component
 public class DigimonXAttackConverter implements GenericConverter<DigimonXAttack, DigimonXAttackModel> {
 
 	private final DigimonRepository digimonRepository;
 	private final AttackRepository attackRepository;
-
-	@Autowired
-	public DigimonXAttackConverter(DigimonRepository digimonRepository, AttackRepository attackRepository) {
-		this.digimonRepository = digimonRepository;
-		this.attackRepository = attackRepository;
-	}
 
 	@Override
 	public DigimonXAttackModel convertToDomain(DigimonXAttack entity) {

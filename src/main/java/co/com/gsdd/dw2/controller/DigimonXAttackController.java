@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
@@ -23,7 +22,9 @@ import co.com.gsdd.dw2.model.DigimonXAttackModel;
 import co.com.gsdd.dw2.persistence.entities.DigimonXAttack;
 import co.com.gsdd.dw2.repository.DigimonRepository;
 import co.com.gsdd.dw2.repository.DigimonXAttackRepository;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 @RefreshScope
 @RestController
 @RequestMapping("v1/")
@@ -33,22 +34,14 @@ public class DigimonXAttackController {
 	private final DigimonXAttackRepository digimonXAttackRepository;
 	private final GenericConverter<DigimonXAttack, DigimonXAttackModel> digimonXAttackConverter;
 
-	@Autowired
-	public DigimonXAttackController(GenericConverter<DigimonXAttack, DigimonXAttackModel> digimonXAttackConverter,
-			DigimonRepository digimonRepository, DigimonXAttackRepository digimonXAttackRepository) {
-		this.digimonXAttackConverter = digimonXAttackConverter;
-		this.digimonRepository = digimonRepository;
-		this.digimonXAttackRepository = digimonXAttackRepository;
-	}
-
 	private DigimonXAttackModel getFromData(Long digimonId, Long attackId) {
 		return DigimonXAttackModel.builder().attackId(attackId).digimonId(digimonId).build();
 	}
 
 	private DigimonXAttackModel defineModelWithLinks(DigimonXAttack entity) {
 		DigimonXAttackModel model = digimonXAttackConverter.convertToDomain(entity);
-		Link selfLink = WebMvcLinkBuilder
-				.linkTo(WebMvcLinkBuilder.methodOn(AttackController.class).getById(model.getAttackId())).withSelfRel();
+		Link selfLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(DigimonXAttackController.class)
+				.getById(model.getDigimonId(), model.getAttackId())).withSelfRel();
 		Link linkAttack = WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder.methodOn(AttackController.class).getById(model.getAttackId()))
 				.withRel("attack");
@@ -69,7 +62,7 @@ public class DigimonXAttackController {
 		CollectionModel<DigimonXAttackModel> result = CollectionModel.of(digimonXAttacks, link);
 		return ResponseEntity.ok(result);
 	}
-	
+
 	@GetMapping("digimons/{digimonId:[0-9]+}/attacks/{attackId:[0-9]+}")
 	public ResponseEntity<DigimonXAttackModel> getById(@PathVariable("digimonId") Long digimonId,
 			@PathVariable("attackId") Long attackId) {

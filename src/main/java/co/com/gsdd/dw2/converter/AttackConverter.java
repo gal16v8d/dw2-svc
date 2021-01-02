@@ -10,8 +10,8 @@ import co.com.gsdd.dw2.persistence.entities.AttackType;
 import co.com.gsdd.dw2.repository.AttackTypeRepository;
 import lombok.AllArgsConstructor;
 
-@Component
 @AllArgsConstructor
+@Component
 public class AttackConverter implements GenericConverter<Attack, AttackModel> {
 
 	private final AttackTypeRepository attackTypeRepository;
