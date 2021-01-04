@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
-import co.com.gsdd.dw2.model.EvolutionModel;
+import co.com.gsdd.dw2.model.hateoas.EvolutionModel;
 import co.com.gsdd.dw2.persistence.entities.Digimon;
 import co.com.gsdd.dw2.persistence.entities.Evolution;
 import co.com.gsdd.dw2.repository.DigimonRepository;

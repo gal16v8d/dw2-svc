@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.com.gsdd.dw2.converter.GenericConverter;
-import co.com.gsdd.dw2.model.AttackTypeModel;
+import co.com.gsdd.dw2.model.hateoas.AttackTypeModel;
 import co.com.gsdd.dw2.persistence.entities.AttackType;
 import co.com.gsdd.dw2.repository.AttackTypeRepository;
 import lombok.AllArgsConstructor;

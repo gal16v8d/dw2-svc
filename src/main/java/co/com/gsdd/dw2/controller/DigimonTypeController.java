@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.com.gsdd.dw2.converter.GenericConverter;
-import co.com.gsdd.dw2.model.DigimonTypeModel;
+import co.com.gsdd.dw2.model.hateoas.DigimonTypeModel;
 import co.com.gsdd.dw2.persistence.entities.DigimonType;
 import co.com.gsdd.dw2.repository.DigimonTypeRepository;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package co.com.gsdd.dw2.model;
+package co.com.gsdd.dw2.model.hateoas;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -13,10 +13,11 @@ import lombok.Generated;
 @Data
 @Builder
 @EqualsAndHashCode(callSuper = false)
-public class ElementModel extends RepresentationModel<ElementModel> {
+public class AttackTypeModel extends RepresentationModel<AttackTypeModel> {
 
-	private Long elementId;
+	private Long attackTypeId;
 
-	@NotEmpty(message = "element name should not be empty")
+	@NotEmpty(message = "attack type name should not be empty")
 	private String name;
+
 }

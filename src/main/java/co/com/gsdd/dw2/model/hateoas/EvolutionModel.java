@@ -1,4 +1,4 @@
-package co.com.gsdd.dw2.model;
+package co.com.gsdd.dw2.model.hateoas;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;

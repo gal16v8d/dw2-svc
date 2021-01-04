@@ -1,4 +1,4 @@
-package co.com.gsdd.dw2.model;
+package co.com.gsdd.dw2.model.hateoas;
 
 import javax.validation.constraints.NotEmpty;
 
@@ -13,10 +13,10 @@ import lombok.Generated;
 @Data
 @Builder
 @EqualsAndHashCode(callSuper = false)
-public class DigimonTypeModel extends RepresentationModel<DigimonTypeModel> {
+public class ElementModel extends RepresentationModel<ElementModel> {
 
-	private Long digimonTypeId;
+	private Long elementId;
 
-	@NotEmpty(message = "digimon type name should not be empty")
+	@NotEmpty(message = "element name should not be empty")
 	private String name;
 }
