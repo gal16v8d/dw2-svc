@@ -15,6 +15,7 @@ import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -29,7 +30,7 @@ public abstract class AbstractController<T, D extends RepresentationModel<D>> {
 	public abstract String getSortArg();
 
 	public abstract Long getId(T entity);
-	
+
 	public abstract T replaceId(T entityNew, T entityOrig);
 
 	public abstract JpaRepository<T, Long> getRepo();
@@ -77,10 +78,9 @@ public abstract class AbstractController<T, D extends RepresentationModel<D>> {
 				.map(this::defineModelWithLinks).map(ResponseEntity::ok)
 				.orElseGet(() -> ResponseEntity.badRequest().build());
 	}
-	
+
 	@PutMapping("{id:[0-9]+}")
-	public ResponseEntity<D> update(@PathVariable("id") Long id,
-			@Valid @RequestBody D model) {
+	public ResponseEntity<D> update(@PathVariable("id") Long id, @Valid @RequestBody D model) {
 		return getRepo().findById(id).map((T dbEntity) -> {
 			T ent = getConverter().convertToEntity(model);
 			return Optional.ofNullable(ent).map((T e) -> {
@@ -88,6 +88,13 @@ public abstract class AbstractController<T, D extends RepresentationModel<D>> {
 				return getRepo().saveAndFlush(e);
 			}).orElse(null);
 		}).map(this::defineModelWithLinks).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+	}
+
+	@PatchMapping("{id:[0-9]+}")
+	public ResponseEntity<D> patch(@PathVariable("id") Long id, @RequestBody D model) {
+		return getRepo().findById(id).map(dbEntity -> getConverter().mapToEntity(model, dbEntity))
+				.map((T e) -> getRepo().saveAndFlush(e)).map(this::defineModelWithLinks).map(ResponseEntity::ok)
+				.orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
 	@DeleteMapping("{id:[0-9]+}")

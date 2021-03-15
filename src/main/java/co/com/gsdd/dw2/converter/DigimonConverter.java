@@ -44,7 +44,23 @@ public class DigimonConverter implements GenericConverter<Digimon, DigimonModel>
 					.digimonType(typeOp.get()).element(elementOp.get()).build()).orElse(null);
 		}
 		return null;
+	}
 
+	@Override
+	public Digimon mapToEntity(DigimonModel model, Digimon oldEntity) {
+		Digimon newEntity = Digimon.builder().digimonId(oldEntity.getDigimonId()).build();
+		Optional<DigimonModel> modelOp = Optional.ofNullable(model);
+		Optional<DigimonType> typeOp = modelOp.map(DigimonModel::getDigimonTypeId).map(digimonTypeRepository::findById)
+				.orElseGet(Optional::empty);
+		Optional<Level> levelOp = modelOp.map(DigimonModel::getLevelId).map(levelRepository::findById)
+				.orElseGet(Optional::empty);
+		Optional<Element> elementOp = modelOp.map(DigimonModel::getElementId).map(elementRepository::findById)
+				.orElseGet(Optional::empty);
+		newEntity.setName(modelOp.map(DigimonModel::getName).orElseGet(oldEntity::getName));
+		newEntity.setDigimonType(typeOp.orElseGet(oldEntity::getDigimonType));
+		newEntity.setLevel(levelOp.orElseGet(oldEntity::getLevel));
+		newEntity.setElement(elementOp.orElseGet(oldEntity::getElement));
+		return newEntity;
 	}
 
 }

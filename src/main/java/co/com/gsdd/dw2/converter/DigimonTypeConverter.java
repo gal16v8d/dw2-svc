@@ -24,4 +24,11 @@ public class DigimonTypeConverter implements GenericConverter<DigimonType, Digim
 				.orElse(null);
 	}
 
+	@Override
+	public DigimonType mapToEntity(DigimonTypeModel model, DigimonType oldEntity) {
+		DigimonType newEntity = DigimonType.builder().digimonTypeId(oldEntity.getDigimonTypeId()).build();
+		newEntity.setName(Optional.ofNullable(model).map(DigimonTypeModel::getName).orElseGet(oldEntity::getName));
+		return newEntity;
+	}
+
 }

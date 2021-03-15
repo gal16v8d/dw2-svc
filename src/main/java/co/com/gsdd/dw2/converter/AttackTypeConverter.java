@@ -24,4 +24,11 @@ public class AttackTypeConverter implements GenericConverter<AttackType, AttackT
 				.orElse(null);
 	}
 
+	@Override
+	public AttackType mapToEntity(AttackTypeModel model, AttackType oldEntity) {
+		AttackType newEntity = AttackType.builder().attackTypeId(oldEntity.getAttackTypeId()).build();
+		newEntity.setName(Optional.ofNullable(model).map(AttackTypeModel::getName).orElseGet(oldEntity::getName));
+		return newEntity;
+	}
+
 }

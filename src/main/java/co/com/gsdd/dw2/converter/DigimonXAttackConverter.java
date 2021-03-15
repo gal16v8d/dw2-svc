@@ -39,4 +39,17 @@ public class DigimonXAttackConverter implements GenericConverter<DigimonXAttack,
 		return null;
 	}
 
+	@Override
+	public DigimonXAttack mapToEntity(DigimonXAttackModel model, DigimonXAttack oldEntity) {
+		DigimonXAttack newEntity = DigimonXAttack.builder().id(oldEntity.getId()).build();
+		Optional<Digimon> digi = Optional.ofNullable(model).map(DigimonXAttackModel::getDigimonId)
+				.map(digimonRepository::findById).orElseGet(Optional::empty);
+		Optional<Attack> atk = Optional.ofNullable(model).map(DigimonXAttackModel::getAttackId)
+				.map(attackRepository::findById).orElseGet(Optional::empty);
+		if (digi.isPresent() && atk.isPresent()) {
+			return DigimonXAttack.builder().id(new DigimonXAttackPK(digi.get(), atk.get())).build();
+		}
+		return newEntity;
+	}
+
 }

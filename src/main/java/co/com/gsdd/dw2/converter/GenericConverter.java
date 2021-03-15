@@ -6,4 +6,6 @@ public interface GenericConverter<T, D> {
 
 	T convertToEntity(D model);
 
+	T mapToEntity(D model, T oldEntity);
+	
 }
