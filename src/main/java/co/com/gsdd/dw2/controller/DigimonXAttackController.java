@@ -57,7 +57,7 @@ public class DigimonXAttackController {
 			@PathVariable("attackId") Long attackId) {
 		DigimonXAttackModel dxa = digimonXAttackService.getById(digimonId, attackId);
 		return Optional.ofNullable(dxa).map(this::defineModelWithLinks).map(ResponseEntity::ok)
-				.orElseGet(() -> ResponseEntity.badRequest().build());
+				.orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
 	@PostMapping("digimons/{digimonId:[0-9]+}/attacks/{attackId:[0-9]+}")

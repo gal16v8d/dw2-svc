@@ -35,7 +35,9 @@ public class DigimonXAttackService {
 	public DigimonXAttackModel getById(Long digimonId, Long attackId) {
 		DigimonXAttack dxa = digimonXAttackConverter
 				.convertToEntity(DigimonXAttackModel.builder().attackId(attackId).digimonId(digimonId).build());
-		return Optional.ofNullable(dxa).map(digimonXAttackConverter::convertToDomain).orElse(null);
+		return Optional.ofNullable(dxa).map(data -> digimonXAttackRepository
+				.findByDigimonAndAttack(data.getId().getDigimon(), data.getId().getAttack()))
+				.map(digimonXAttackConverter::convertToDomain).orElse(null);
 	}
 
 	public DigimonXAttackModel associate(Long digimonId, Long attackId) {

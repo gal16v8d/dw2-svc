@@ -12,7 +12,7 @@ import co.com.gsdd.dw2.converter.GenericConverter;
 
 public abstract class AbstractService<T, D extends RepresentationModel<D>> {
 
-	public abstract String getSortArg();
+	abstract String getSortArg();
 
 	/**
 	 * Keep old entity id for update operation.
@@ -20,11 +20,11 @@ public abstract class AbstractService<T, D extends RepresentationModel<D>> {
 	 * @param entityOrig, database mapped entity
 	 * @return entityNew fields but with entityOrig id.
 	 */
-	public abstract T replaceId(T entityNew, T entityOrig);
+	abstract T replaceId(T entityNew, T entityOrig);
 
-	public abstract JpaRepository<T, Long> getRepo();
+	abstract JpaRepository<T, Long> getRepo();
 
-	public abstract GenericConverter<T, D> getConverter();
+	abstract GenericConverter<T, D> getConverter();
 
 	public List<D> getAll() {
 		return getRepo().findAll(Sort.by(getSortArg())).stream().map(getConverter()::convertToDomain)

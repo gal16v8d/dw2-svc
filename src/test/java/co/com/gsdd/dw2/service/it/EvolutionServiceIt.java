@@ -19,7 +19,7 @@ class EvolutionServiceIt {
 	private static final long TO_CHAMPTION_ID = 1200L;
 	private static final long TO_MEGA_ID = 1400L;
 	private static final long ID_NOT_FOUND = 1600L;
-	private static final String TO_ULTRA_MEGA = "20";
+	private static final String TO_ULTRA_MEGA = "20+";
 	private static final String ZERO_OR_MANY = "0+";
 	@Autowired
 	private EvolutionService service;
