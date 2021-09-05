@@ -14,9 +14,9 @@ import co.com.gsdd.dw2.service.LevelService;
 @DataJpaTest
 class LevelServiceIt {
 
-	private static final long ROOKIE_ID = 2L;
-	private static final long MEGA_ID = 5L;
-	private static final long ID_NOT_FOUND = 6L;
+	private static final long ROOKIE_ID = 200L;
+	private static final long MEGA_ID = 500L;
+	private static final long ID_NOT_FOUND = 600L;
 	private static final String MEGA_DNA = "Mega DNA";
 	private static final String ROOKIE = "Rookie";
 	@Autowired

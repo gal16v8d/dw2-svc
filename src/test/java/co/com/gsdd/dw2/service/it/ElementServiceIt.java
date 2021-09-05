@@ -14,9 +14,9 @@ import co.com.gsdd.dw2.service.ElementService;
 @DataJpaTest
 class ElementServiceIt {
 
-	private static final long NONE_ID = 2L;
-	private static final long DARKNESS_ID = 5L;
-	private static final long ID_NOT_FOUND = 8L;
+	private static final long NONE_ID = 200L;
+	private static final long DARKNESS_ID = 500L;
+	private static final long ID_NOT_FOUND = 800L;
 	private static final String AIR = "Air";
 	private static final String NONE = "None";
 	@Autowired
