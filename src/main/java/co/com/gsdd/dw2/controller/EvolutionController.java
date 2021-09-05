@@ -1,64 +1,48 @@
 package co.com.gsdd.dw2.controller;
 
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.com.gsdd.dw2.converter.GenericConverter;
 import co.com.gsdd.dw2.model.hateoas.EvolutionModel;
 import co.com.gsdd.dw2.persistence.entities.Evolution;
-import co.com.gsdd.dw2.repository.EvolutionRepository;
-import lombok.AllArgsConstructor;
+import co.com.gsdd.dw2.service.AbstractService;
+import co.com.gsdd.dw2.service.EvolutionService;
+import io.swagger.annotations.Api;
+import lombok.RequiredArgsConstructor;
 
-@AllArgsConstructor
+@Api("Evolution CRUD operations")
+@RequiredArgsConstructor
 @RefreshScope
 @RestController
 @RequestMapping("v1/evolutions")
 public class EvolutionController extends AbstractController<Evolution, EvolutionModel> {
 
-	private final EvolutionRepository evolutionRepository;
-	private final GenericConverter<Evolution, EvolutionModel> evolutionConverter;
+	private final EvolutionService evolutionService;
 	
 	@Override
-	public String getSortArg() {
-		return "evolutionId";
-	}
-	
-	@Override
-	public Long getId(Evolution entity) {
-		return entity.getEvolutionId();
-	}
-	
-	@Override
-	public Evolution replaceId(Evolution entityNew, Evolution entityOrig) {
-		entityNew.setEvolutionId(entityOrig.getEvolutionId());
-		return entityNew;
+	public Long getId(EvolutionModel model) {
+		return model.getEvolutionId();
 	}
 
 	@Override
-	public JpaRepository<Evolution, Long> getRepo() {
-		return evolutionRepository;
+	public AbstractService<Evolution, EvolutionModel> getService() {
+		return evolutionService;
 	}
 
 	@Override
-	public GenericConverter<Evolution, EvolutionModel> getConverter() {
-		return evolutionConverter;
-	}
-
-	@Override
-	public EvolutionModel defineModelWithLinks(Evolution entity) {
-		EvolutionModel model = super.defineModelWithLinks(entity);
+	public EvolutionModel defineModelWithLinks(EvolutionModel model) {
+		EvolutionModel linkedModel = super.defineModelWithLinks(model);
 		Link baseLink = WebMvcLinkBuilder
-				.linkTo(WebMvcLinkBuilder.methodOn(DigimonController.class).getById(model.getBaseDigimonId()))
+				.linkTo(WebMvcLinkBuilder.methodOn(DigimonController.class).getById(linkedModel.getBaseDigimonId()))
 				.withRel("baseDigimon");
 		Link evolvedLink = WebMvcLinkBuilder
-				.linkTo(WebMvcLinkBuilder.methodOn(DigimonController.class).getById(model.getEvolvedDigimonId()))
+				.linkTo(WebMvcLinkBuilder.methodOn(DigimonController.class).getById(linkedModel.getEvolvedDigimonId()))
 				.withRel("evolvedDigimon");
-		model.add(baseLink, evolvedLink);
-		return model;
+		linkedModel.add(baseLink, evolvedLink);
+		return linkedModel;
 	}
 
 }

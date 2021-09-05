@@ -1,61 +1,45 @@
 package co.com.gsdd.dw2.controller;
 
 import org.springframework.cloud.context.config.annotation.RefreshScope;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.com.gsdd.dw2.converter.GenericConverter;
 import co.com.gsdd.dw2.model.hateoas.AttackModel;
 import co.com.gsdd.dw2.persistence.entities.Attack;
-import co.com.gsdd.dw2.repository.AttackRepository;
-import lombok.AllArgsConstructor;
+import co.com.gsdd.dw2.service.AbstractService;
+import co.com.gsdd.dw2.service.AttackService;
+import io.swagger.annotations.Api;
+import lombok.RequiredArgsConstructor;
 
-@AllArgsConstructor
+@Api("Attack CRUD operations")
+@RequiredArgsConstructor
 @RefreshScope
 @RestController
 @RequestMapping("v1/attacks")
 public class AttackController extends AbstractController<Attack, AttackModel> {
 
-	private final AttackRepository attackRepository;
-	private final GenericConverter<Attack, AttackModel> attackConverter;
+	private final AttackService attackService;
 	
 	@Override
-	public String getSortArg() {
-		return "attackId";
+	public Long getId(AttackModel model) {
+		return model.getAttackId();
 	}
 
 	@Override
-	public Long getId(Attack entity) {
-		return entity.getAttackId();
-	}
-	
-	@Override
-	public Attack replaceId(Attack entityNew, Attack entityOrig) {
-		entityNew.setAttackId(entityOrig.getAttackId());
-		return entityNew;
+	public AbstractService<Attack, AttackModel> getService() {
+		return attackService;
 	}
 
 	@Override
-	public JpaRepository<Attack, Long> getRepo() {
-		return attackRepository;
-	}
-
-	@Override
-	public GenericConverter<Attack, AttackModel> getConverter() {
-		return attackConverter;
-	}
-
-	@Override
-	public AttackModel defineModelWithLinks(Attack entity) {
-		AttackModel model = super.defineModelWithLinks(entity);
+	public AttackModel defineModelWithLinks(AttackModel model) {
+		AttackModel linkedModel = super.defineModelWithLinks(model);
 		Link linkType = WebMvcLinkBuilder
 				.linkTo(WebMvcLinkBuilder.methodOn(AttackTypeController.class).getById(model.getAttackTypeId()))
 				.withRel("attackType");
-		model.add(linkType);
-		return model;
+		linkedModel.add(linkType);
+		return linkedModel;
 	}
 
 }

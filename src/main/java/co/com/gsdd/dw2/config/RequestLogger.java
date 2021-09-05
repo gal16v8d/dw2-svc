@@ -21,10 +21,15 @@ public class RequestLogger {
 		String nombreJP = joinPoint.getSignature().getName();
 		long startTime = System.nanoTime();
 		log.info("Before: {}", nombreJP);
-		o = joinPoint.proceed();
-		log.info("After: {}", nombreJP);
-		long timeTaken = System.nanoTime() - startTime;
-		log.info("request {} took {} ms", nombreJP, TimeUnit.MILLISECONDS.convert(timeTaken, TimeUnit.NANOSECONDS));
+		try {
+			o = joinPoint.proceed();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			log.info("After: {}", nombreJP);
+			long timeTaken = System.currentTimeMillis() - startTime;
+			log.info("Execution of {} tooks {} ms", nombreJP, TimeUnit.MILLISECONDS.convert(timeTaken, TimeUnit.NANOSECONDS));
+		}
 		return o;
 	}
 	

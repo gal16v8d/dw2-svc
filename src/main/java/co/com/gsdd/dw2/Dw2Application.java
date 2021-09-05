@@ -10,7 +10,8 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableDiscoveryClient
 @EnableEurekaClient
 @ComponentScan({ Dw2Application.BASE_PACKAGE + "config", Dw2Application.BASE_PACKAGE + "controller",
-		Dw2Application.BASE_PACKAGE + "converter", Dw2Application.BASE_PACKAGE + "repository" })
+		Dw2Application.BASE_PACKAGE + "converter", Dw2Application.BASE_PACKAGE + "repository",
+		Dw2Application.BASE_PACKAGE + "service" })
 public class Dw2Application {
 
 	public static final String BASE_PACKAGE = "co.com.gsdd.dw2.";

@@ -30,7 +30,7 @@ public class SwaggerConfig {
 	}
 
 	private ApiInfo apiInfo() {
-		return new ApiInfo("DW2 SQL REST", "REST con Spring-Boot & SQLite", "0.0.1.SNAPSHOT", null, getContact(),
+		return new ApiInfo("DW2 SQL REST", "REST con Spring-Boot & H2", "0.0.1.SNAPSHOT", null, getContact(),
 				null, null, Collections.emptyList());
 	}
 

@@ -1,6 +1,5 @@
 package co.com.gsdd.dw2.controller;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -17,47 +16,37 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.com.gsdd.dw2.converter.GenericConverter;
 import co.com.gsdd.dw2.model.hateoas.DigimonXAttackModel;
-import co.com.gsdd.dw2.persistence.entities.DigimonXAttack;
-import co.com.gsdd.dw2.repository.DigimonRepository;
-import co.com.gsdd.dw2.repository.DigimonXAttackRepository;
-import lombok.AllArgsConstructor;
+import co.com.gsdd.dw2.service.DigimonXAttackService;
+import lombok.RequiredArgsConstructor;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RefreshScope
 @RestController
 @RequestMapping("v1/")
 public class DigimonXAttackController {
 
-	private final DigimonRepository digimonRepository;
-	private final DigimonXAttackRepository digimonXAttackRepository;
-	private final GenericConverter<DigimonXAttack, DigimonXAttackModel> digimonXAttackConverter;
+	private final DigimonXAttackService digimonXAttackService;
 
-	private DigimonXAttackModel getFromData(Long digimonId, Long attackId) {
-		return DigimonXAttackModel.builder().attackId(attackId).digimonId(digimonId).build();
-	}
-
-	private DigimonXAttackModel defineModelWithLinks(DigimonXAttack entity) {
-		DigimonXAttackModel model = digimonXAttackConverter.convertToDomain(entity);
+	private DigimonXAttackModel defineModelWithLinks(DigimonXAttackModel model) {
+		DigimonXAttackModel linkedModel = DigimonXAttackModel.builder().attackId(model.getAttackId())
+				.digimonId(model.getDigimonId()).build();
 		Link selfLink = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(DigimonXAttackController.class)
-				.getById(model.getDigimonId(), model.getAttackId())).withSelfRel();
+				.getById(linkedModel.getDigimonId(), linkedModel.getAttackId())).withSelfRel();
 		Link linkAttack = WebMvcLinkBuilder
-				.linkTo(WebMvcLinkBuilder.methodOn(AttackController.class).getById(model.getAttackId()))
+				.linkTo(WebMvcLinkBuilder.methodOn(AttackController.class).getById(linkedModel.getAttackId()))
 				.withRel("attack");
 		Link linkDigimon = WebMvcLinkBuilder
-				.linkTo(WebMvcLinkBuilder.methodOn(DigimonController.class).getById(model.getDigimonId()))
+				.linkTo(WebMvcLinkBuilder.methodOn(DigimonController.class).getById(linkedModel.getDigimonId()))
 				.withRel("digimon");
-		model.add(selfLink, linkAttack, linkDigimon);
-		return model;
+		linkedModel.add(selfLink, linkAttack, linkDigimon);
+		return linkedModel;
 	}
 
 	@GetMapping("digimons/{digimonId:[0-9]+}/attacks")
 	public ResponseEntity<CollectionModel<DigimonXAttackModel>> getAllAtk(@PathVariable("digimonId") Long digimonId) {
-		List<DigimonXAttackModel> digimonXAttacks = Optional.ofNullable(digimonId).map(digimonRepository::findById)
-				.orElseGet(Optional::empty).map(digimonXAttackRepository::findByDigimon)
-				.orElseGet(Collections::emptyList).stream().map(this::defineModelWithLinks)
-				.collect(Collectors.toList());
+		List<DigimonXAttackModel> digimonXAttacks = digimonXAttackService.getAllAtk(digimonId).stream()
+				.map(this::defineModelWithLinks).collect(Collectors.toList());
 		Link link = WebMvcLinkBuilder.linkTo(DigimonXAttackController.class).withSelfRel();
 		CollectionModel<DigimonXAttackModel> result = CollectionModel.of(digimonXAttacks, link);
 		return ResponseEntity.ok(result);
@@ -66,8 +55,7 @@ public class DigimonXAttackController {
 	@GetMapping("digimons/{digimonId:[0-9]+}/attacks/{attackId:[0-9]+}")
 	public ResponseEntity<DigimonXAttackModel> getById(@PathVariable("digimonId") Long digimonId,
 			@PathVariable("attackId") Long attackId) {
-		DigimonXAttack dxa = digimonXAttackConverter
-				.convertToEntity(DigimonXAttackModel.builder().attackId(attackId).digimonId(digimonId).build());
+		DigimonXAttackModel dxa = digimonXAttackService.getById(digimonId, attackId);
 		return Optional.ofNullable(dxa).map(this::defineModelWithLinks).map(ResponseEntity::ok)
 				.orElseGet(() -> ResponseEntity.badRequest().build());
 	}
@@ -75,23 +63,15 @@ public class DigimonXAttackController {
 	@PostMapping("digimons/{digimonId:[0-9]+}/attacks/{attackId:[0-9]+}")
 	public ResponseEntity<DigimonXAttackModel> associate(@PathVariable("digimonId") Long digimonId,
 			@PathVariable("attackId") Long attackId) {
-		return Optional.ofNullable(getFromData(digimonId, attackId)).map(digimonXAttackConverter::convertToEntity)
-				.map(digimonXAttackRepository::saveAndFlush).map(this::defineModelWithLinks).map(ResponseEntity::ok)
-				.orElseGet(() -> ResponseEntity.badRequest().build());
+		return Optional.ofNullable(digimonXAttackService.associate(digimonId, attackId)).map(this::defineModelWithLinks)
+				.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.badRequest().build());
 	}
 
 	@DeleteMapping("digimons/{digimonId:[0-9]+}/attacks/{attackId:[0-9]+}")
 	public ResponseEntity<Object> deassociate(@PathVariable("digimonId") Long digimonId,
 			@PathVariable("attackId") Long attackId) {
-		DigimonXAttack dxa = digimonXAttackConverter
-				.convertToEntity(DigimonXAttackModel.builder().attackId(attackId).digimonId(digimonId).build());
-		return Optional.ofNullable(dxa).map(
-				d -> digimonXAttackRepository.findByDigimonAndAttack(d.getId().getDigimon(), d.getId().getAttack()))
-				.map((DigimonXAttack ndxa) -> {
-					digimonXAttackRepository.delete(ndxa);
-					return ResponseEntity.noContent().build();
-				}).orElseGet(() -> ResponseEntity.notFound().build());
-
+		return Optional.ofNullable(digimonXAttackService.deassociate(digimonId, attackId))
+				.map(result -> ResponseEntity.noContent().build()).orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
 }

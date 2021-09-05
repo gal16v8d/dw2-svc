@@ -6,8 +6,6 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
-import org.springframework.data.domain.Sort;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.RepresentationModel;
@@ -21,25 +19,21 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
-import co.com.gsdd.dw2.converter.GenericConverter;
+import co.com.gsdd.dw2.service.AbstractService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public abstract class AbstractController<T, D extends RepresentationModel<D>> {
 
-	public abstract String getSortArg();
+	public abstract Long getId(D model);
 
-	public abstract Long getId(T entity);
+	public abstract AbstractService<T, D> getService();
 
-	public abstract T replaceId(T entityNew, T entityOrig);
-
-	public abstract JpaRepository<T, Long> getRepo();
-
-	public abstract GenericConverter<T, D> getConverter();
-
-	public D defineModelWithLinks(T entity) {
-		D model = getConverter().convertToDomain(entity);
-		Link selfLink = generateSelfLink(getId(entity));
+	public D defineModelWithLinks(D model) {
+		Link selfLink = generateSelfLink(getId(model));
 		if (selfLink != null) {
 			model.add(selfLink);
 		}
@@ -57,51 +51,59 @@ public abstract class AbstractController<T, D extends RepresentationModel<D>> {
 		return null;
 	}
 
+	@ApiOperation(value = "Allows to retrieve all", responseContainer = "List")
 	@GetMapping
 	public ResponseEntity<CollectionModel<D>> getAll() {
-		List<D> models = getRepo().findAll(Sort.by(getSortArg())).stream().map(this::defineModelWithLinks)
-				.collect(Collectors.toList());
+		List<D> models = getService().getAll().stream().map(this::defineModelWithLinks).collect(Collectors.toList());
 		Link link = WebMvcLinkBuilder.linkTo(this.getClass()).withSelfRel();
 		CollectionModel<D> result = CollectionModel.of(models, link);
 		return ResponseEntity.ok(result);
 	}
 
+	@ApiOperation(value = "Retrieve a single record by id")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Matching data"),
+			@ApiResponse(code = 404, message = "Can not find any data by given id") })
 	@GetMapping("{id:[0-9]+}")
 	public ResponseEntity<D> getById(@PathVariable("id") Long id) {
-		return getRepo().findById(id).map(this::defineModelWithLinks).map(ResponseEntity::ok)
+		return Optional.ofNullable(getService().getById(id)).map(this::defineModelWithLinks).map(ResponseEntity::ok)
 				.orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
+	@ApiOperation(value = "Store given data")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Save success"),
+			@ApiResponse(code = 400, message = "If some missing data or wrong payload") })
 	@PostMapping
 	public ResponseEntity<D> save(@Valid @RequestBody D model) {
-		return Optional.ofNullable(model).map(getConverter()::convertToEntity).map(getRepo()::saveAndFlush)
-				.map(this::defineModelWithLinks).map(ResponseEntity::ok)
+		return Optional.ofNullable(getService().save(model)).map(this::defineModelWithLinks).map(ResponseEntity::ok)
 				.orElseGet(() -> ResponseEntity.badRequest().build());
 	}
 
+	@ApiOperation(value = "Fully updates matching data")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Update success"),
+			@ApiResponse(code = 400, message = "If some missing data or wrong payload"),
+			@ApiResponse(code = 404, message = "Can not find any data by given id") })
 	@PutMapping("{id:[0-9]+}")
 	public ResponseEntity<D> update(@PathVariable("id") Long id, @Valid @RequestBody D model) {
-		return getRepo().findById(id).map((T dbEntity) -> {
-			T ent = getConverter().convertToEntity(model);
-			return Optional.ofNullable(ent).map((T e) -> {
-				e = replaceId(e, dbEntity);
-				return getRepo().saveAndFlush(e);
-			}).orElse(null);
-		}).map(this::defineModelWithLinks).map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+		return Optional.ofNullable(getService().update(id, model)).map(this::defineModelWithLinks)
+				.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
+	@ApiOperation(value = "Partial update matching data")
+	@ApiResponses(value = { @ApiResponse(code = 200, message = "Update success"),
+			@ApiResponse(code = 400, message = "If some missing data or wrong payload"),
+			@ApiResponse(code = 404, message = "Can not find any data by given id") })
 	@PatchMapping("{id:[0-9]+}")
 	public ResponseEntity<D> patch(@PathVariable("id") Long id, @RequestBody D model) {
-		return getRepo().findById(id).map(dbEntity -> getConverter().mapToEntity(model, dbEntity))
-				.map((T e) -> getRepo().saveAndFlush(e)).map(this::defineModelWithLinks).map(ResponseEntity::ok)
-				.orElseGet(() -> ResponseEntity.notFound().build());
+		return Optional.ofNullable(getService().patch(id, model)).map(this::defineModelWithLinks)
+				.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
 	}
 
+	@ApiOperation(value = "Delete matching data")
+	@ApiResponses(value = { @ApiResponse(code = 204, message = "Delete success"),
+			@ApiResponse(code = 404, message = "Can not find any data by given id") })
 	@DeleteMapping("{id:[0-9]+}")
 	public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
-		return getRepo().findById(id).map((T entity) -> {
-			getRepo().delete(entity);
-			return ResponseEntity.noContent().build();
-		}).orElseGet(() -> ResponseEntity.notFound().build());
+		return Optional.ofNullable(getService().delete(id)).map(result -> ResponseEntity.noContent().build())
+				.orElseGet(() -> ResponseEntity.notFound().build());
 	}
 }
