@@ -21,7 +21,7 @@ import co.com.gsdd.dw2.service.AttackTypeService;
 @SpringBootTest
 @AutoConfigureMockMvc
 //@WebMvcTest(AttackTypeController.class)
-class AtackTypeControllerTest {
+class AttackTypeControllerTest {
 
 	private static final String V1_ATTACK_TYPES = "/v1/attackTypes";
 	private static final String V1_ATTACK_TYPES_1 = "/v1/attackTypes/1";

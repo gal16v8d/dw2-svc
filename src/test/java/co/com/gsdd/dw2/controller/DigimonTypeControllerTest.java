@@ -21,7 +21,7 @@ import co.com.gsdd.dw2.service.DigimonTypeService;
 @SpringBootTest
 @AutoConfigureMockMvc
 //@WebMvcTest(DigimonTypeController.class)
-class DIgimonTypeControllerTest {
+class DigimonTypeControllerTest {
 
 	private static final String V1_DIGIMON_TYPES = "/v1/digimonTypes";
 	private static final String V1_DIGIMON_TYPES_1 = "/v1/digimonTypes/1";
