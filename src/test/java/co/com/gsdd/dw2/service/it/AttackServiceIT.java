@@ -12,7 +12,7 @@ import co.com.gsdd.dw2.model.hateoas.AttackModel;
 import co.com.gsdd.dw2.service.AttackService;
 
 @DataJpaTest
-class AttackServiceIt {
+class AttackServiceIT {
 
 	private static final long ATTACK_ID = 200L;
 	private static final long INTERRUPT_ID = 400L;

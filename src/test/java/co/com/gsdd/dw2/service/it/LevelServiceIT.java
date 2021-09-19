@@ -12,7 +12,7 @@ import co.com.gsdd.dw2.model.hateoas.LevelModel;
 import co.com.gsdd.dw2.service.LevelService;
 
 @DataJpaTest
-class LevelServiceIt {
+class LevelServiceIT {
 
 	private static final long ROOKIE_ID = 200L;
 	private static final long MEGA_ID = 500L;

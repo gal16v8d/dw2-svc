@@ -14,7 +14,7 @@ import co.com.gsdd.dw2.service.EvolutionService;
 
 @Disabled // need to take a look on import file
 @DataJpaTest
-class EvolutionServiceIt {
+class EvolutionServiceIT {
 
 	private static final long TO_CHAMPTION_ID = 1200L;
 	private static final long TO_MEGA_ID = 1400L;

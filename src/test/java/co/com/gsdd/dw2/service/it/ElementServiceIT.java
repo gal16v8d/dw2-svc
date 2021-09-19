@@ -12,7 +12,7 @@ import co.com.gsdd.dw2.model.hateoas.ElementModel;
 import co.com.gsdd.dw2.service.ElementService;
 
 @DataJpaTest
-class ElementServiceIt {
+class ElementServiceIT {
 
 	private static final long NONE_ID = 200L;
 	private static final long DARKNESS_ID = 500L;

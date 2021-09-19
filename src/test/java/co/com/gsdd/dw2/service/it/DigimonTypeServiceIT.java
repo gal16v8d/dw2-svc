@@ -12,7 +12,7 @@ import co.com.gsdd.dw2.model.hateoas.DigimonTypeModel;
 import co.com.gsdd.dw2.service.DigimonTypeService;
 
 @DataJpaTest
-class DigimonTypeServiceIt {
+class DigimonTypeServiceIT {
 
 	private static final long DATA_ID = 200L;
 	private static final long VIRUS_ID = 400L;

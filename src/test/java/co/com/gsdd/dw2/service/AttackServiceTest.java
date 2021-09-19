@@ -1,5 +1,11 @@
 package co.com.gsdd.dw2.service;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.willDoNothing;
+import static org.mockito.BDDMockito.willReturn;
+import static org.mockito.Mockito.spy;
+
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -8,7 +14,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.BDDMockito;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -33,7 +38,7 @@ class AttackServiceTest {
 	@BeforeEach
 	void setUp() {
 		MockitoAnnotations.initMocks(this);
-		service = BDDMockito.spy(new AttackService(attackRepository, attackConverter));
+		service = spy(new AttackService(attackRepository, attackConverter));
 	}
 
 	@Test
@@ -50,10 +55,10 @@ class AttackServiceTest {
 
 	@Test
 	void getAllTest() {
-		BDDMockito.willReturn(Arrays.asList(Attack.builder().attackId(2L).build())).given(attackRepository)
-				.findAll(BDDMockito.any(Sort.class));
-		BDDMockito.willReturn(AttackModel.builder().attackId(2L).build()).given(attackConverter)
-				.convertToDomain(BDDMockito.any(Attack.class));
+		willReturn(Arrays.asList(Attack.builder().attackId(2L).build())).given(attackRepository)
+				.findAll(any(Sort.class));
+		willReturn(AttackModel.builder().attackId(2L).build()).given(attackConverter)
+				.convertToDomain(any(Attack.class));
 		List<AttackModel> resultList = service.getAll();
 		Assertions.assertNotNull(resultList);
 		Assertions.assertEquals(1, resultList.size());
@@ -61,10 +66,10 @@ class AttackServiceTest {
 
 	@Test
 	void getByIdTest() {
-		BDDMockito.willReturn(Optional.ofNullable(Attack.builder().attackId(2L).build())).given(attackRepository)
-				.findById(BDDMockito.anyLong());
-		BDDMockito.willReturn(AttackModel.builder().attackId(2L).attackTypeId(1L).mp(0).name(NECRO_MAGIC).build())
-				.given(attackConverter).convertToDomain(BDDMockito.any(Attack.class));
+		willReturn(Optional.ofNullable(Attack.builder().attackId(2L).build())).given(attackRepository)
+				.findById(anyLong());
+		willReturn(AttackModel.builder().attackId(2L).attackTypeId(1L).mp(0).name(NECRO_MAGIC).build())
+				.given(attackConverter).convertToDomain(any(Attack.class));
 		AttackModel result = service.getById(2L);
 		Assertions.assertNotNull(result);
 		Assertions.assertAll(() -> Assertions.assertEquals(0, result.getMp()),
@@ -75,7 +80,7 @@ class AttackServiceTest {
 
 	@Test
 	void getByIdNotFoundTest() {
-		BDDMockito.willReturn(Optional.ofNullable(null)).given(attackRepository).findById(BDDMockito.anyLong());
+		willReturn(Optional.ofNullable(null)).given(attackRepository).findById(anyLong());
 		AttackModel result = service.getById(2L);
 		Assertions.assertNull(result);
 	}
@@ -90,9 +95,9 @@ class AttackServiceTest {
 		AttackModel model = AttackModel.builder().attackTypeId(1L).mp(0).name(NECRO_MAGIC).build();
 		Attack entity = Attack.builder().attackType(AttackType.builder().attackTypeId(1L).build()).mp(0)
 				.name(NECRO_MAGIC).build();
-		BDDMockito.willReturn(entity).given(attackRepository).saveAndFlush(BDDMockito.any(Attack.class));
-		BDDMockito.willReturn(entity).given(attackConverter).convertToEntity(BDDMockito.any(AttackModel.class));
-		BDDMockito.willReturn(model).given(attackConverter).convertToDomain(BDDMockito.any(Attack.class));
+		willReturn(entity).given(attackRepository).saveAndFlush(any(Attack.class));
+		willReturn(entity).given(attackConverter).convertToEntity(any(AttackModel.class));
+		willReturn(model).given(attackConverter).convertToDomain(any(Attack.class));
 		AttackModel result = service.save(model);
 		Assertions.assertNotNull(result);
 		Assertions.assertAll(() -> Assertions.assertEquals(0, result.getMp()),
@@ -100,4 +105,30 @@ class AttackServiceTest {
 				() -> Assertions.assertEquals(NECRO_MAGIC, result.getName()),
 				() -> Assertions.assertEquals(1L, result.getAttackTypeId()));
 	}
+
+	@Test
+	void updateNotFoundTest() {
+		willReturn(Optional.ofNullable(null)).given(attackRepository).findById(anyLong());
+		Assertions.assertNull(service.update(1L, AttackModel.builder().build()));
+	}
+	
+	@Test
+	void patchNotFoundTest() {
+		willReturn(Optional.ofNullable(null)).given(attackRepository).findById(anyLong());
+		Assertions.assertNull(service.patch(1L, AttackModel.builder().build()));
+	}
+	
+	@Test
+	void deleteNotFoundTest() {
+		willReturn(Optional.ofNullable(null)).given(attackRepository).findById(anyLong());
+		Assertions.assertNull(service.delete(1L));
+	}
+	
+	@Test
+	void deleteTest() {
+		willReturn(Optional.ofNullable(Attack.builder().build())).given(attackRepository).findById(anyLong());
+		willDoNothing().given(attackRepository).delete(any(Attack.class));
+		Assertions.assertNotNull(service.delete(1L));
+	}
+
 }
