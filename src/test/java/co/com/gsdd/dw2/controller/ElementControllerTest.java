@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import co.com.gsdd.dw2.model.hateoas.ElementModel;
+import co.com.gsdd.dw2.model.ElementModel;
 import co.com.gsdd.dw2.service.ElementService;
 
 @SpringBootTest
@@ -25,10 +25,8 @@ class ElementControllerTest {
 
 	private static final String V1_ELEMENTS = "/v1/elements";
 	private static final String V1_ELEMENTS_1 = "/v1/elements/1";
-	private static final String JSON_PATH_LINKS = "$._links";
 	private static final String JSON_PATH_NAME = "$.name";
 	private static final String AIR = "Air";
-	private static final String APPLICATION_HAL_JSON = "application/hal+json";
 	private static final String NONE = "None";
 	private static final ObjectMapper MAPPER = new ObjectMapper();
 	@Autowired
@@ -42,10 +40,8 @@ class ElementControllerTest {
 				.given(elementService).getAll();
 		mvc.perform(MockMvcRequestBuilders.get(V1_ELEMENTS).contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.content().contentType(APPLICATION_HAL_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath("$._embedded").exists())
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_LINKS).exists())
-				.andExpect(MockMvcResultMatchers.jsonPath("$._embedded.elementModelList").isArray());
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
 	}
 
 	@Test
@@ -54,21 +50,18 @@ class ElementControllerTest {
 				.getById(BDDMockito.anyLong());
 		mvc.perform(MockMvcRequestBuilders.get(V1_ELEMENTS_1).contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.content().contentType(APPLICATION_HAL_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(NONE))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_LINKS).exists());
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(NONE));
 	}
 
 	@Test
 	void saveTest() throws Exception {
-		ElementModel model = ElementModel.builder().name(AIR).build();
-		BDDMockito.willReturn(ElementModel.builder().elementId(1L).name(AIR).build()).given(elementService)
-				.save(BDDMockito.any(ElementModel.class));
+		ElementModel model = ElementModel.builder().elementId(1L).name(AIR).build();
+		BDDMockito.willReturn(model).given(elementService).save(BDDMockito.any(ElementModel.class));
 		mvc.perform(MockMvcRequestBuilders.post(V1_ELEMENTS).contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content(MAPPER.writeValueAsString(model))).andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.content().contentType(APPLICATION_HAL_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(AIR))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_LINKS).exists());
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(AIR));
 	}
 
 	@Test
@@ -80,14 +73,13 @@ class ElementControllerTest {
 
 	@Test
 	void updateTest() throws Exception {
-		ElementModel model = ElementModel.builder().name(AIR).build();
-		BDDMockito.willReturn(ElementModel.builder().elementId(1L).name(AIR).build()).given(elementService)
-				.update(BDDMockito.anyLong(), BDDMockito.any(ElementModel.class));
+		ElementModel model = ElementModel.builder().elementId(1L).name(AIR).build();
+		BDDMockito.willReturn(model).given(elementService).update(BDDMockito.anyLong(),
+				BDDMockito.any(ElementModel.class));
 		mvc.perform(MockMvcRequestBuilders.put(V1_ELEMENTS_1).contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content(MAPPER.writeValueAsString(model))).andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.content().contentType(APPLICATION_HAL_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(AIR))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_LINKS).exists());
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(AIR));
 	}
 
 	@Test
@@ -106,9 +98,8 @@ class ElementControllerTest {
 				.patch(BDDMockito.anyLong(), BDDMockito.any(ElementModel.class));
 		mvc.perform(MockMvcRequestBuilders.patch(V1_ELEMENTS_1).contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content(MAPPER.writeValueAsString(model))).andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.content().contentType(APPLICATION_HAL_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(AIR))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_LINKS).exists());
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(AIR));
 	}
 
 	@Test

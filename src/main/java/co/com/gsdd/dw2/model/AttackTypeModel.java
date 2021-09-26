@@ -1,8 +1,6 @@
-package co.com.gsdd.dw2.model.hateoas;
+package co.com.gsdd.dw2.model;
 
 import javax.validation.constraints.NotEmpty;
-
-import org.springframework.hateoas.RepresentationModel;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
@@ -14,7 +12,7 @@ import lombok.Generated;
 @Data
 @Builder
 @EqualsAndHashCode(callSuper = false)
-public class AttackTypeModel extends RepresentationModel<AttackTypeModel> {
+public class AttackTypeModel {
 
 	private Long attackTypeId;
 

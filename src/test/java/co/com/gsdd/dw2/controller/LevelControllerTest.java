@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import co.com.gsdd.dw2.model.hateoas.LevelModel;
+import co.com.gsdd.dw2.model.LevelModel;
 import co.com.gsdd.dw2.service.LevelService;
 
 @SpringBootTest
@@ -25,10 +25,8 @@ class LevelControllerTest {
 
 	private static final String V1_LEVELS = "/v1/levels";
 	private static final String V1_LEVELS_1 = "/v1/levels/1";
-	private static final String JSON_PATH_LINKS = "$._links";
 	private static final String JSON_PATH_NAME = "$.name";
 	private static final String MEGA_DNA = "Mega DNA";
-	private static final String APPLICATION_HAL_JSON = "application/hal+json";
 	private static final String ROOKIE = "Rookie";
 	private static final ObjectMapper MAPPER = new ObjectMapper();
 	@Autowired
@@ -42,10 +40,8 @@ class LevelControllerTest {
 				.getAll();
 		mvc.perform(MockMvcRequestBuilders.get(V1_LEVELS).contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.content().contentType(APPLICATION_HAL_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath("$._embedded").exists())
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_LINKS).exists())
-				.andExpect(MockMvcResultMatchers.jsonPath("$._embedded.levelModelList").isArray());
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
 	}
 
 	@Test
@@ -54,9 +50,8 @@ class LevelControllerTest {
 				.getById(BDDMockito.anyLong());
 		mvc.perform(MockMvcRequestBuilders.get(V1_LEVELS_1).contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.content().contentType(APPLICATION_HAL_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(ROOKIE))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_LINKS).exists());
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(ROOKIE));
 	}
 
 	@Test
@@ -66,9 +61,8 @@ class LevelControllerTest {
 				.save(BDDMockito.any(LevelModel.class));
 		mvc.perform(MockMvcRequestBuilders.post(V1_LEVELS).contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content(MAPPER.writeValueAsString(model))).andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.content().contentType(APPLICATION_HAL_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(MEGA_DNA))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_LINKS).exists());
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(MEGA_DNA));
 	}
 
 	@Test
@@ -77,7 +71,7 @@ class LevelControllerTest {
 		mvc.perform(MockMvcRequestBuilders.post(V1_LEVELS).contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content(MAPPER.writeValueAsString(model))).andExpect(MockMvcResultMatchers.status().isBadRequest());
 	}
-	
+
 	@Test
 	void updateTest() throws Exception {
 		LevelModel model = LevelModel.builder().name(MEGA_DNA).build();
@@ -85,9 +79,8 @@ class LevelControllerTest {
 				.update(BDDMockito.anyLong(), BDDMockito.any(LevelModel.class));
 		mvc.perform(MockMvcRequestBuilders.put(V1_LEVELS_1).contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content(MAPPER.writeValueAsString(model))).andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.content().contentType(APPLICATION_HAL_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(MEGA_DNA))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_LINKS).exists());
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(MEGA_DNA));
 	}
 
 	@Test
@@ -97,7 +90,7 @@ class LevelControllerTest {
 		mvc.perform(MockMvcRequestBuilders.put(V1_LEVELS_1).contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content(MAPPER.writeValueAsString(model))).andExpect(MockMvcResultMatchers.status().isNotFound());
 	}
-	
+
 	@Test
 	void patchTest() throws Exception {
 		LevelModel model = LevelModel.builder().name(MEGA_DNA).build();
@@ -105,9 +98,8 @@ class LevelControllerTest {
 				.patch(BDDMockito.anyLong(), BDDMockito.any(LevelModel.class));
 		mvc.perform(MockMvcRequestBuilders.patch(V1_LEVELS_1).contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content(MAPPER.writeValueAsString(model))).andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.content().contentType(APPLICATION_HAL_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(MEGA_DNA))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_LINKS).exists());
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(MEGA_DNA));
 	}
 
 	@Test

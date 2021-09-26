@@ -6,11 +6,10 @@ import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.hateoas.RepresentationModel;
 
 import co.com.gsdd.dw2.converter.GenericConverter;
 
-public abstract class AbstractService<T, D extends RepresentationModel<D>> {
+public abstract class AbstractService<T, D> {
 
 	abstract String getSortArg();
 

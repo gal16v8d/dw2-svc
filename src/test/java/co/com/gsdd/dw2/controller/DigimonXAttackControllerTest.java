@@ -14,7 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import co.com.gsdd.dw2.model.hateoas.DigimonXAttackModel;
+import co.com.gsdd.dw2.model.DigimonXAttackModel;
 import co.com.gsdd.dw2.service.DigimonXAttackService;
 
 @SpringBootTest
@@ -22,8 +22,6 @@ import co.com.gsdd.dw2.service.DigimonXAttackService;
 //@WebMvcTest(DigimonXAttackController.class)
 class DigimonXAttackControllerTest {
 
-	private static final String JSON_PATH_LINKS = "$._links";
-	private static final String APPLICATION_HAL_JSON = "application/hal+json";
 	@Autowired
 	private MockMvc mvc;
 	@MockBean
@@ -35,10 +33,8 @@ class DigimonXAttackControllerTest {
 				.given(service).getAllAtk(BDDMockito.anyLong());
 		mvc.perform(MockMvcRequestBuilders.get("/v1/digimons/1/attacks").contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.content().contentType(APPLICATION_HAL_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath("$._embedded").exists())
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_LINKS).exists())
-				.andExpect(MockMvcResultMatchers.jsonPath("$._embedded.digimonXAttackModelList").isArray());
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
 	}
 
 	@Test
@@ -48,8 +44,7 @@ class DigimonXAttackControllerTest {
 		mvc.perform(
 				MockMvcRequestBuilders.get("/v1/digimons/1/attacks/1").contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.content().contentType(APPLICATION_HAL_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_LINKS).exists())
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.digimonId", Matchers.equalTo((Number) 1)))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.attackId", Matchers.equalTo((Number) 1)));
 	}
@@ -69,8 +64,7 @@ class DigimonXAttackControllerTest {
 		mvc.perform(
 				MockMvcRequestBuilders.post("/v1/digimons/1/attacks/1").contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.content().contentType(APPLICATION_HAL_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_LINKS).exists())
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.digimonId", Matchers.equalTo((Number) 1)))
 				.andExpect(MockMvcResultMatchers.jsonPath("$.attackId", Matchers.equalTo((Number) 1)));
 	}

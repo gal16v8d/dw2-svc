@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
-import co.com.gsdd.dw2.model.hateoas.ElementModel;
+import co.com.gsdd.dw2.model.ElementModel;
 import co.com.gsdd.dw2.persistence.entities.Element;
 
 @Component

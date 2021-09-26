@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import co.com.gsdd.dw2.model.hateoas.AttackModel;
+import co.com.gsdd.dw2.model.AttackModel;
 import co.com.gsdd.dw2.service.AttackService;
 
 @SpringBootTest
@@ -25,10 +25,8 @@ class AttackControllerTest {
 
 	private static final String V1_ATTACK = "/v1/attacks";
 	private static final String V1_ATTACK_1 = "/v1/attacks/1";
-	private static final String JSON_PATH_LINKS = "$._links";
 	private static final String JSON_PATH_NAME = "$.name";
 	private static final String SMILEY_BOMB = "Smiley Bomb";
-	private static final String APPLICATION_HAL_JSON = "application/hal+json";
 	private static final String NECRO_MAGIC = "Necro Magic";
 	private static final ObjectMapper MAPPER = new ObjectMapper();
 	@Autowired
@@ -44,10 +42,8 @@ class AttackControllerTest {
 				.given(attackService).getAll();
 		mvc.perform(MockMvcRequestBuilders.get(V1_ATTACK).contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.content().contentType(APPLICATION_HAL_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath("$._embedded").exists())
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_LINKS).exists())
-				.andExpect(MockMvcResultMatchers.jsonPath("$._embedded.attackModelList").isArray());
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
 	}
 
 	@Test
@@ -56,22 +52,18 @@ class AttackControllerTest {
 				.given(attackService).getById(BDDMockito.anyLong());
 		mvc.perform(MockMvcRequestBuilders.get(V1_ATTACK_1).contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.content().contentType(APPLICATION_HAL_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(NECRO_MAGIC))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_LINKS).exists())
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_LINKS + ".attackType").exists());
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(NECRO_MAGIC));
 	}
 
 	@Test
 	void saveTest() throws Exception {
 		AttackModel model = AttackModel.builder().attackTypeId(1L).attackId(1L).mp(16).name(SMILEY_BOMB).build();
-		BDDMockito.willReturn(AttackModel.builder().attackTypeId(1L).attackId(1L).mp(16).name(SMILEY_BOMB).build())
-				.given(attackService).save(BDDMockito.any(AttackModel.class));
+		BDDMockito.willReturn(model).given(attackService).save(BDDMockito.any(AttackModel.class));
 		mvc.perform(MockMvcRequestBuilders.post(V1_ATTACK).contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content(MAPPER.writeValueAsString(model))).andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.content().contentType(APPLICATION_HAL_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(SMILEY_BOMB))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_LINKS).exists());
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(SMILEY_BOMB));
 	}
 
 	@Test
@@ -84,13 +76,12 @@ class AttackControllerTest {
 	@Test
 	void updateTest() throws Exception {
 		AttackModel model = AttackModel.builder().attackTypeId(1L).attackId(1L).mp(16).name(SMILEY_BOMB).build();
-		BDDMockito.willReturn(AttackModel.builder().attackTypeId(1L).attackId(1L).mp(16).name(SMILEY_BOMB).build())
-				.given(attackService).update(BDDMockito.anyLong(), BDDMockito.any(AttackModel.class));
+		BDDMockito.willReturn(model).given(attackService).update(BDDMockito.anyLong(),
+				BDDMockito.any(AttackModel.class));
 		mvc.perform(MockMvcRequestBuilders.put(V1_ATTACK_1).contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content(MAPPER.writeValueAsString(model))).andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.content().contentType(APPLICATION_HAL_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(SMILEY_BOMB))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_LINKS).exists());
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(SMILEY_BOMB));
 	}
 
 	@Test
@@ -104,14 +95,13 @@ class AttackControllerTest {
 
 	@Test
 	void patchTest() throws Exception {
-		AttackModel model = AttackModel.builder().attackTypeId(1L).attackId(1L).mp(16).name(SMILEY_BOMB).build();
+		AttackModel model = AttackModel.builder().mp(16).name(SMILEY_BOMB).build();
 		BDDMockito.willReturn(AttackModel.builder().attackTypeId(1L).attackId(1L).mp(16).name(SMILEY_BOMB).build())
 				.given(attackService).patch(BDDMockito.anyLong(), BDDMockito.any(AttackModel.class));
 		mvc.perform(MockMvcRequestBuilders.patch(V1_ATTACK_1).contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content(MAPPER.writeValueAsString(model))).andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.content().contentType(APPLICATION_HAL_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(SMILEY_BOMB))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_LINKS).exists());
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(SMILEY_BOMB));
 	}
 
 	@Test

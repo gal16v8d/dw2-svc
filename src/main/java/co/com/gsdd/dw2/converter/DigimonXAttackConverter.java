@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Component;
 
-import co.com.gsdd.dw2.model.hateoas.DigimonXAttackModel;
+import co.com.gsdd.dw2.model.DigimonXAttackModel;
 import co.com.gsdd.dw2.persistence.entities.Attack;
 import co.com.gsdd.dw2.persistence.entities.Digimon;
 import co.com.gsdd.dw2.persistence.entities.DigimonXAttack;

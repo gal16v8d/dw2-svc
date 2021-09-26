@@ -11,7 +11,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import co.com.gsdd.dw2.model.hateoas.AttackModel;
+import co.com.gsdd.dw2.model.AttackModel;
 import co.com.gsdd.dw2.persistence.entities.Attack;
 import co.com.gsdd.dw2.persistence.entities.AttackType;
 import co.com.gsdd.dw2.repository.AttackTypeRepository;

@@ -1,9 +1,7 @@
-package co.com.gsdd.dw2.model.hateoas;
+package co.com.gsdd.dw2.model;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
-
-import org.springframework.hateoas.RepresentationModel;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Builder;
@@ -15,7 +13,7 @@ import lombok.Generated;
 @Data
 @Builder
 @EqualsAndHashCode(callSuper = false)
-public class DigimonXAttackModel extends RepresentationModel<DigimonXAttackModel> {
+public class DigimonXAttackModel {
 
 	@ApiModelProperty(required = true, value = "Registered digimon id")
 	@PositiveOrZero(message = "digimonId should be positive")

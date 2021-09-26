@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import co.com.gsdd.dw2.converter.GenericConverter;
-import co.com.gsdd.dw2.model.hateoas.LevelModel;
+import co.com.gsdd.dw2.model.LevelModel;
 import co.com.gsdd.dw2.persistence.entities.Level;
 import co.com.gsdd.dw2.repository.LevelRepository;
 import lombok.RequiredArgsConstructor;

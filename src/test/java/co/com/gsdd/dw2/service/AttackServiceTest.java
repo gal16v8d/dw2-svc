@@ -20,7 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Sort;
 
 import co.com.gsdd.dw2.converter.GenericConverter;
-import co.com.gsdd.dw2.model.hateoas.AttackModel;
+import co.com.gsdd.dw2.model.AttackModel;
 import co.com.gsdd.dw2.persistence.entities.Attack;
 import co.com.gsdd.dw2.persistence.entities.AttackType;
 import co.com.gsdd.dw2.repository.AttackRepository;

@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.dao.DataIntegrityViolationException;
 
-import co.com.gsdd.dw2.model.hateoas.EvolutionModel;
+import co.com.gsdd.dw2.model.EvolutionModel;
 import co.com.gsdd.dw2.service.EvolutionService;
 
 @Disabled // need to take a look on import file

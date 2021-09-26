@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import co.com.gsdd.dw2.converter.GenericConverter;
-import co.com.gsdd.dw2.model.hateoas.DigimonXAttackModel;
+import co.com.gsdd.dw2.model.DigimonXAttackModel;
 import co.com.gsdd.dw2.persistence.entities.DigimonXAttack;
 import co.com.gsdd.dw2.repository.DigimonRepository;
 import co.com.gsdd.dw2.repository.DigimonXAttackRepository;

@@ -15,7 +15,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import co.com.gsdd.dw2.model.hateoas.DigimonModel;
+import co.com.gsdd.dw2.model.DigimonModel;
 import co.com.gsdd.dw2.service.DigimonService;
 
 @SpringBootTest
@@ -25,10 +25,8 @@ class DigimonControllerTest {
 
 	private static final String V1_DIGIMON = "/v1/digimons";
 	private static final String V1_DIGIMON_1 = "/v1/digimons/1";
-	private static final String JSON_PATH_LINKS = "$._links";
 	private static final String JSON_PATH_NAME = "$.name";
 	private static final String METALGREYMON = "MetalGreymon";
-	private static final String APPLICATION_HAL_JSON = "application/hal+json";
 	private static final String AGUMON = "Agumon";
 	private static final ObjectMapper MAPPER = new ObjectMapper();
 	@Autowired
@@ -43,10 +41,8 @@ class DigimonControllerTest {
 				.given(digimonService).getAll();
 		mvc.perform(MockMvcRequestBuilders.get(V1_DIGIMON).contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.content().contentType(APPLICATION_HAL_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath("$._embedded").exists())
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_LINKS).exists())
-				.andExpect(MockMvcResultMatchers.jsonPath("$._embedded.digimonModelList").isArray());
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
 	}
 
 	@Test
@@ -56,27 +52,19 @@ class DigimonControllerTest {
 				.given(digimonService).getById(BDDMockito.anyLong());
 		mvc.perform(MockMvcRequestBuilders.get(V1_DIGIMON_1).contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.content().contentType(APPLICATION_HAL_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(AGUMON))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_LINKS).exists())
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_LINKS + ".level").exists())
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_LINKS + ".type").exists())
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_LINKS + ".element").exists());
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(AGUMON));
 	}
 
 	@Test
 	void saveTest() throws Exception {
 		DigimonModel model = DigimonModel.builder().elementId(1L).digimonTypeId(1L).levelId(1L).name(METALGREYMON)
 				.build();
-		BDDMockito
-				.willReturn(
-						DigimonModel.builder().elementId(1L).digimonTypeId(1L).levelId(1L).name(METALGREYMON).build())
-				.given(digimonService).save(BDDMockito.any(DigimonModel.class));
+		BDDMockito.willReturn(model).given(digimonService).save(BDDMockito.any(DigimonModel.class));
 		mvc.perform(MockMvcRequestBuilders.post(V1_DIGIMON).contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content(MAPPER.writeValueAsString(model))).andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.content().contentType(APPLICATION_HAL_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(METALGREYMON))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_LINKS).exists());
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(METALGREYMON));
 	}
 
 	@Test
@@ -90,15 +78,12 @@ class DigimonControllerTest {
 	void updateTest() throws Exception {
 		DigimonModel model = DigimonModel.builder().elementId(1L).digimonTypeId(1L).levelId(1L).name(METALGREYMON)
 				.build();
-		BDDMockito
-				.willReturn(
-						DigimonModel.builder().elementId(1L).digimonTypeId(1L).levelId(1L).name(METALGREYMON).build())
-				.given(digimonService).update(BDDMockito.anyLong(), BDDMockito.any(DigimonModel.class));
+		BDDMockito.willReturn(model).given(digimonService).update(BDDMockito.anyLong(),
+				BDDMockito.any(DigimonModel.class));
 		mvc.perform(MockMvcRequestBuilders.put(V1_DIGIMON_1).contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content(MAPPER.writeValueAsString(model))).andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.content().contentType(APPLICATION_HAL_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(METALGREYMON))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_LINKS).exists());
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(METALGREYMON));
 	}
 
 	@Test
@@ -113,17 +98,15 @@ class DigimonControllerTest {
 
 	@Test
 	void patchTest() throws Exception {
-		DigimonModel model = DigimonModel.builder().elementId(1L).digimonTypeId(1L).levelId(1L).name(METALGREYMON)
-				.build();
+		DigimonModel model = DigimonModel.builder().levelId(1L).name(METALGREYMON).build();
 		BDDMockito
 				.willReturn(
 						DigimonModel.builder().elementId(1L).digimonTypeId(1L).levelId(1L).name(METALGREYMON).build())
 				.given(digimonService).patch(BDDMockito.anyLong(), BDDMockito.any(DigimonModel.class));
 		mvc.perform(MockMvcRequestBuilders.patch(V1_DIGIMON_1).contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content(MAPPER.writeValueAsString(model))).andExpect(MockMvcResultMatchers.status().isOk())
-				.andExpect(MockMvcResultMatchers.content().contentType(APPLICATION_HAL_JSON))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(METALGREYMON))
-				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_LINKS).exists());
+				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(METALGREYMON));
 	}
 
 	@Test
