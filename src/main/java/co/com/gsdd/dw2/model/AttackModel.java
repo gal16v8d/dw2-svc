@@ -27,6 +27,11 @@ public class AttackModel {
 	@NotNull(message = "attack type should not be null")
 	private Long attackTypeId;
 	
+	@ApiModelProperty(required = true, example = "631")
+	@PositiveOrZero(message = "attackTargetTypeId should be positive")
+	@NotNull(message = "attack target type should not be null")
+	private Long attackTargetTypeId;
+	
 	@ApiModelProperty(required = true, example = "12", value = "Magical Points")
 	@PositiveOrZero(message = "Magical points (MP) should be positive")
 	private Integer mp;

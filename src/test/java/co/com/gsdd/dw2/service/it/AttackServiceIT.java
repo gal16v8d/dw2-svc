@@ -14,6 +14,7 @@ import co.com.gsdd.dw2.service.AttackService;
 @DataJpaTest
 class AttackServiceIT {
 
+	private static final long ATTACK_TARGET_ID = 700L;
 	private static final long ATTACK_ID = 200L;
 	private static final long INTERRUPT_ID = 400L;
 	private static final long ID_NOT_FOUND = 600L;
@@ -43,21 +44,22 @@ class AttackServiceIT {
 
 	@Test
 	void saveTest() {
-		AttackModel result = service.save(AttackModel.builder().name(RUN).mp(0).attackTypeId(200L).build());
+		AttackModel result = service.save(AttackModel.builder().name(RUN).mp(0).attackTypeId(ATTACK_ID)
+				.attackTargetTypeId(ATTACK_TARGET_ID).build());
 		Assertions.assertNotNull(result);
 		Assertions.assertEquals(RUN, result.getName());
 	}
 
 	@Test
 	void saveNameExistsTest() {
-		Assertions.assertThrows(DataIntegrityViolationException.class,
-				() -> service.save(AttackModel.builder().name(ATTACK).mp(4).attackTypeId(200L).build()));
+		Assertions.assertThrows(DataIntegrityViolationException.class, () -> service.save(AttackModel.builder()
+				.name(ATTACK).mp(4).attackTypeId(ATTACK_ID).attackTargetTypeId(ATTACK_TARGET_ID).build()));
 	}
 
 	@Test
 	void updateTest() {
-		AttackModel result = service.update(INTERRUPT_ID,
-				AttackModel.builder().name(RUN).mp(0).attackTypeId(200L).build());
+		AttackModel result = service.update(INTERRUPT_ID, AttackModel.builder().name(RUN).mp(0).attackTypeId(ATTACK_ID)
+				.attackTargetTypeId(ATTACK_TARGET_ID).build());
 		Assertions.assertNotNull(result);
 		Assertions.assertEquals(RUN, result.getName());
 	}
@@ -65,13 +67,13 @@ class AttackServiceIT {
 	@Test
 	void updateNoMatchTest() {
 		Assertions.assertNull(
-				service.update(ID_NOT_FOUND, AttackModel.builder().name(RUN).mp(0).attackTypeId(200L).build()));
+				service.update(ID_NOT_FOUND, AttackModel.builder().name(RUN).mp(0).attackTypeId(ATTACK_ID).build()));
 	}
 
 	@Test
 	void patchTest() {
 		AttackModel result = service.patch(INTERRUPT_ID,
-				AttackModel.builder().name(RUN).mp(0).attackTypeId(200L).build());
+				AttackModel.builder().name(RUN).mp(0).attackTypeId(ATTACK_ID).build());
 		Assertions.assertNotNull(result);
 		Assertions.assertEquals(RUN, result.getName());
 	}
@@ -79,7 +81,7 @@ class AttackServiceIT {
 	@Test
 	void patchNoMatchTest() {
 		Assertions.assertNull(
-				service.patch(ID_NOT_FOUND, AttackModel.builder().name(RUN).mp(0).attackTypeId(200L).build()));
+				service.patch(ID_NOT_FOUND, AttackModel.builder().name(RUN).mp(0).attackTypeId(ATTACK_ID).build()));
 	}
 
 	@Test

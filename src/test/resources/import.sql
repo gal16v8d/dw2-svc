@@ -19,20 +19,28 @@ INSERT INTO attack_type (attack_type_id, name) VALUES (300, 'Counter Attack');
 INSERT INTO attack_type (attack_type_id, name) VALUES (400, 'Interrupt');
 INSERT INTO attack_type (attack_type_id, name) VALUES (500, 'Assist');
 
+INSERT INTO attack_target_type (attack_target_type_id, name) VALUES (200, 'All');
+INSERT INTO attack_target_type (attack_target_type_id, name) VALUES (300, 'Self');
+INSERT INTO attack_target_type (attack_target_type_id, name) VALUES (400, 'All Allies');
+INSERT INTO attack_target_type (attack_target_type_id, name) VALUES (500, 'All Enemies');
+INSERT INTO attack_target_type (attack_target_type_id, name) VALUES (600, 'One Ally');
+INSERT INTO attack_target_type (attack_target_type_id, name) VALUES (700, 'One Enemy');
+INSERT INTO attack_target_type (attack_target_type_id, name) VALUES (800, 'Random Enemy');
+
 INSERT INTO digimon (digimon_id, name, level_id, digimon_type_id, element_id) VALUES (200, 'Agumon', 200, 300, 200);
 INSERT INTO digimon (digimon_id, name, level_id, digimon_type_id, element_id) VALUES (300, 'Greymon', 300, 300, 200);
 INSERT INTO digimon (digimon_id, name, level_id, digimon_type_id, element_id) VALUES (400, 'MetalGreymon', 400, 300, 700);
 INSERT INTO digimon (digimon_id, name, level_id, digimon_type_id, element_id) VALUES (500, 'WarGreymon', 500, 300, 200);
 INSERT INTO digimon (digimon_id, name, level_id, digimon_type_id, element_id) VALUES (600, 'Omnimon', 500, 300, 200);
 
-INSERT INTO attack (attack_id, name, attack_type_id, mp) VALUES (200, 'Blue Blaster', 200, 4);
-INSERT INTO attack (attack_id, name, attack_type_id, mp) VALUES (201, 'Pepper Breath', 200, 8);
-INSERT INTO attack (attack_id, name, attack_type_id, mp) VALUES (202, 'Nova Blast', 200, 12);
-INSERT INTO attack (attack_id, name, attack_type_id, mp) VALUES (203, 'Giga Blaster', 200, 18);
-INSERT INTO attack (attack_id, name, attack_type_id, mp) VALUES (204, 'Terra Force', 200, 40);
-INSERT INTO attack (attack_id, name, attack_type_id, mp) VALUES (300, 'Smiley Bomb', 300, 16);
-INSERT INTO attack (attack_id, name, attack_type_id, mp) VALUES (400, 'MP Magic', 400, 4);
-INSERT INTO attack (attack_id, name, attack_type_id, mp) VALUES (500, 'Necro Magic', 500, 0);
+INSERT INTO attack (attack_id, name, attack_type_id, attack_target_type_id, mp) VALUES (200, 'Blue Blaster', 200, 700, 4);
+INSERT INTO attack (attack_id, name, attack_type_id, attack_target_type_id, mp) VALUES (201, 'Pepper Breath', 200, 700, 8);
+INSERT INTO attack (attack_id, name, attack_type_id, attack_target_type_id, mp) VALUES (202, 'Nova Blast', 200, 700, 12);
+INSERT INTO attack (attack_id, name, attack_type_id, attack_target_type_id, mp) VALUES (203, 'Giga Blaster', 200, 700, 18);
+INSERT INTO attack (attack_id, name, attack_type_id, attack_target_type_id, mp) VALUES (204, 'Terra Force', 200, 700, 40);
+INSERT INTO attack (attack_id, name, attack_type_id, attack_target_type_id, mp) VALUES (300, 'Smiley Bomb', 300, 700, 16);
+INSERT INTO attack (attack_id, name, attack_type_id, attack_target_type_id, mp) VALUES (400, 'MP Magic', 400, 700, 4);
+INSERT INTO attack (attack_id, name, attack_type_id, attack_target_type_id, mp) VALUES (500, 'Necro Magic', 500, 200, 0);
 
 INSERT INTO evolution (evolution_id, base_digimon_id, evolved_digimon_id, dna_times) VALUES (1200, 200, 300, "0+");
 INSERT INTO evolution (evolution_id, base_digimon_id, evolved_digimon_id, dna_times) VALUES (1300, 300, 400, "0-5");

@@ -1,9 +1,12 @@
 package co.com.gsdd.dw2.controller;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.willReturn;
+
 import java.util.Arrays;
 
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,10 +39,8 @@ class AttackControllerTest {
 
 	@Test
 	void getAllTest() throws Exception {
-		BDDMockito
-				.willReturn(Arrays
-						.asList(AttackModel.builder().attackTypeId(1L).attackId(1L).mp(0).name(NECRO_MAGIC).build()))
-				.given(attackService).getAll();
+		willReturn(Arrays.asList(AttackModel.builder().attackTypeId(1L).attackTargetTypeId(1L).attackId(1L).mp(0)
+				.name(NECRO_MAGIC).build())).given(attackService).getAll();
 		mvc.perform(MockMvcRequestBuilders.get(V1_ATTACK).contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -48,8 +49,8 @@ class AttackControllerTest {
 
 	@Test
 	void getByIdTest() throws Exception {
-		BDDMockito.willReturn(AttackModel.builder().attackTypeId(1L).attackId(1L).mp(0).name(NECRO_MAGIC).build())
-				.given(attackService).getById(BDDMockito.anyLong());
+		willReturn(AttackModel.builder().attackTypeId(1L).attackTargetTypeId(1L).attackId(1L).mp(0).name(NECRO_MAGIC)
+				.build()).given(attackService).getById(anyLong());
 		mvc.perform(MockMvcRequestBuilders.get(V1_ATTACK_1).contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -58,8 +59,9 @@ class AttackControllerTest {
 
 	@Test
 	void saveTest() throws Exception {
-		AttackModel model = AttackModel.builder().attackTypeId(1L).attackId(1L).mp(16).name(SMILEY_BOMB).build();
-		BDDMockito.willReturn(model).given(attackService).save(BDDMockito.any(AttackModel.class));
+		AttackModel model = AttackModel.builder().attackTypeId(1L).attackTargetTypeId(1L).attackId(1L).mp(16)
+				.name(SMILEY_BOMB).build();
+		willReturn(model).given(attackService).save(any(AttackModel.class));
 		mvc.perform(MockMvcRequestBuilders.post(V1_ATTACK).contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content(MAPPER.writeValueAsString(model))).andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -75,9 +77,9 @@ class AttackControllerTest {
 
 	@Test
 	void updateTest() throws Exception {
-		AttackModel model = AttackModel.builder().attackTypeId(1L).attackId(1L).mp(16).name(SMILEY_BOMB).build();
-		BDDMockito.willReturn(model).given(attackService).update(BDDMockito.anyLong(),
-				BDDMockito.any(AttackModel.class));
+		AttackModel model = AttackModel.builder().attackTypeId(1L).attackTargetTypeId(1L).attackId(1L).mp(16)
+				.name(SMILEY_BOMB).build();
+		willReturn(model).given(attackService).update(anyLong(), any(AttackModel.class));
 		mvc.perform(MockMvcRequestBuilders.put(V1_ATTACK_1).contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content(MAPPER.writeValueAsString(model))).andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -86,9 +88,9 @@ class AttackControllerTest {
 
 	@Test
 	void updateNotFoundTest() throws Exception {
-		AttackModel model = AttackModel.builder().attackTypeId(1L).attackId(1L).mp(16).name(SMILEY_BOMB).build();
-		BDDMockito.willReturn(null).given(attackService).update(BDDMockito.anyLong(),
-				BDDMockito.any(AttackModel.class));
+		AttackModel model = AttackModel.builder().attackTypeId(1L).attackTargetTypeId(1L).attackId(1L).mp(16)
+				.name(SMILEY_BOMB).build();
+		willReturn(null).given(attackService).update(anyLong(), any(AttackModel.class));
 		mvc.perform(MockMvcRequestBuilders.put(V1_ATTACK_1).contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content(MAPPER.writeValueAsString(model))).andExpect(MockMvcResultMatchers.status().isNotFound());
 	}
@@ -96,8 +98,8 @@ class AttackControllerTest {
 	@Test
 	void patchTest() throws Exception {
 		AttackModel model = AttackModel.builder().mp(16).name(SMILEY_BOMB).build();
-		BDDMockito.willReturn(AttackModel.builder().attackTypeId(1L).attackId(1L).mp(16).name(SMILEY_BOMB).build())
-				.given(attackService).patch(BDDMockito.anyLong(), BDDMockito.any(AttackModel.class));
+		willReturn(AttackModel.builder().attackTypeId(1L).attackId(1L).mp(16).name(SMILEY_BOMB).build())
+				.given(attackService).patch(anyLong(), any(AttackModel.class));
 		mvc.perform(MockMvcRequestBuilders.patch(V1_ATTACK_1).contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content(MAPPER.writeValueAsString(model))).andExpect(MockMvcResultMatchers.status().isOk())
 				.andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
@@ -107,21 +109,21 @@ class AttackControllerTest {
 	@Test
 	void patchNotFoundTest() throws Exception {
 		AttackModel model = AttackModel.builder().name(SMILEY_BOMB).build();
-		BDDMockito.willReturn(null).given(attackService).patch(BDDMockito.anyLong(), BDDMockito.any(AttackModel.class));
+		willReturn(null).given(attackService).patch(anyLong(), any(AttackModel.class));
 		mvc.perform(MockMvcRequestBuilders.patch(V1_ATTACK_1).contentType(MediaType.APPLICATION_JSON_VALUE)
 				.content(MAPPER.writeValueAsString(model))).andExpect(MockMvcResultMatchers.status().isNotFound());
 	}
 
 	@Test
 	void deleteTest() throws Exception {
-		BDDMockito.willReturn(1L).given(attackService).delete(BDDMockito.anyLong());
+		willReturn(1L).given(attackService).delete(anyLong());
 		mvc.perform(MockMvcRequestBuilders.delete(V1_ATTACK_1).contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(MockMvcResultMatchers.status().isNoContent());
 	}
 
 	@Test
 	void deleteNotFoundTest() throws Exception {
-		BDDMockito.willReturn(null).given(attackService).delete(BDDMockito.anyLong());
+		willReturn(null).given(attackService).delete(anyLong());
 		mvc.perform(MockMvcRequestBuilders.delete(V1_ATTACK_1).contentType(MediaType.APPLICATION_JSON_VALUE))
 				.andExpect(MockMvcResultMatchers.status().isNotFound());
 	}

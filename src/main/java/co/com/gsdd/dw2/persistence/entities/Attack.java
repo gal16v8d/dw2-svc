@@ -27,20 +27,24 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 public class Attack {
-	
+
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Id
 	@Column(name = "attackId")
 	private Long attackId;
-	
+
 	@NotEmpty(message = "attack name should not be empty")
 	@Column(name = "name", nullable = false, unique = true)
 	private String name;
-	
+
 	@ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "attackTypeId", referencedColumnName = "attackTypeId", foreignKey = @ForeignKey(name = "Fk_attack_type"))
 	private AttackType attackType;
-	
+
+	@ManyToOne(optional = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "attackTargetTypeId", referencedColumnName = "attackTargetTypeId", foreignKey = @ForeignKey(name = "Fk_attack_target_type"))
+	private AttackTargetType attackTargetType;
+
 	@PositiveOrZero(message = "Magical points (MP) should be positive")
 	@Column(name = "mp", nullable = false)
 	private Integer mp;

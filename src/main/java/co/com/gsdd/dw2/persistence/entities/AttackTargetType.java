@@ -24,18 +24,17 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
-public class AttackType {
-	
+public class AttackTargetType {
+
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Id
-	@Column(name = "attackTypeId")
-	private Long attackTypeId;
+	@Column(name = "attackTargetTypeId")
+	private Long attackTargetTypeId;
 
-	@NotEmpty(message = "attack type name should not be empty")
+	@NotEmpty(message = "attack target type name should not be empty")
 	@Column(name = "name", nullable = false, unique = true)
 	private String name;
 	
-	@OneToMany(mappedBy = "attackType", fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "attackTargetType", fetch = FetchType.LAZY)
 	private Set<Attack> attacks;
-
 }
