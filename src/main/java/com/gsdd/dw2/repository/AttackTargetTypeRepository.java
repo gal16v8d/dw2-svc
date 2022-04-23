@@ -1,10 +1,8 @@
 package com.gsdd.dw2.repository;
 
+import com.gsdd.dw2.persistence.entities.AttackTargetType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import com.gsdd.dw2.persistence.entities.AttackTargetType;
 
 @Repository
-public interface AttackTargetTypeRepository extends JpaRepository<AttackTargetType, Long> {
-
-}
+public interface AttackTargetTypeRepository extends JpaRepository<AttackTargetType, Long> {}

@@ -6,7 +6,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class Dw2ApplicationTests {
 
-  @Test
-  void contextLoads() {}
-
+    @Test
+    void contextLoads() {}
 }

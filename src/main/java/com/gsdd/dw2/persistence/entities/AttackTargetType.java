@@ -24,15 +24,15 @@ import lombok.NoArgsConstructor;
 @Entity
 public class AttackTargetType {
 
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  @Id
-  @Column(name = "attackTargetTypeId")
-  private Long attackTargetTypeId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @Column(name = "attackTargetTypeId")
+    private Long attackTargetTypeId;
 
-  @NotEmpty(message = "attack target type name should not be empty")
-  @Column(name = "name", nullable = false, unique = true)
-  private String name;
+    @NotEmpty(message = "attack target type name should not be empty")
+    @Column(name = "name", nullable = false, unique = true)
+    private String name;
 
-  @OneToMany(mappedBy = "attackTargetType", fetch = FetchType.LAZY)
-  private Set<Attack> attacks;
+    @OneToMany(mappedBy = "attackTargetType", fetch = FetchType.LAZY)
+    private Set<Attack> attacks;
 }

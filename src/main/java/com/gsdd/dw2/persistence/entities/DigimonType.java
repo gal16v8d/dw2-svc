@@ -21,13 +21,12 @@ import lombok.NoArgsConstructor;
 @Entity
 public class DigimonType {
 
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  @Id
-  @Column(name = "digimonTypeId")
-  private Long digimonTypeId;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @Column(name = "digimonTypeId")
+    private Long digimonTypeId;
 
-  @NotEmpty(message = "digimon type name should not be empty")
-  @Column(name = "name", nullable = false, unique = true)
-  private String name;
-
+    @NotEmpty(message = "digimon type name should not be empty")
+    @Column(name = "name", nullable = false, unique = true)
+    private String name;
 }
