@@ -12,27 +12,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class EvolutionService extends AbstractService<Evolution, EvolutionModel> {
 
-    private final EvolutionRepository evolutionRepository;
-    private final GenericConverter<Evolution, EvolutionModel> evolutionConverter;
+  private final EvolutionRepository evolutionRepository;
+  private final GenericConverter<Evolution, EvolutionModel> evolutionConverter;
 
-    @Override
-    public String getSortArg() {
-        return "evolutionId";
-    }
+  @Override
+  public String getSortArg() {
+    return "evolutionId";
+  }
 
-    @Override
-    public Evolution replaceId(Evolution entityNew, Evolution entityOrig) {
-        entityNew.setEvolutionId(entityOrig.getEvolutionId());
-        return entityNew;
-    }
+  @Override
+  public Evolution replaceId(Evolution entityNew, Evolution entityOrig) {
+    entityNew.setEvolutionId(entityOrig.getEvolutionId());
+    return entityNew;
+  }
 
-    @Override
-    public JpaRepository<Evolution, Long> getRepo() {
-        return evolutionRepository;
-    }
+  @Override
+  public JpaRepository<Evolution, Long> getRepo() {
+    return evolutionRepository;
+  }
 
-    @Override
-    public GenericConverter<Evolution, EvolutionModel> getConverter() {
-        return evolutionConverter;
-    }
+  @Override
+  public GenericConverter<Evolution, EvolutionModel> getConverter() {
+    return evolutionConverter;
+  }
 }

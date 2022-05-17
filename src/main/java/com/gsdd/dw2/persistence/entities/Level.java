@@ -21,12 +21,12 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Level {
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Id
-    @Column(name = "levelId")
-    private Long levelId;
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Id
+  @Column(name = "levelId")
+  private Long levelId;
 
-    @NotBlank(message = "level name should not be empty")
-    @Column(name = "name", nullable = false, unique = true)
-    private String name;
+  @NotBlank(message = "level name should not be empty")
+  @Column(name = "name", nullable = false, unique = true)
+  private String name;
 }

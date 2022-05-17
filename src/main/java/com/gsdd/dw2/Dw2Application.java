@@ -13,24 +13,24 @@ import org.springframework.context.annotation.ComponentScan;
 @EnableDiscoveryClient
 @EnableEurekaClient
 @ComponentScan({
-    Dw2Application.BASE_PACKAGE + "config",
-    Dw2Application.BASE_PACKAGE + "controller",
-    Dw2Application.BASE_PACKAGE + "converter",
-    Dw2Application.BASE_PACKAGE + "repository",
-    Dw2Application.BASE_PACKAGE + "service"
+  Dw2Application.BASE_PACKAGE + "config",
+  Dw2Application.BASE_PACKAGE + "controller",
+  Dw2Application.BASE_PACKAGE + "converter",
+  Dw2Application.BASE_PACKAGE + "repository",
+  Dw2Application.BASE_PACKAGE + "service"
 })
 @OpenAPIDefinition(
-        info =
-                @Info(
-                        title = "DW2 API",
-                        version = "2.0",
-                        description = "REST with Spring-Boot & H2",
-                        contact = @Contact(email = "alex.galvis.sistemas@gmail.com")))
+    info =
+        @Info(
+            title = "DW2 API",
+            version = "2.0",
+            description = "REST with Spring-Boot & H2",
+            contact = @Contact(email = "alex.galvis.sistemas@gmail.com")))
 public class Dw2Application {
 
-    public static final String BASE_PACKAGE = "com.gsdd.dw2.";
+  public static final String BASE_PACKAGE = "com.gsdd.dw2.";
 
-    public static void main(String[] args) {
-        SpringApplication.run(Dw2Application.class, args);
-    }
+  public static void main(String[] args) {
+    SpringApplication.run(Dw2Application.class, args);
+  }
 }

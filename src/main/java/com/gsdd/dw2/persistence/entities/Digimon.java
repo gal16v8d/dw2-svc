@@ -26,33 +26,33 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Digimon {
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Id
-    @Column(name = "digimonId")
-    private Long digimonId;
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Id
+  @Column(name = "digimonId")
+  private Long digimonId;
 
-    @NotEmpty(message = "digimon name should not be empty")
-    @Column(name = "name", nullable = false, unique = true)
-    private String name;
+  @NotEmpty(message = "digimon name should not be empty")
+  @Column(name = "name", nullable = false, unique = true)
+  private String name;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(
-            name = "levelId",
-            referencedColumnName = "levelId",
-            foreignKey = @ForeignKey(name = "Fk_level"))
-    private Level level;
+  @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JoinColumn(
+      name = "levelId",
+      referencedColumnName = "levelId",
+      foreignKey = @ForeignKey(name = "Fk_level"))
+  private Level level;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(
-            name = "digimonTypeId",
-            referencedColumnName = "digimonTypeId",
-            foreignKey = @ForeignKey(name = "Fk_type"))
-    private DigimonType digimonType;
+  @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JoinColumn(
+      name = "digimonTypeId",
+      referencedColumnName = "digimonTypeId",
+      foreignKey = @ForeignKey(name = "Fk_type"))
+  private DigimonType digimonType;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(
-            name = "elementId",
-            referencedColumnName = "elementId",
-            foreignKey = @ForeignKey(name = "Fk_element"))
-    private Element element;
+  @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JoinColumn(
+      name = "elementId",
+      referencedColumnName = "elementId",
+      foreignKey = @ForeignKey(name = "Fk_element"))
+  private Element element;
 }

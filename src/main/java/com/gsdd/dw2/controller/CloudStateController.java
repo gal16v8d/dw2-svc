@@ -15,11 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("v1/state")
 public class CloudStateController {
 
-    @Value("${service.welcome.message}")
-    private String welcomeMessage;
+  @Value("${service.welcome.message}")
+  private String welcomeMessage;
 
-    @GetMapping("/welcome")
-    public String getWelcomeMsg() {
-        return welcomeMessage;
-    }
+  @GetMapping("/welcome")
+  public String getWelcomeMsg() {
+    return welcomeMessage;
+  }
 }

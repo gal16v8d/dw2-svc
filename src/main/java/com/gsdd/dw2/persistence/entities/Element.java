@@ -21,12 +21,12 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Element {
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Id
-    @Column(name = "elementId")
-    private Long elementId;
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Id
+  @Column(name = "elementId")
+  private Long elementId;
 
-    @NotBlank(message = "element name should not be empty")
-    @Column(name = "name", nullable = false, unique = true)
-    private String name;
+  @NotBlank(message = "element name should not be empty")
+  @Column(name = "name", nullable = false, unique = true)
+  private String name;
 }

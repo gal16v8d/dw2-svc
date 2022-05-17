@@ -17,15 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("v1/attackTypes")
 public class AttackTypeController extends AbstractController<AttackType, AttackTypeModel> {
 
-    private final AttackTypeService attackTypeService;
+  private final AttackTypeService attackTypeService;
 
-    @Override
-    public Long getId(AttackTypeModel model) {
-        return model.getAttackTypeId();
-    }
+  @Override
+  public Long getId(AttackTypeModel model) {
+    return model.getAttackTypeId();
+  }
 
-    @Override
-    public AbstractService<AttackType, AttackTypeModel> getService() {
-        return attackTypeService;
-    }
+  @Override
+  public AbstractService<AttackType, AttackTypeModel> getService() {
+    return attackTypeService;
+  }
 }

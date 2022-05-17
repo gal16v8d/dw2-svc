@@ -13,9 +13,9 @@ import lombok.Generated;
 @EqualsAndHashCode(callSuper = false)
 public class DigimonTypeModel {
 
-    private Long digimonTypeId;
+  private Long digimonTypeId;
 
-    @Schema(required = true, example = "Data")
-    @NotEmpty(message = "digimon type name should not be empty")
-    private String name;
+  @Schema(required = true, example = "Data")
+  @NotEmpty(message = "digimon type name should not be empty")
+  private String name;
 }

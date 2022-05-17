@@ -17,15 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("v1/digimonTypes")
 public class DigimonTypeController extends AbstractController<DigimonType, DigimonTypeModel> {
 
-    private final DigimonTypeService digimonTypeService;
+  private final DigimonTypeService digimonTypeService;
 
-    @Override
-    public Long getId(DigimonTypeModel model) {
-        return model.getDigimonTypeId();
-    }
+  @Override
+  public Long getId(DigimonTypeModel model) {
+    return model.getDigimonTypeId();
+  }
 
-    @Override
-    public AbstractService<DigimonType, DigimonTypeModel> getService() {
-        return digimonTypeService;
-    }
+  @Override
+  public AbstractService<DigimonType, DigimonTypeModel> getService() {
+    return digimonTypeService;
+  }
 }

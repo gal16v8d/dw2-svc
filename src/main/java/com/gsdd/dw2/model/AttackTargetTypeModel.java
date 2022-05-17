@@ -13,9 +13,9 @@ import lombok.Generated;
 @EqualsAndHashCode(callSuper = false)
 public class AttackTargetTypeModel {
 
-    private Long attackTargetTypeId;
+  private Long attackTargetTypeId;
 
-    @Schema(required = true, example = "Single Ally")
-    @NotEmpty(message = "attack target type name should not be empty")
-    private String name;
+  @Schema(required = true, example = "Single Ally")
+  @NotEmpty(message = "attack target type name should not be empty")
+  private String name;
 }

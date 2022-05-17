@@ -12,27 +12,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class DigimonTypeService extends AbstractService<DigimonType, DigimonTypeModel> {
 
-    private final DigimonTypeRepository digimonTypeRepository;
-    private final GenericConverter<DigimonType, DigimonTypeModel> digimonTypeConverter;
+  private final DigimonTypeRepository digimonTypeRepository;
+  private final GenericConverter<DigimonType, DigimonTypeModel> digimonTypeConverter;
 
-    @Override
-    public String getSortArg() {
-        return "digimonTypeId";
-    }
+  @Override
+  public String getSortArg() {
+    return "digimonTypeId";
+  }
 
-    @Override
-    public DigimonType replaceId(DigimonType entityNew, DigimonType entityOrig) {
-        entityNew.setDigimonTypeId(entityOrig.getDigimonTypeId());
-        return entityNew;
-    }
+  @Override
+  public DigimonType replaceId(DigimonType entityNew, DigimonType entityOrig) {
+    entityNew.setDigimonTypeId(entityOrig.getDigimonTypeId());
+    return entityNew;
+  }
 
-    @Override
-    public JpaRepository<DigimonType, Long> getRepo() {
-        return digimonTypeRepository;
-    }
+  @Override
+  public JpaRepository<DigimonType, Long> getRepo() {
+    return digimonTypeRepository;
+  }
 
-    @Override
-    public GenericConverter<DigimonType, DigimonTypeModel> getConverter() {
-        return digimonTypeConverter;
-    }
+  @Override
+  public GenericConverter<DigimonType, DigimonTypeModel> getConverter() {
+    return digimonTypeConverter;
+  }
 }

@@ -17,5 +17,5 @@ import lombok.NoArgsConstructor;
 @Entity
 public class DigimonXAttack {
 
-    @EmbeddedId private DigimonXAttackPK id;
+  @EmbeddedId private DigimonXAttackPK id;
 }

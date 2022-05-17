@@ -257,6 +257,7 @@
 						<format>
 							<!-- define the files to apply to -->
 							<includes>
+								<include>*.properties</include>
 								<include>*.xml</include>
 							</includes>
 							<trimTrailingWhitespace />
@@ -267,7 +268,6 @@
 					<java>
 						<googleJavaFormat>
 							<version>1.15.0</version>
-							<style>AOSP</style>
 							<reflowLongStrings>true</reflowLongStrings>
 						</googleJavaFormat>
 						<trimTrailingWhitespace />

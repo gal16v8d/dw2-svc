@@ -11,30 +11,29 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class AttackTargetTypeService
-        extends AbstractService<AttackTargetType, AttackTargetTypeModel> {
+    extends AbstractService<AttackTargetType, AttackTargetTypeModel> {
 
-    private final AttackTargetTypeRepository attackTargetTypeRepository;
-    private final GenericConverter<AttackTargetType, AttackTargetTypeModel>
-            attackTargetTypeConverter;
+  private final AttackTargetTypeRepository attackTargetTypeRepository;
+  private final GenericConverter<AttackTargetType, AttackTargetTypeModel> attackTargetTypeConverter;
 
-    @Override
-    public String getSortArg() {
-        return "attackTargetTypeId";
-    }
+  @Override
+  public String getSortArg() {
+    return "attackTargetTypeId";
+  }
 
-    @Override
-    public AttackTargetType replaceId(AttackTargetType entityNew, AttackTargetType entityOrig) {
-        entityNew.setAttackTargetTypeId(entityOrig.getAttackTargetTypeId());
-        return entityNew;
-    }
+  @Override
+  public AttackTargetType replaceId(AttackTargetType entityNew, AttackTargetType entityOrig) {
+    entityNew.setAttackTargetTypeId(entityOrig.getAttackTargetTypeId());
+    return entityNew;
+  }
 
-    @Override
-    public JpaRepository<AttackTargetType, Long> getRepo() {
-        return attackTargetTypeRepository;
-    }
+  @Override
+  public JpaRepository<AttackTargetType, Long> getRepo() {
+    return attackTargetTypeRepository;
+  }
 
-    @Override
-    public GenericConverter<AttackTargetType, AttackTargetTypeModel> getConverter() {
-        return attackTargetTypeConverter;
-    }
+  @Override
+  public GenericConverter<AttackTargetType, AttackTargetTypeModel> getConverter() {
+    return attackTargetTypeConverter;
+  }
 }

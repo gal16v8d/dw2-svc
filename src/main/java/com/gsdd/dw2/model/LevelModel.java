@@ -13,9 +13,9 @@ import lombok.Generated;
 @EqualsAndHashCode(callSuper = false)
 public class LevelModel {
 
-    private Long levelId;
+  private Long levelId;
 
-    @Schema(required = true, example = "Rookie")
-    @NotEmpty(message = "level name should not be empty")
-    private String name;
+  @Schema(required = true, example = "Rookie")
+  @NotEmpty(message = "level name should not be empty")
+  private String name;
 }

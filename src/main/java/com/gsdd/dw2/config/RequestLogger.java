@@ -13,24 +13,24 @@ import org.springframework.stereotype.Component;
 @Component
 public class RequestLogger {
 
-    @Around("execution(* " + Dw2Application.BASE_PACKAGE + "controller.*.*(..))")
-    public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
-        Object o = null;
-        String nombreJP = joinPoint.getSignature().getName();
-        long startTime = System.nanoTime();
-        log.info("Before: {}", nombreJP);
-        try {
-            o = joinPoint.proceed();
-        } catch (Exception e) {
-            throw e;
-        } finally {
-            log.info("After: {}", nombreJP);
-            long timeTaken = System.currentTimeMillis() - startTime;
-            log.info(
-                    "Execution of {} tooks {} ms",
-                    nombreJP,
-                    TimeUnit.MILLISECONDS.convert(timeTaken, TimeUnit.NANOSECONDS));
-        }
-        return o;
+  @Around("execution(* " + Dw2Application.BASE_PACKAGE + "controller.*.*(..))")
+  public Object around(ProceedingJoinPoint joinPoint) throws Throwable {
+    Object o = null;
+    String nombreJP = joinPoint.getSignature().getName();
+    long startTime = System.nanoTime();
+    log.info("Before: {}", nombreJP);
+    try {
+      o = joinPoint.proceed();
+    } catch (Exception e) {
+      throw e;
+    } finally {
+      log.info("After: {}", nombreJP);
+      long timeTaken = System.currentTimeMillis() - startTime;
+      log.info(
+          "Execution of {} tooks {} ms",
+          nombreJP,
+          TimeUnit.MILLISECONDS.convert(timeTaken, TimeUnit.NANOSECONDS));
     }
+    return o;
+  }
 }

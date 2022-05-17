@@ -17,15 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("v1/elements")
 public class ElementController extends AbstractController<Element, ElementModel> {
 
-    private final ElementService elementService;
+  private final ElementService elementService;
 
-    @Override
-    public Long getId(ElementModel model) {
-        return model.getElementId();
-    }
+  @Override
+  public Long getId(ElementModel model) {
+    return model.getElementId();
+  }
 
-    @Override
-    public AbstractService<Element, ElementModel> getService() {
-        return elementService;
-    }
+  @Override
+  public AbstractService<Element, ElementModel> getService() {
+    return elementService;
+  }
 }

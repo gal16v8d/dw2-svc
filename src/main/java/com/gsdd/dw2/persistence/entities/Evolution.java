@@ -26,26 +26,26 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Evolution {
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Id
-    @Column(name = "evolutionId")
-    private Long evolutionId;
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Id
+  @Column(name = "evolutionId")
+  private Long evolutionId;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(
-            name = "baseDigimonId",
-            referencedColumnName = "digimonId",
-            foreignKey = @ForeignKey(name = "Fk_digimon_base"))
-    private Digimon baseDigimon;
+  @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JoinColumn(
+      name = "baseDigimonId",
+      referencedColumnName = "digimonId",
+      foreignKey = @ForeignKey(name = "Fk_digimon_base"))
+  private Digimon baseDigimon;
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinColumn(
-            name = "evolvedDigimonId",
-            referencedColumnName = "digimonId",
-            foreignKey = @ForeignKey(name = "Fk_digimon_evolved"))
-    private Digimon evolvedDigimon;
+  @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JoinColumn(
+      name = "evolvedDigimonId",
+      referencedColumnName = "digimonId",
+      foreignKey = @ForeignKey(name = "Fk_digimon_evolved"))
+  private Digimon evolvedDigimon;
 
-    @NotBlank(message = "evolution should have dna factor")
-    @Column(name = "dnaTimes", nullable = false)
-    private String dnaTimes;
+  @NotBlank(message = "evolution should have dna factor")
+  @Column(name = "dnaTimes", nullable = false)
+  private String dnaTimes;
 }

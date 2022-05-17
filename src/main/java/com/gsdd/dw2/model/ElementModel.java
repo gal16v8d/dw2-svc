@@ -13,9 +13,9 @@ import lombok.Generated;
 @EqualsAndHashCode(callSuper = false)
 public class ElementModel {
 
-    private Long elementId;
+  private Long elementId;
 
-    @Schema(required = true, example = "Machine")
-    @NotEmpty(message = "element name should not be empty")
-    private String name;
+  @Schema(required = true, example = "Machine")
+  @NotEmpty(message = "element name should not be empty")
+  private String name;
 }

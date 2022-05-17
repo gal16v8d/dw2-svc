@@ -17,15 +17,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("v1/levels")
 public class LevelController extends AbstractController<Level, LevelModel> {
 
-    private final LevelService levelService;
+  private final LevelService levelService;
 
-    @Override
-    public Long getId(LevelModel model) {
-        return model.getLevelId();
-    }
+  @Override
+  public Long getId(LevelModel model) {
+    return model.getLevelId();
+  }
 
-    @Override
-    public AbstractService<Level, LevelModel> getService() {
-        return levelService;
-    }
+  @Override
+  public AbstractService<Level, LevelModel> getService() {
+    return levelService;
+  }
 }

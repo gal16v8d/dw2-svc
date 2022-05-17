@@ -12,27 +12,27 @@ import org.springframework.stereotype.Service;
 @Service
 public class AttackTypeService extends AbstractService<AttackType, AttackTypeModel> {
 
-    private final AttackTypeRepository attackTypeRepository;
-    private final GenericConverter<AttackType, AttackTypeModel> attackTypeConverter;
+  private final AttackTypeRepository attackTypeRepository;
+  private final GenericConverter<AttackType, AttackTypeModel> attackTypeConverter;
 
-    @Override
-    public String getSortArg() {
-        return "attackTypeId";
-    }
+  @Override
+  public String getSortArg() {
+    return "attackTypeId";
+  }
 
-    @Override
-    public AttackType replaceId(AttackType entityNew, AttackType entityOrig) {
-        entityNew.setAttackTypeId(entityOrig.getAttackTypeId());
-        return entityNew;
-    }
+  @Override
+  public AttackType replaceId(AttackType entityNew, AttackType entityOrig) {
+    entityNew.setAttackTypeId(entityOrig.getAttackTypeId());
+    return entityNew;
+  }
 
-    @Override
-    public JpaRepository<AttackType, Long> getRepo() {
-        return attackTypeRepository;
-    }
+  @Override
+  public JpaRepository<AttackType, Long> getRepo() {
+    return attackTypeRepository;
+  }
 
-    @Override
-    public GenericConverter<AttackType, AttackTypeModel> getConverter() {
-        return attackTypeConverter;
-    }
+  @Override
+  public GenericConverter<AttackType, AttackTypeModel> getConverter() {
+    return attackTypeConverter;
+  }
 }

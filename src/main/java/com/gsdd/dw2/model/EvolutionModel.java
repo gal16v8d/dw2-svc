@@ -15,19 +15,19 @@ import lombok.Generated;
 @EqualsAndHashCode(callSuper = false)
 public class EvolutionModel {
 
-    private Long evolutionId;
+  private Long evolutionId;
 
-    @Schema(required = true, description = "Digimon id for base form")
-    @PositiveOrZero(message = "baseDigimonId should be positive")
-    @NotNull(message = "baseDigimonId should not be null")
-    private Long baseDigimonId;
+  @Schema(required = true, description = "Digimon id for base form")
+  @PositiveOrZero(message = "baseDigimonId should be positive")
+  @NotNull(message = "baseDigimonId should not be null")
+  private Long baseDigimonId;
 
-    @Schema(required = true, description = "Digimon id for evolved form")
-    @PositiveOrZero(message = "evolvedDigimonId should be positive")
-    @NotNull(message = "evolvedDigimonId should not be null")
-    private Long evolvedDigimonId;
+  @Schema(required = true, description = "Digimon id for evolved form")
+  @PositiveOrZero(message = "evolvedDigimonId should be positive")
+  @NotNull(message = "evolvedDigimonId should not be null")
+  private Long evolvedDigimonId;
 
-    @Schema(required = true, description = "DNA amount for properly evolve")
-    @NotBlank(message = "evolution should have dna factor")
-    private String dnaTimes;
+  @Schema(required = true, description = "DNA amount for properly evolve")
+  @NotBlank(message = "evolution should have dna factor")
+  private String dnaTimes;
 }
