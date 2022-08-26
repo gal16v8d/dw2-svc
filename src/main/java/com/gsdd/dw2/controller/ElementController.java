@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RefreshScope
 @RestController
-@RequestMapping("v1/elements")
+@RequestMapping("api/elements")
 public class ElementController extends AbstractController<Element, ElementModel> {
 
   private final ElementService elementService;

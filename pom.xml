@@ -32,6 +32,7 @@
 
 		<checkstyle.version>10.1</checkstyle.version>
 
+		<bucket4j.version>0.7.0</bucket4j.version>
 		<springdoc.openapi.ui.version>1.6.10</springdoc.openapi.ui.version>
 		<spring.cloud.version>2021.0.3</spring.cloud.version>
 		<spring.admin.client.version>2.7.4</spring.admin.client.version>
@@ -49,6 +50,10 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -87,8 +92,21 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springdoc</groupId>
-    		<artifactId>springdoc-openapi-ui</artifactId>
+			<artifactId>springdoc-openapi-ui</artifactId>
 			<version>${springdoc.openapi.ui.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.giffing.bucket4j.spring.boot.starter</groupId>
+			<artifactId>bucket4j-spring-boot-starter</artifactId>
+			<version>${bucket4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.github.ben-manes.caffeine</groupId>
+			<artifactId>caffeine</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.github.ben-manes.caffeine</groupId>
+			<artifactId>jcache</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -143,7 +161,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
-				<version>${mvn.surefire.plugin.version}</version><!--$NO-MVN-MAN-VER$-->
+				<version>${mvn.surefire.plugin.version}</version><!--$NO-MVN-MAN-VER$ -->
 				<configuration>
 					<skipTests>${skip.unit.tests}</skipTests>
 					<!-- Excludes integration tests when unit tests are run. -->
@@ -156,7 +174,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-failsafe-plugin</artifactId>
-				<version>${mvn.failsafe.plugin.version}</version><!--$NO-MVN-MAN-VER$-->
+				<version>${mvn.failsafe.plugin.version}</version><!--$NO-MVN-MAN-VER$ -->
 				<executions>
 					<execution>
 						<id>integration-tests</id>
@@ -249,8 +267,8 @@
 				<artifactId>spotless-maven-plugin</artifactId>
 				<version>${mvn.spotless.plugin.version}</version>
 				<configuration>
-					<!-- optional: limit format enforcement to just the files changed by
-						this feature branch  -->
+					<!-- optional: limit format enforcement to just the files changed by 
+						this feature branch -->
 					<ratchetFrom>origin/main</ratchetFrom>
 					<formats>
 						<!-- you can define as many formats as you want, each is independent -->

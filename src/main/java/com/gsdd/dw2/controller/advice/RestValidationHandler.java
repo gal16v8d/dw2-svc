@@ -1,8 +1,8 @@
 package com.gsdd.dw2.controller.advice;
 
+import com.gsdd.dw2.model.response.ApiError;
 import java.util.Arrays;
 import javax.validation.ConstraintViolationException;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,21 +15,21 @@ public class RestValidationHandler extends ResponseEntityExceptionHandler {
       "Unique index or primary key violation";
 
   @ExceptionHandler(ConstraintViolationException.class)
-  protected ResponseEntity<Object> handleConflict(ConstraintViolationException e) {
+  protected ResponseEntity<ApiError> handleConflict(ConstraintViolationException e) {
     StringBuilder messages = new StringBuilder();
     e.getConstraintViolations()
         .forEach(cv -> messages.append(cv.getMessage()).append(System.lineSeparator()));
-    return ResponseEntity.badRequest().body(messages.toString());
+    return ResponseEntity.badRequest().body(new ApiError(messages.toString()));
   }
 
   @ExceptionHandler(Exception.class)
-  protected ResponseEntity<String> handleConflict(Exception e) {
+  protected ResponseEntity<ApiError> handleConflict(Exception e) {
     boolean indexViolated =
         Arrays.toString(e.getStackTrace()).contains(UNIQUE_INDEX_OR_PRIMARY_KEY_VIOLATION);
     if (indexViolated) {
-      return ResponseEntity.badRequest().body(UNIQUE_INDEX_OR_PRIMARY_KEY_VIOLATION);
+      return ResponseEntity.badRequest().body(new ApiError(UNIQUE_INDEX_OR_PRIMARY_KEY_VIOLATION));
     } else {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getLocalizedMessage());
+      return ResponseEntity.internalServerError().body(new ApiError(e.getLocalizedMessage()));
     }
   }
 }

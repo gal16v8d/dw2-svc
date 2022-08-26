@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RefreshScope
 @RestController
-@RequestMapping("v1/evolutions")
+@RequestMapping("api/evolutions")
 public class EvolutionController extends AbstractController<Evolution, EvolutionModel> {
 
   private final EvolutionService evolutionService;

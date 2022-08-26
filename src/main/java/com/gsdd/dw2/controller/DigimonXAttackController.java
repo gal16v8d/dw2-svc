@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RefreshScope
 @RestController
-@RequestMapping("v1/")
+@RequestMapping("api/")
 public class DigimonXAttackController {
 
   private final DigimonXAttackService digimonXAttackService;

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RefreshScope
 @RestController
-@RequestMapping("v1/attacks")
+@RequestMapping("api/attacks")
 public class AttackController extends AbstractController<Attack, AttackModel> {
 
   private final AttackService attackService;

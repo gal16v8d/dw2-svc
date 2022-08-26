@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RefreshScope
 @RestController
-@RequestMapping("v1/digimons")
+@RequestMapping("api/digimons")
 public class DigimonController extends AbstractController<Digimon, DigimonModel> {
 
   private final DigimonService digimonService;

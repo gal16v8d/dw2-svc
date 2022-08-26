@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RefreshScope
 @RestController
-@RequestMapping("v1/levels")
+@RequestMapping("api/levels")
 public class LevelController extends AbstractController<Level, LevelModel> {
 
   private final LevelService levelService;

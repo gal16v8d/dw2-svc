@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RefreshScope
 @RestController
-@RequestMapping("v1/state")
+@RequestMapping("api/state")
 public class CloudStateController {
 
   @Value("${service.welcome.message}")
