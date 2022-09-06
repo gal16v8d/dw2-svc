@@ -31,7 +31,7 @@ class AttackConverterTest {
 
   @BeforeEach
   void setUp() {
-    MockitoAnnotations.initMocks(this);
+    MockitoAnnotations.openMocks(this);
     converter = spy(new AttackConverter(typeRepo, targetRepo));
   }
 

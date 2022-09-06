@@ -33,7 +33,7 @@ class AttackServiceTest {
 
   @BeforeEach
   void setUp() {
-    MockitoAnnotations.initMocks(this);
+    MockitoAnnotations.openMocks(this);
     service = spy(new AttackService(attackRepository, attackConverter));
   }
 
