@@ -20,8 +20,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 // @WebMvcTest(AttackTypeController.class)
 class AttackTypeControllerTest {
 
-  private static final String V1_ATTACK_TYPES = "/v1/attackTypes";
-  private static final String V1_ATTACK_TYPES_1 = "/v1/attackTypes/1";
+  private static final String V1_ATTACK_TYPES = "/api/attackTypes";
+  private static final String V1_ATTACK_TYPES_1 = V1_ATTACK_TYPES + "/1";
   private static final String JSON_PATH_NAME = "$.name";
   private static final String RUN = "Run";
   private static final String ATTACK = "Attack";

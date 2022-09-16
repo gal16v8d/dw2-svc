@@ -23,8 +23,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 // @WebMvcTest(AttackTypeController.class)
 class AttackTargetTypeControllerTest {
 
-  private static final String V1_ATTACK_TYPES = "/v1/attackTargetTypes";
-  private static final String V1_ATTACK_TYPES_1 = "/v1/attackTargetTypes/1";
+  private static final String V1_ATTACK_TYPES = "/api/attackTargetTypes";
+  private static final String V1_ATTACK_TYPES_1 = V1_ATTACK_TYPES + "/1";
   private static final String JSON_PATH_NAME = "$.name";
   private static final String RANDOM_ALLY = "Random Ally";
   private static final String ALL = "All";

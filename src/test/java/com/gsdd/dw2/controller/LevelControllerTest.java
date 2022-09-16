@@ -20,8 +20,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 // @WebMvcTest(LevelController.class)
 class LevelControllerTest {
 
-  private static final String V1_LEVELS = "/v1/levels";
-  private static final String V1_LEVELS_1 = "/v1/levels/1";
+  private static final String V1_LEVELS = "/api/levels";
+  private static final String V1_LEVELS_1 = V1_LEVELS + "/1";
   private static final String JSON_PATH_NAME = "$.name";
   private static final String MEGA_DNA = "Mega DNA";
   private static final String ROOKIE = "Rookie";

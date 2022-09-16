@@ -20,8 +20,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 // @WebMvcTest(EvolutionController.class)
 class EvolutionControllerTest {
 
-  private static final String V1_EVOLUTIONS = "/v1/evolutions";
-  private static final String V1_EVOLUTIONS_1 = "/v1/evolutions/1";
+  private static final String V1_EVOLUTIONS = "/api/evolutions";
+  private static final String V1_EVOLUTIONS_1 = V1_EVOLUTIONS + "/1";
   private static final String JSON_PATH_NAME = "$.dnaTimes";
   private static final String MAX_DNA = "20+";
   private static final String MIN_DNA = "0+";

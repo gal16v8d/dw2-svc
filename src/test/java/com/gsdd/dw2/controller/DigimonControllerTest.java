@@ -20,8 +20,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 // @WebMvcTest(DigimonController.class)
 class DigimonControllerTest {
 
-  private static final String V1_DIGIMON = "/v1/digimons";
-  private static final String V1_DIGIMON_1 = "/v1/digimons/1";
+  private static final String V1_DIGIMON = "/api/digimons";
+  private static final String V1_DIGIMON_1 = V1_DIGIMON + "/1";
   private static final String JSON_PATH_NAME = "$.name";
   private static final String METALGREYMON = "MetalGreymon";
   private static final String AGUMON = "Agumon";

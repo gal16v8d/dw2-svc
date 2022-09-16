@@ -20,8 +20,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 // @WebMvcTest(ElementController.class)
 class ElementControllerTest {
 
-  private static final String V1_ELEMENTS = "/v1/elements";
-  private static final String V1_ELEMENTS_1 = "/v1/elements/1";
+  private static final String V1_ELEMENTS = "/api/elements";
+  private static final String V1_ELEMENTS_1 = V1_ELEMENTS + "/1";
   private static final String JSON_PATH_NAME = "$.name";
   private static final String AIR = "Air";
   private static final String NONE = "None";

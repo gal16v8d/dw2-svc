@@ -23,8 +23,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 // @WebMvcTest(AttackController.class)
 class AttackControllerTest {
 
-  private static final String V1_ATTACK = "/v1/attacks";
-  private static final String V1_ATTACK_1 = "/v1/attacks/1";
+  private static final String V1_ATTACK = "/api/attacks";
+  private static final String V1_ATTACK_1 = V1_ATTACK + "/1";
   private static final String JSON_PATH_NAME = "$.name";
   private static final String SMILEY_BOMB = "Smiley Bomb";
   private static final String NECRO_MAGIC = "Necro Magic";
