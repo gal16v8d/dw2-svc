@@ -12,11 +12,10 @@ public class AttackTypeConverter implements GenericConverter<AttackType, AttackT
   public AttackTypeModel convertToDomain(AttackType entity) {
     return Optional.ofNullable(entity)
         .map(
-            e ->
-                AttackTypeModel.builder()
-                    .attackTypeId(e.getAttackTypeId())
-                    .name(e.getName())
-                    .build())
+            e -> AttackTypeModel.builder()
+                .attackTypeId(e.getAttackTypeId())
+                .name(e.getName())
+                .build())
         .orElse(null);
   }
 

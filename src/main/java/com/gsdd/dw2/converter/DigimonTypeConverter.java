@@ -12,11 +12,10 @@ public class DigimonTypeConverter implements GenericConverter<DigimonType, Digim
   public DigimonTypeModel convertToDomain(DigimonType entity) {
     return Optional.ofNullable(entity)
         .map(
-            e ->
-                DigimonTypeModel.builder()
-                    .digimonTypeId(e.getDigimonTypeId())
-                    .name(e.getName())
-                    .build())
+            e -> DigimonTypeModel.builder()
+                .digimonTypeId(e.getDigimonTypeId())
+                .name(e.getName())
+                .build())
         .orElse(null);
   }
 
@@ -24,8 +23,10 @@ public class DigimonTypeConverter implements GenericConverter<DigimonType, Digim
   public DigimonType convertToEntity(DigimonTypeModel model) {
     return Optional.ofNullable(model)
         .map(
-            m ->
-                DigimonType.builder().digimonTypeId(m.getDigimonTypeId()).name(m.getName()).build())
+            m -> DigimonType.builder()
+                .digimonTypeId(m.getDigimonTypeId())
+                .name(m.getName())
+                .build())
         .orElse(null);
   }
 

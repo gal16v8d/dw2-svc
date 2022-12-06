@@ -26,8 +26,10 @@ class ElementControllerTest {
   private static final String AIR = "Air";
   private static final String NONE = "None";
   private static final ObjectMapper MAPPER = new ObjectMapper();
-  @Autowired private MockMvc mvc;
-  @MockBean private ElementService elementService;
+  @Autowired
+  private MockMvc mvc;
+  @MockBean
+  private ElementService elementService;
 
   @Test
   void getAllTest() throws Exception {
@@ -35,7 +37,7 @@ class ElementControllerTest {
         .given(elementService)
         .getAll();
     mvc.perform(
-            MockMvcRequestBuilders.get(V1_ELEMENTS).contentType(MediaType.APPLICATION_JSON_VALUE))
+        MockMvcRequestBuilders.get(V1_ELEMENTS).contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
@@ -47,7 +49,7 @@ class ElementControllerTest {
         .given(elementService)
         .getById(BDDMockito.anyLong());
     mvc.perform(
-            MockMvcRequestBuilders.get(V1_ELEMENTS_1).contentType(MediaType.APPLICATION_JSON_VALUE))
+        MockMvcRequestBuilders.get(V1_ELEMENTS_1).contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(NONE));
@@ -58,9 +60,9 @@ class ElementControllerTest {
     ElementModel model = ElementModel.builder().elementId(1L).name(AIR).build();
     BDDMockito.willReturn(model).given(elementService).save(BDDMockito.any(ElementModel.class));
     mvc.perform(
-            MockMvcRequestBuilders.post(V1_ELEMENTS)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(MAPPER.writeValueAsString(model)))
+        MockMvcRequestBuilders.post(V1_ELEMENTS)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(MAPPER.writeValueAsString(model)))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(AIR));
@@ -70,9 +72,9 @@ class ElementControllerTest {
   void saveBadRequestTest() throws Exception {
     ElementModel model = ElementModel.builder().build();
     mvc.perform(
-            MockMvcRequestBuilders.post(V1_ELEMENTS)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(MAPPER.writeValueAsString(model)))
+        MockMvcRequestBuilders.post(V1_ELEMENTS)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(MAPPER.writeValueAsString(model)))
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
 
@@ -83,9 +85,9 @@ class ElementControllerTest {
         .given(elementService)
         .update(BDDMockito.anyLong(), BDDMockito.any(ElementModel.class));
     mvc.perform(
-            MockMvcRequestBuilders.put(V1_ELEMENTS_1)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(MAPPER.writeValueAsString(model)))
+        MockMvcRequestBuilders.put(V1_ELEMENTS_1)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(MAPPER.writeValueAsString(model)))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(AIR));
@@ -98,9 +100,9 @@ class ElementControllerTest {
         .given(elementService)
         .update(BDDMockito.anyLong(), BDDMockito.any(ElementModel.class));
     mvc.perform(
-            MockMvcRequestBuilders.put(V1_ELEMENTS_1)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(MAPPER.writeValueAsString(model)))
+        MockMvcRequestBuilders.put(V1_ELEMENTS_1)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(MAPPER.writeValueAsString(model)))
         .andExpect(MockMvcResultMatchers.status().isNotFound());
   }
 
@@ -111,9 +113,9 @@ class ElementControllerTest {
         .given(elementService)
         .patch(BDDMockito.anyLong(), BDDMockito.any(ElementModel.class));
     mvc.perform(
-            MockMvcRequestBuilders.patch(V1_ELEMENTS_1)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(MAPPER.writeValueAsString(model)))
+        MockMvcRequestBuilders.patch(V1_ELEMENTS_1)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(MAPPER.writeValueAsString(model)))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(AIR));
@@ -126,9 +128,9 @@ class ElementControllerTest {
         .given(elementService)
         .patch(BDDMockito.anyLong(), BDDMockito.any(ElementModel.class));
     mvc.perform(
-            MockMvcRequestBuilders.patch(V1_ELEMENTS_1)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(MAPPER.writeValueAsString(model)))
+        MockMvcRequestBuilders.patch(V1_ELEMENTS_1)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(MAPPER.writeValueAsString(model)))
         .andExpect(MockMvcResultMatchers.status().isNotFound());
   }
 
@@ -136,8 +138,7 @@ class ElementControllerTest {
   void deleteTest() throws Exception {
     BDDMockito.willReturn(1L).given(elementService).delete(BDDMockito.anyLong());
     mvc.perform(
-            MockMvcRequestBuilders.delete(V1_ELEMENTS_1)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
+        MockMvcRequestBuilders.delete(V1_ELEMENTS_1).contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.status().isNoContent());
   }
 
@@ -145,8 +146,7 @@ class ElementControllerTest {
   void deleteNotFoundTest() throws Exception {
     BDDMockito.willReturn(null).given(elementService).delete(BDDMockito.anyLong());
     mvc.perform(
-            MockMvcRequestBuilders.delete(V1_ELEMENTS_1)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
+        MockMvcRequestBuilders.delete(V1_ELEMENTS_1).contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.status().isNotFound());
   }
 }

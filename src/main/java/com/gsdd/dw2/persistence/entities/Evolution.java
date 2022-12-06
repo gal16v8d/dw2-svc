@@ -32,16 +32,12 @@ public class Evolution {
   private Long evolutionId;
 
   @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  @JoinColumn(
-      name = "baseDigimonId",
-      referencedColumnName = "digimonId",
+  @JoinColumn(name = "baseDigimonId", referencedColumnName = "digimonId",
       foreignKey = @ForeignKey(name = "Fk_digimon_base"))
   private Digimon baseDigimon;
 
   @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  @JoinColumn(
-      name = "evolvedDigimonId",
-      referencedColumnName = "digimonId",
+  @JoinColumn(name = "evolvedDigimonId", referencedColumnName = "digimonId",
       foreignKey = @ForeignKey(name = "Fk_digimon_evolved"))
   private Digimon evolvedDigimon;
 

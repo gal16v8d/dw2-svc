@@ -28,8 +28,10 @@ class AttackServiceTest {
 
   private static final String NECRO_MAGIC = "Necro Magic";
   private AttackService service;
-  @Mock private AttackRepository attackRepository;
-  @Mock private GenericConverter<Attack, AttackModel> attackConverter;
+  @Mock
+  private AttackRepository attackRepository;
+  @Mock
+  private GenericConverter<Attack, AttackModel> attackConverter;
 
   @BeforeEach
   void setUp() {
@@ -51,11 +53,9 @@ class AttackServiceTest {
 
   @Test
   void getAllTest() {
-    willReturn(Arrays.asList(Attack.builder().attackId(2L).build()))
-        .given(attackRepository)
+    willReturn(Arrays.asList(Attack.builder().attackId(2L).build())).given(attackRepository)
         .findAll(any(Sort.class));
-    willReturn(AttackModel.builder().attackId(2L).build())
-        .given(attackConverter)
+    willReturn(AttackModel.builder().attackId(2L).build()).given(attackConverter)
         .convertToDomain(any(Attack.class));
     List<AttackModel> resultList = service.getAll();
     Assertions.assertNotNull(resultList);
@@ -64,8 +64,7 @@ class AttackServiceTest {
 
   @Test
   void getByIdTest() {
-    willReturn(Optional.ofNullable(Attack.builder().attackId(2L).build()))
-        .given(attackRepository)
+    willReturn(Optional.ofNullable(Attack.builder().attackId(2L).build())).given(attackRepository)
         .findById(anyLong());
     willReturn(AttackModel.builder().attackId(2L).attackTypeId(1L).mp(0).name(NECRO_MAGIC).build())
         .given(attackConverter)
@@ -94,12 +93,11 @@ class AttackServiceTest {
   @Test
   void saveTest() {
     AttackModel model = AttackModel.builder().attackTypeId(1L).mp(0).name(NECRO_MAGIC).build();
-    Attack entity =
-        Attack.builder()
-            .attackType(AttackType.builder().attackTypeId(1L).build())
-            .mp(0)
-            .name(NECRO_MAGIC)
-            .build();
+    Attack entity = Attack.builder()
+        .attackType(AttackType.builder().attackTypeId(1L).build())
+        .mp(0)
+        .name(NECRO_MAGIC)
+        .build();
     willReturn(entity).given(attackRepository).saveAndFlush(any(Attack.class));
     willReturn(entity).given(attackConverter).convertToEntity(any(AttackModel.class));
     willReturn(model).given(attackConverter).convertToDomain(any(Attack.class));
@@ -132,8 +130,7 @@ class AttackServiceTest {
 
   @Test
   void deleteTest() {
-    willReturn(Optional.ofNullable(Attack.builder().build()))
-        .given(attackRepository)
+    willReturn(Optional.ofNullable(Attack.builder().build())).given(attackRepository)
         .findById(anyLong());
     willDoNothing().given(attackRepository).delete(any(Attack.class));
     Assertions.assertNotNull(service.delete(1L));

@@ -17,7 +17,8 @@ class ElementServiceIT {
   private static final long ID_NOT_FOUND = 800L;
   private static final String AIR = "Air";
   private static final String NONE = "None";
-  @Autowired private ElementService service;
+  @Autowired
+  private ElementService service;
 
   @Test
   void getAllTest() {

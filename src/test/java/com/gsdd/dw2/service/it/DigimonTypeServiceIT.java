@@ -17,7 +17,8 @@ class DigimonTypeServiceIT {
   private static final long ID_NOT_FOUND = 500L;
   private static final String ZOMBIE = "Zombie";
   private static final String DATA = "Data";
-  @Autowired private DigimonTypeService service;
+  @Autowired
+  private DigimonTypeService service;
 
   @Test
   void getAllTest() {
@@ -62,8 +63,8 @@ class DigimonTypeServiceIT {
 
   @Test
   void updateNoMatchTest() {
-    Assertions.assertNull(
-        service.update(ID_NOT_FOUND, DigimonTypeModel.builder().name(ZOMBIE).build()));
+    Assertions
+        .assertNull(service.update(ID_NOT_FOUND, DigimonTypeModel.builder().name(ZOMBIE).build()));
   }
 
   @Test
@@ -76,8 +77,8 @@ class DigimonTypeServiceIT {
 
   @Test
   void patchNoMatchTest() {
-    Assertions.assertNull(
-        service.patch(ID_NOT_FOUND, DigimonTypeModel.builder().name(ZOMBIE).build()));
+    Assertions
+        .assertNull(service.patch(ID_NOT_FOUND, DigimonTypeModel.builder().name(ZOMBIE).build()));
   }
 
   @Test

@@ -18,7 +18,8 @@ class AttackServiceIT {
   private static final long ID_NOT_FOUND = 600L;
   private static final String RUN = "Run Away";
   private static final String ATTACK = "Blue Blaster";
-  @Autowired private AttackService service;
+  @Autowired
+  private AttackService service;
 
   @Test
   void getAllTest() {
@@ -41,14 +42,13 @@ class AttackServiceIT {
 
   @Test
   void saveTest() {
-    AttackModel result =
-        service.save(
-            AttackModel.builder()
-                .name(RUN)
-                .mp(0)
-                .attackTypeId(ATTACK_ID)
-                .attackTargetTypeId(ATTACK_TARGET_ID)
-                .build());
+    AttackModel result = service.save(
+        AttackModel.builder()
+            .name(RUN)
+            .mp(0)
+            .attackTypeId(ATTACK_ID)
+            .attackTargetTypeId(ATTACK_TARGET_ID)
+            .build());
     Assertions.assertNotNull(result);
     Assertions.assertEquals(RUN, result.getName());
   }
@@ -57,27 +57,25 @@ class AttackServiceIT {
   void saveNameExistsTest() {
     Assertions.assertThrows(
         DataIntegrityViolationException.class,
-        () ->
-            service.save(
-                AttackModel.builder()
-                    .name(ATTACK)
-                    .mp(4)
-                    .attackTypeId(ATTACK_ID)
-                    .attackTargetTypeId(ATTACK_TARGET_ID)
-                    .build()));
+        () -> service.save(
+            AttackModel.builder()
+                .name(ATTACK)
+                .mp(4)
+                .attackTypeId(ATTACK_ID)
+                .attackTargetTypeId(ATTACK_TARGET_ID)
+                .build()));
   }
 
   @Test
   void updateTest() {
-    AttackModel result =
-        service.update(
-            INTERRUPT_ID,
-            AttackModel.builder()
-                .name(RUN)
-                .mp(0)
-                .attackTypeId(ATTACK_ID)
-                .attackTargetTypeId(ATTACK_TARGET_ID)
-                .build());
+    AttackModel result = service.update(
+        INTERRUPT_ID,
+        AttackModel.builder()
+            .name(RUN)
+            .mp(0)
+            .attackTypeId(ATTACK_ID)
+            .attackTargetTypeId(ATTACK_TARGET_ID)
+            .build());
     Assertions.assertNotNull(result);
     Assertions.assertEquals(RUN, result.getName());
   }
@@ -86,14 +84,14 @@ class AttackServiceIT {
   void updateNoMatchTest() {
     Assertions.assertNull(
         service.update(
-            ID_NOT_FOUND, AttackModel.builder().name(RUN).mp(0).attackTypeId(ATTACK_ID).build()));
+            ID_NOT_FOUND,
+            AttackModel.builder().name(RUN).mp(0).attackTypeId(ATTACK_ID).build()));
   }
 
   @Test
   void patchTest() {
-    AttackModel result =
-        service.patch(
-            INTERRUPT_ID, AttackModel.builder().name(RUN).mp(0).attackTypeId(ATTACK_ID).build());
+    AttackModel result = service
+        .patch(INTERRUPT_ID, AttackModel.builder().name(RUN).mp(0).attackTypeId(ATTACK_ID).build());
     Assertions.assertNotNull(result);
     Assertions.assertEquals(RUN, result.getName());
   }
@@ -102,7 +100,8 @@ class AttackServiceIT {
   void patchNoMatchTest() {
     Assertions.assertNull(
         service.patch(
-            ID_NOT_FOUND, AttackModel.builder().name(RUN).mp(0).attackTypeId(ATTACK_ID).build()));
+            ID_NOT_FOUND,
+            AttackModel.builder().name(RUN).mp(0).attackTypeId(ATTACK_ID).build()));
   }
 
   @Test

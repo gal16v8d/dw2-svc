@@ -17,7 +17,8 @@ class LevelServiceIT {
   private static final long ID_NOT_FOUND = 600L;
   private static final String MEGA_DNA = "Mega DNA";
   private static final String ROOKIE = "Rookie";
-  @Autowired private LevelService service;
+  @Autowired
+  private LevelService service;
 
   @Test
   void getAllTest() {
@@ -61,8 +62,8 @@ class LevelServiceIT {
 
   @Test
   void updateNoMatchTest() {
-    Assertions.assertNull(
-        service.update(ID_NOT_FOUND, LevelModel.builder().name(MEGA_DNA).build()));
+    Assertions
+        .assertNull(service.update(ID_NOT_FOUND, LevelModel.builder().name(MEGA_DNA).build()));
   }
 
   @Test

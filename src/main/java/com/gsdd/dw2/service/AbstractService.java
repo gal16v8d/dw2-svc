@@ -25,7 +25,8 @@ public abstract class AbstractService<T, D> {
   abstract GenericConverter<T, D> getConverter();
 
   public List<D> getAll() {
-    return getRepo().findAll(Sort.by(getSortArg())).stream()
+    return getRepo().findAll(Sort.by(getSortArg()))
+        .stream()
         .map(getConverter()::convertToDomain)
         .collect(Collectors.toList());
   }
@@ -43,26 +44,17 @@ public abstract class AbstractService<T, D> {
   }
 
   public D update(Long id, D model) {
-    return getRepo()
-        .findById(id)
-        .map(
-            (T dbEntity) -> {
-              T ent = getConverter().convertToEntity(model);
-              return Optional.ofNullable(ent)
-                  .map(
-                      (T e) -> {
-                        e = replaceId(e, dbEntity);
-                        return getRepo().saveAndFlush(e);
-                      })
-                  .orElse(null);
-            })
-        .map(getConverter()::convertToDomain)
-        .orElse(null);
+    return getRepo().findById(id).map((T dbEntity) -> {
+      T ent = getConverter().convertToEntity(model);
+      return Optional.ofNullable(ent).map((T e) -> {
+        e = replaceId(e, dbEntity);
+        return getRepo().saveAndFlush(e);
+      }).orElse(null);
+    }).map(getConverter()::convertToDomain).orElse(null);
   }
 
   public D patch(Long id, D model) {
-    return getRepo()
-        .findById(id)
+    return getRepo().findById(id)
         .map(dbEntity -> getConverter().mapToEntity(model, dbEntity))
         .map((T e) -> getRepo().saveAndFlush(e))
         .map(getConverter()::convertToDomain)
@@ -70,13 +62,9 @@ public abstract class AbstractService<T, D> {
   }
 
   public Long delete(Long id) {
-    return getRepo()
-        .findById(id)
-        .map(
-            (T entity) -> {
-              getRepo().delete(entity);
-              return id;
-            })
-        .orElse(null);
+    return getRepo().findById(id).map((T entity) -> {
+      getRepo().delete(entity);
+      return id;
+    }).orElse(null);
   }
 }

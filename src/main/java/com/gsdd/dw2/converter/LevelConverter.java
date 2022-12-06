@@ -25,8 +25,8 @@ public class LevelConverter implements GenericConverter<Level, LevelModel> {
   @Override
   public Level mapToEntity(LevelModel model, Level oldEntity) {
     Level newEntity = Level.builder().levelId(oldEntity.getLevelId()).build();
-    newEntity.setName(
-        Optional.ofNullable(model).map(LevelModel::getName).orElseGet(oldEntity::getName));
+    newEntity
+        .setName(Optional.ofNullable(model).map(LevelModel::getName).orElseGet(oldEntity::getName));
     return newEntity;
   }
 }

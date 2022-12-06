@@ -19,7 +19,8 @@ class EvolutionServiceIT {
   private static final long ID_NOT_FOUND = 1600L;
   private static final String TO_ULTRA_MEGA = "20+";
   private static final String ZERO_OR_MANY = "0+";
-  @Autowired private EvolutionService service;
+  @Autowired
+  private EvolutionService service;
 
   @Test
   void getAllTest() {
@@ -42,13 +43,12 @@ class EvolutionServiceIT {
 
   @Test
   void saveTest() {
-    EvolutionModel result =
-        service.save(
-            EvolutionModel.builder()
-                .dnaTimes(TO_ULTRA_MEGA)
-                .baseDigimonId(1400L)
-                .evolvedDigimonId(1600L)
-                .build());
+    EvolutionModel result = service.save(
+        EvolutionModel.builder()
+            .dnaTimes(TO_ULTRA_MEGA)
+            .baseDigimonId(1400L)
+            .evolvedDigimonId(1600L)
+            .build());
     Assertions.assertNotNull(result);
     Assertions.assertEquals(TO_ULTRA_MEGA, result.getDnaTimes());
   }
@@ -57,13 +57,12 @@ class EvolutionServiceIT {
   void saveNameExistsTest() {
     Assertions.assertThrows(
         DataIntegrityViolationException.class,
-        () ->
-            service.save(
-                EvolutionModel.builder()
-                    .dnaTimes(ZERO_OR_MANY)
-                    .baseDigimonId(1400L)
-                    .evolvedDigimonId(1600L)
-                    .build()));
+        () -> service.save(
+            EvolutionModel.builder()
+                .dnaTimes(ZERO_OR_MANY)
+                .baseDigimonId(1400L)
+                .evolvedDigimonId(1600L)
+                .build()));
   }
 
   @Test
@@ -88,14 +87,13 @@ class EvolutionServiceIT {
 
   @Test
   void patchTest() {
-    EvolutionModel result =
-        service.patch(
-            TO_MEGA_ID,
-            EvolutionModel.builder()
-                .dnaTimes(TO_ULTRA_MEGA)
-                .baseDigimonId(1400L)
-                .evolvedDigimonId(1600L)
-                .build());
+    EvolutionModel result = service.patch(
+        TO_MEGA_ID,
+        EvolutionModel.builder()
+            .dnaTimes(TO_ULTRA_MEGA)
+            .baseDigimonId(1400L)
+            .evolvedDigimonId(1600L)
+            .build());
     Assertions.assertNotNull(result);
     Assertions.assertEquals(TO_ULTRA_MEGA, result.getDnaTimes());
   }

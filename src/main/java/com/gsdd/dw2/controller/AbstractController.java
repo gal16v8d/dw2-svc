@@ -28,12 +28,10 @@ public abstract class AbstractController<T, D> {
     return ResponseEntity.ok(getService().getAll().stream().collect(Collectors.toList()));
   }
 
-  @Operation(
-      summary = "Retrieve a single record by id",
+  @Operation(summary = "Retrieve a single record by id",
       responses = {
-        @ApiResponse(responseCode = "200", description = "Matching data"),
-        @ApiResponse(responseCode = "404", description = "Can not find any data by given id")
-      })
+          @ApiResponse(responseCode = "200", description = "Matching data"),
+          @ApiResponse(responseCode = "404", description = "Can not find any data by given id")})
   @GetMapping("{id:[0-9]+}")
   public ResponseEntity<D> getById(@PathVariable("id") Long id) {
     return Optional.ofNullable(getService().getById(id))
@@ -41,12 +39,11 @@ public abstract class AbstractController<T, D> {
         .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
-  @Operation(
-      summary = "Store given data",
+  @Operation(summary = "Store given data",
       responses = {
-        @ApiResponse(responseCode = "200", description = "Save success"),
-        @ApiResponse(responseCode = "400", description = "If some missing data or wrong payload")
-      })
+          @ApiResponse(responseCode = "200", description = "Save success"),
+          @ApiResponse(responseCode = "400",
+              description = "If some missing data or wrong payload")})
   @PostMapping
   public ResponseEntity<D> save(@Valid @RequestBody D model) {
     return Optional.ofNullable(getService().save(model))
@@ -54,13 +51,11 @@ public abstract class AbstractController<T, D> {
         .orElseGet(() -> ResponseEntity.badRequest().build());
   }
 
-  @Operation(
-      summary = "Fully updates matching data",
+  @Operation(summary = "Fully updates matching data",
       responses = {
-        @ApiResponse(responseCode = "200", description = "Update success"),
-        @ApiResponse(responseCode = "400", description = "If some missing data or wrong payload"),
-        @ApiResponse(responseCode = "404", description = "Can not find any data by given id")
-      })
+          @ApiResponse(responseCode = "200", description = "Update success"),
+          @ApiResponse(responseCode = "400", description = "If some missing data or wrong payload"),
+          @ApiResponse(responseCode = "404", description = "Can not find any data by given id")})
   @PutMapping("{id:[0-9]+}")
   public ResponseEntity<D> update(@PathVariable("id") Long id, @Valid @RequestBody D model) {
     return Optional.ofNullable(getService().update(id, model))
@@ -68,13 +63,11 @@ public abstract class AbstractController<T, D> {
         .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
-  @Operation(
-      summary = "Partial update matching data",
+  @Operation(summary = "Partial update matching data",
       responses = {
-        @ApiResponse(responseCode = "200", description = "Update success"),
-        @ApiResponse(responseCode = "400", description = "If some missing data or wrong payload"),
-        @ApiResponse(responseCode = "404", description = "Can not find any data by given id")
-      })
+          @ApiResponse(responseCode = "200", description = "Update success"),
+          @ApiResponse(responseCode = "400", description = "If some missing data or wrong payload"),
+          @ApiResponse(responseCode = "404", description = "Can not find any data by given id")})
   @PatchMapping("{id:[0-9]+}")
   public ResponseEntity<D> patch(@PathVariable("id") Long id, @RequestBody D model) {
     return Optional.ofNullable(getService().patch(id, model))
@@ -82,12 +75,10 @@ public abstract class AbstractController<T, D> {
         .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
-  @Operation(
-      summary = "Delete matching data",
+  @Operation(summary = "Delete matching data",
       responses = {
-        @ApiResponse(responseCode = "204", description = "Delete success"),
-        @ApiResponse(responseCode = "404", description = "Can not find any data by given id")
-      })
+          @ApiResponse(responseCode = "204", description = "Delete success"),
+          @ApiResponse(responseCode = "404", description = "Can not find any data by given id")})
   @DeleteMapping("{id:[0-9]+}")
   public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
     return Optional.ofNullable(getService().delete(id))

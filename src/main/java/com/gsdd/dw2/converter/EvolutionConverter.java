@@ -18,37 +18,33 @@ public class EvolutionConverter implements GenericConverter<Evolution, Evolution
   public EvolutionModel convertToDomain(Evolution entity) {
     return Optional.ofNullable(entity)
         .map(
-            e ->
-                EvolutionModel.builder()
-                    .baseDigimonId(e.getBaseDigimon().getDigimonId())
-                    .evolvedDigimonId(e.getEvolvedDigimon().getDigimonId())
-                    .dnaTimes(e.getDnaTimes())
-                    .evolutionId(entity.getEvolutionId())
-                    .build())
+            e -> EvolutionModel.builder()
+                .baseDigimonId(e.getBaseDigimon().getDigimonId())
+                .evolvedDigimonId(e.getEvolvedDigimon().getDigimonId())
+                .dnaTimes(e.getDnaTimes())
+                .evolutionId(entity.getEvolutionId())
+                .build())
         .orElse(null);
   }
 
   @Override
   public Evolution convertToEntity(EvolutionModel model) {
-    Optional<Digimon> baseOp =
-        Optional.ofNullable(model)
-            .map(EvolutionModel::getBaseDigimonId)
-            .map(digimonRepository::findById)
-            .orElseGet(Optional::empty);
-    Optional<Digimon> evolvedOp =
-        Optional.ofNullable(model)
-            .map(EvolutionModel::getEvolvedDigimonId)
-            .map(digimonRepository::findById)
-            .orElseGet(Optional::empty);
+    Optional<Digimon> baseOp = Optional.ofNullable(model)
+        .map(EvolutionModel::getBaseDigimonId)
+        .map(digimonRepository::findById)
+        .orElseGet(Optional::empty);
+    Optional<Digimon> evolvedOp = Optional.ofNullable(model)
+        .map(EvolutionModel::getEvolvedDigimonId)
+        .map(digimonRepository::findById)
+        .orElseGet(Optional::empty);
     if (baseOp.isPresent() && evolvedOp.isPresent()) {
       return Optional.ofNullable(model)
           .map(
-              m ->
-                  Evolution.builder()
-                      .dnaTimes(m.getDnaTimes())
-                      .baseDigimon(baseOp.get())
-                      .evolvedDigimon(evolvedOp.get())
-                      .build())
+              m -> Evolution.builder()
+                  .dnaTimes(m.getDnaTimes())
+                  .baseDigimon(baseOp.get())
+                  .evolvedDigimon(evolvedOp.get())
+                  .build())
           .orElse(null);
     }
     return null;
@@ -58,20 +54,16 @@ public class EvolutionConverter implements GenericConverter<Evolution, Evolution
   public Evolution mapToEntity(EvolutionModel model, Evolution oldEntity) {
     Evolution newEntity = Evolution.builder().evolutionId(oldEntity.getEvolutionId()).build();
     Optional<EvolutionModel> modelOp = Optional.ofNullable(model);
-    Optional<Digimon> baseOp =
-        modelOp
-            .map(EvolutionModel::getBaseDigimonId)
-            .map(digimonRepository::findById)
-            .orElseGet(Optional::empty);
-    Optional<Digimon> evolvedOp =
-        modelOp
-            .map(EvolutionModel::getEvolvedDigimonId)
-            .map(digimonRepository::findById)
-            .orElseGet(Optional::empty);
+    Optional<Digimon> baseOp = modelOp.map(EvolutionModel::getBaseDigimonId)
+        .map(digimonRepository::findById)
+        .orElseGet(Optional::empty);
+    Optional<Digimon> evolvedOp = modelOp.map(EvolutionModel::getEvolvedDigimonId)
+        .map(digimonRepository::findById)
+        .orElseGet(Optional::empty);
     newEntity.setBaseDigimon(baseOp.orElseGet(oldEntity::getBaseDigimon));
     newEntity.setEvolvedDigimon(evolvedOp.orElseGet(oldEntity::getEvolvedDigimon));
-    newEntity.setDnaTimes(
-        modelOp.map(EvolutionModel::getDnaTimes).orElseGet(oldEntity::getDnaTimes));
+    newEntity
+        .setDnaTimes(modelOp.map(EvolutionModel::getDnaTimes).orElseGet(oldEntity::getDnaTimes));
     return newEntity;
   }
 }

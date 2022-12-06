@@ -37,16 +37,12 @@ public class Attack {
   private String name;
 
   @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  @JoinColumn(
-      name = "attackTypeId",
-      referencedColumnName = "attackTypeId",
+  @JoinColumn(name = "attackTypeId", referencedColumnName = "attackTypeId",
       foreignKey = @ForeignKey(name = "Fk_attack_type"))
   private AttackType attackType;
 
   @ManyToOne(optional = true, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  @JoinColumn(
-      name = "attackTargetTypeId",
-      referencedColumnName = "attackTargetTypeId",
+  @JoinColumn(name = "attackTargetTypeId", referencedColumnName = "attackTargetTypeId",
       foreignKey = @ForeignKey(name = "Fk_attack_target_type"))
   private AttackTargetType attackTargetType;
 

@@ -20,18 +20,20 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 // @WebMvcTest(DigimonXAttackController.class)
 class DigimonXAttackControllerTest {
 
-  @Autowired private MockMvc mvc;
-  @MockBean private DigimonXAttackService service;
+  @Autowired
+  private MockMvc mvc;
+  @MockBean
+  private DigimonXAttackService service;
 
   @Test
   void getAllAtkTest() throws Exception {
-    BDDMockito.willReturn(
-            Arrays.asList(DigimonXAttackModel.builder().attackId(1L).digimonId(1L).build()))
+    BDDMockito
+        .willReturn(Arrays.asList(DigimonXAttackModel.builder().attackId(1L).digimonId(1L).build()))
         .given(service)
         .getAllAtk(BDDMockito.anyLong());
     mvc.perform(
-            MockMvcRequestBuilders.get("/api/digimons/1/attacks")
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
+        MockMvcRequestBuilders.get("/api/digimons/1/attacks")
+            .contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
@@ -43,8 +45,8 @@ class DigimonXAttackControllerTest {
         .given(service)
         .getById(BDDMockito.anyLong(), BDDMockito.anyLong());
     mvc.perform(
-            MockMvcRequestBuilders.get("/api/digimons/1/attacks/1")
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
+        MockMvcRequestBuilders.get("/api/digimons/1/attacks/1")
+            .contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.jsonPath("$.digimonId", Matchers.equalTo((Number) 1)))
@@ -55,8 +57,8 @@ class DigimonXAttackControllerTest {
   void getByIdNotFoundTest() throws Exception {
     BDDMockito.willReturn(null).given(service).getById(BDDMockito.anyLong(), BDDMockito.anyLong());
     mvc.perform(
-            MockMvcRequestBuilders.get("/api/digimons/1/attacks/1")
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
+        MockMvcRequestBuilders.get("/api/digimons/1/attacks/1")
+            .contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.status().isNotFound());
   }
 
@@ -66,8 +68,8 @@ class DigimonXAttackControllerTest {
         .given(service)
         .associate(BDDMockito.anyLong(), BDDMockito.anyLong());
     mvc.perform(
-            MockMvcRequestBuilders.post("/api/digimons/1/attacks/1")
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
+        MockMvcRequestBuilders.post("/api/digimons/1/attacks/1")
+            .contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.jsonPath("$.digimonId", Matchers.equalTo((Number) 1)))
@@ -80,8 +82,8 @@ class DigimonXAttackControllerTest {
         .given(service)
         .associate(BDDMockito.anyLong(), BDDMockito.anyLong());
     mvc.perform(
-            MockMvcRequestBuilders.post("/api/digimons/1/attacks/1")
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
+        MockMvcRequestBuilders.post("/api/digimons/1/attacks/1")
+            .contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
 
@@ -91,8 +93,8 @@ class DigimonXAttackControllerTest {
         .given(service)
         .deassociate(BDDMockito.anyLong(), BDDMockito.anyLong());
     mvc.perform(
-            MockMvcRequestBuilders.delete("/api/digimons/1/attacks/1")
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
+        MockMvcRequestBuilders.delete("/api/digimons/1/attacks/1")
+            .contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.status().isNoContent());
   }
 
@@ -102,8 +104,8 @@ class DigimonXAttackControllerTest {
         .given(service)
         .deassociate(BDDMockito.anyLong(), BDDMockito.anyLong());
     mvc.perform(
-            MockMvcRequestBuilders.delete("/api/digimons/1/attacks/1")
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
+        MockMvcRequestBuilders.delete("/api/digimons/1/attacks/1")
+            .contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.status().isNotFound());
   }
 }

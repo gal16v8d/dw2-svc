@@ -17,7 +17,8 @@ class DigimonServiceIT {
   private static final long ID_NOT_FOUND = 700L;
   private static final String OFANIMON = "Ofanimon";
   private static final String AGUMON = "Agumon";
-  @Autowired private DigimonService service;
+  @Autowired
+  private DigimonService service;
 
   @Test
   void getAllTest() {
@@ -40,14 +41,13 @@ class DigimonServiceIT {
 
   @Test
   void saveTest() {
-    DigimonModel result =
-        service.save(
-            DigimonModel.builder()
-                .name(OFANIMON)
-                .digimonTypeId(300L)
-                .elementId(200L)
-                .levelId(500L)
-                .build());
+    DigimonModel result = service.save(
+        DigimonModel.builder()
+            .name(OFANIMON)
+            .digimonTypeId(300L)
+            .elementId(200L)
+            .levelId(500L)
+            .build());
     Assertions.assertNotNull(result);
     Assertions.assertEquals(OFANIMON, result.getName());
   }
@@ -56,27 +56,25 @@ class DigimonServiceIT {
   void saveNameExistsTest() {
     Assertions.assertThrows(
         DataIntegrityViolationException.class,
-        () ->
-            service.save(
-                DigimonModel.builder()
-                    .name(AGUMON)
-                    .digimonTypeId(300L)
-                    .elementId(200L)
-                    .levelId(500L)
-                    .build()));
+        () -> service.save(
+            DigimonModel.builder()
+                .name(AGUMON)
+                .digimonTypeId(300L)
+                .elementId(200L)
+                .levelId(500L)
+                .build()));
   }
 
   @Test
   void updateTest() {
-    DigimonModel result =
-        service.update(
-            METALGREYMON_ID,
-            DigimonModel.builder()
-                .name(OFANIMON)
-                .digimonTypeId(300L)
-                .elementId(200L)
-                .levelId(500L)
-                .build());
+    DigimonModel result = service.update(
+        METALGREYMON_ID,
+        DigimonModel.builder()
+            .name(OFANIMON)
+            .digimonTypeId(300L)
+            .elementId(200L)
+            .levelId(500L)
+            .build());
     Assertions.assertNotNull(result);
     Assertions.assertEquals(OFANIMON, result.getName());
   }
@@ -96,15 +94,14 @@ class DigimonServiceIT {
 
   @Test
   void patchTest() {
-    DigimonModel result =
-        service.patch(
-            METALGREYMON_ID,
-            DigimonModel.builder()
-                .name(OFANIMON)
-                .digimonTypeId(300L)
-                .elementId(200L)
-                .levelId(500L)
-                .build());
+    DigimonModel result = service.patch(
+        METALGREYMON_ID,
+        DigimonModel.builder()
+            .name(OFANIMON)
+            .digimonTypeId(300L)
+            .elementId(200L)
+            .levelId(500L)
+            .build());
     Assertions.assertNotNull(result);
     Assertions.assertEquals(OFANIMON, result.getName());
   }

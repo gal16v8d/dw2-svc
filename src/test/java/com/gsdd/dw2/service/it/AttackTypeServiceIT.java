@@ -17,7 +17,8 @@ class AttackTypeServiceIT {
   private static final long ID_NOT_FOUND = 600L;
   private static final String RUN = "Run";
   private static final String ATTACK = "Attack";
-  @Autowired private AttackTypeService service;
+  @Autowired
+  private AttackTypeService service;
 
   @Test
   void getAllTest() {
@@ -62,8 +63,8 @@ class AttackTypeServiceIT {
 
   @Test
   void updateNoMatchTest() {
-    Assertions.assertNull(
-        service.update(ID_NOT_FOUND, AttackTypeModel.builder().name(RUN).build()));
+    Assertions
+        .assertNull(service.update(ID_NOT_FOUND, AttackTypeModel.builder().name(RUN).build()));
   }
 
   @Test

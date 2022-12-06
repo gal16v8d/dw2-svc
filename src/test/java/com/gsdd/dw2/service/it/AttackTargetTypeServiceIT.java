@@ -17,7 +17,8 @@ class AttackTargetTypeServiceIT {
   private static final long ID_NOT_FOUND = 900L;
   private static final String RANDOM_ALLIES = "Random Allies";
   private static final String ALL = "All";
-  @Autowired private AttackTargetTypeService service;
+  @Autowired
+  private AttackTargetTypeService service;
 
   @Test
   void getAllTest() {

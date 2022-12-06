@@ -26,22 +26,24 @@ class EvolutionControllerTest {
   private static final String MAX_DNA = "20+";
   private static final String MIN_DNA = "0+";
   private static final ObjectMapper MAPPER = new ObjectMapper();
-  @Autowired private MockMvc mvc;
-  @MockBean private EvolutionService evolutionService;
+  @Autowired
+  private MockMvc mvc;
+  @MockBean
+  private EvolutionService evolutionService;
 
   @Test
   void getAllTest() throws Exception {
     BDDMockito.willReturn(
-            Arrays.asList(
-                EvolutionModel.builder()
-                    .baseDigimonId(1L)
-                    .evolvedDigimonId(2L)
-                    .dnaTimes(MIN_DNA)
-                    .build()))
+        Arrays.asList(
+            EvolutionModel.builder()
+                .baseDigimonId(1L)
+                .evolvedDigimonId(2L)
+                .dnaTimes(MIN_DNA)
+                .build()))
         .given(evolutionService)
         .getAll();
     mvc.perform(
-            MockMvcRequestBuilders.get(V1_EVOLUTIONS).contentType(MediaType.APPLICATION_JSON_VALUE))
+        MockMvcRequestBuilders.get(V1_EVOLUTIONS).contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
@@ -50,16 +52,11 @@ class EvolutionControllerTest {
   @Test
   void getByIdTest() throws Exception {
     BDDMockito.willReturn(
-            EvolutionModel.builder()
-                .baseDigimonId(1L)
-                .evolvedDigimonId(2L)
-                .dnaTimes(MIN_DNA)
-                .build())
+        EvolutionModel.builder().baseDigimonId(1L).evolvedDigimonId(2L).dnaTimes(MIN_DNA).build())
         .given(evolutionService)
         .getById(BDDMockito.anyLong());
     mvc.perform(
-            MockMvcRequestBuilders.get(V1_EVOLUTIONS_1)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
+        MockMvcRequestBuilders.get(V1_EVOLUTIONS_1).contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(MIN_DNA));
@@ -71,9 +68,9 @@ class EvolutionControllerTest {
         EvolutionModel.builder().baseDigimonId(1L).evolvedDigimonId(2L).dnaTimes(MAX_DNA).build();
     BDDMockito.willReturn(model).given(evolutionService).save(BDDMockito.any(EvolutionModel.class));
     mvc.perform(
-            MockMvcRequestBuilders.post(V1_EVOLUTIONS)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(MAPPER.writeValueAsString(model)))
+        MockMvcRequestBuilders.post(V1_EVOLUTIONS)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(MAPPER.writeValueAsString(model)))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(MAX_DNA));
@@ -83,9 +80,9 @@ class EvolutionControllerTest {
   void saveBadRequestTest() throws Exception {
     EvolutionModel model = EvolutionModel.builder().build();
     mvc.perform(
-            MockMvcRequestBuilders.post(V1_EVOLUTIONS)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(MAPPER.writeValueAsString(model)))
+        MockMvcRequestBuilders.post(V1_EVOLUTIONS)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(MAPPER.writeValueAsString(model)))
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
 
@@ -97,9 +94,9 @@ class EvolutionControllerTest {
         .given(evolutionService)
         .update(BDDMockito.anyLong(), BDDMockito.any(EvolutionModel.class));
     mvc.perform(
-            MockMvcRequestBuilders.put(V1_EVOLUTIONS_1)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(MAPPER.writeValueAsString(model)))
+        MockMvcRequestBuilders.put(V1_EVOLUTIONS_1)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(MAPPER.writeValueAsString(model)))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(MAX_DNA));
@@ -113,9 +110,9 @@ class EvolutionControllerTest {
         .given(evolutionService)
         .update(BDDMockito.anyLong(), BDDMockito.any(EvolutionModel.class));
     mvc.perform(
-            MockMvcRequestBuilders.put(V1_EVOLUTIONS_1)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(MAPPER.writeValueAsString(model)))
+        MockMvcRequestBuilders.put(V1_EVOLUTIONS_1)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(MAPPER.writeValueAsString(model)))
         .andExpect(MockMvcResultMatchers.status().isNotFound());
   }
 
@@ -123,17 +120,13 @@ class EvolutionControllerTest {
   void patchTest() throws Exception {
     EvolutionModel model = EvolutionModel.builder().dnaTimes(MAX_DNA).build();
     BDDMockito.willReturn(
-            EvolutionModel.builder()
-                .baseDigimonId(1L)
-                .evolvedDigimonId(2L)
-                .dnaTimes(MAX_DNA)
-                .build())
+        EvolutionModel.builder().baseDigimonId(1L).evolvedDigimonId(2L).dnaTimes(MAX_DNA).build())
         .given(evolutionService)
         .patch(BDDMockito.anyLong(), BDDMockito.any(EvolutionModel.class));
     mvc.perform(
-            MockMvcRequestBuilders.patch(V1_EVOLUTIONS_1)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(MAPPER.writeValueAsString(model)))
+        MockMvcRequestBuilders.patch(V1_EVOLUTIONS_1)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(MAPPER.writeValueAsString(model)))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(MAX_DNA));
@@ -147,9 +140,9 @@ class EvolutionControllerTest {
         .given(evolutionService)
         .patch(BDDMockito.anyLong(), BDDMockito.any(EvolutionModel.class));
     mvc.perform(
-            MockMvcRequestBuilders.patch(V1_EVOLUTIONS_1)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(MAPPER.writeValueAsString(model)))
+        MockMvcRequestBuilders.patch(V1_EVOLUTIONS_1)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(MAPPER.writeValueAsString(model)))
         .andExpect(MockMvcResultMatchers.status().isNotFound());
   }
 
@@ -157,8 +150,8 @@ class EvolutionControllerTest {
   void deleteTest() throws Exception {
     BDDMockito.willReturn(1L).given(evolutionService).delete(BDDMockito.anyLong());
     mvc.perform(
-            MockMvcRequestBuilders.delete(V1_EVOLUTIONS_1)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
+        MockMvcRequestBuilders.delete(V1_EVOLUTIONS_1)
+            .contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.status().isNoContent());
   }
 
@@ -166,8 +159,8 @@ class EvolutionControllerTest {
   void deleteNotFoundTest() throws Exception {
     BDDMockito.willReturn(null).given(evolutionService).delete(BDDMockito.anyLong());
     mvc.perform(
-            MockMvcRequestBuilders.delete(V1_EVOLUTIONS_1)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
+        MockMvcRequestBuilders.delete(V1_EVOLUTIONS_1)
+            .contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.status().isNotFound());
   }
 }

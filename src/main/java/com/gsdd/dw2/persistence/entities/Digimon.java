@@ -36,23 +36,17 @@ public class Digimon {
   private String name;
 
   @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  @JoinColumn(
-      name = "levelId",
-      referencedColumnName = "levelId",
+  @JoinColumn(name = "levelId", referencedColumnName = "levelId",
       foreignKey = @ForeignKey(name = "Fk_level"))
   private Level level;
 
   @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  @JoinColumn(
-      name = "digimonTypeId",
-      referencedColumnName = "digimonTypeId",
+  @JoinColumn(name = "digimonTypeId", referencedColumnName = "digimonTypeId",
       foreignKey = @ForeignKey(name = "Fk_type"))
   private DigimonType digimonType;
 
   @ManyToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-  @JoinColumn(
-      name = "elementId",
-      referencedColumnName = "elementId",
+  @JoinColumn(name = "elementId", referencedColumnName = "elementId",
       foreignKey = @ForeignKey(name = "Fk_element"))
   private Element element;
 }

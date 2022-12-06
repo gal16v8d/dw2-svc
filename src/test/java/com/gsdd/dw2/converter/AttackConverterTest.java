@@ -26,8 +26,10 @@ class AttackConverterTest {
   private static final String ALL = "All";
   private static final String NECRO_MAGIC = "Necro Magic";
   private AttackConverter converter;
-  @Mock private AttackTypeRepository typeRepo;
-  @Mock private AttackTargetTypeRepository targetRepo;
+  @Mock
+  private AttackTypeRepository typeRepo;
+  @Mock
+  private AttackTargetTypeRepository targetRepo;
 
   @BeforeEach
   void setUp() {
@@ -79,8 +81,7 @@ class AttackConverterTest {
 
   @Test
   void convertToEntityTest() {
-    willReturn(Optional.ofNullable(AttackType.builder().attackTypeId(1L).build()))
-        .given(typeRepo)
+    willReturn(Optional.ofNullable(AttackType.builder().attackTypeId(1L).build())).given(typeRepo)
         .findById(eq(1L));
     willReturn(Optional.ofNullable(AttackTargetType.builder().attackTargetTypeId(1L).build()))
         .given(targetRepo)

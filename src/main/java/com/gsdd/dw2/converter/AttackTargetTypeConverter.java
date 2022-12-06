@@ -13,11 +13,10 @@ public class AttackTargetTypeConverter
   public AttackTargetTypeModel convertToDomain(AttackTargetType entity) {
     return Optional.ofNullable(entity)
         .map(
-            e ->
-                AttackTargetTypeModel.builder()
-                    .attackTargetTypeId(e.getAttackTargetTypeId())
-                    .name(e.getName())
-                    .build())
+            e -> AttackTargetTypeModel.builder()
+                .attackTargetTypeId(e.getAttackTargetTypeId())
+                .name(e.getName())
+                .build())
         .orElse(null);
   }
 
@@ -25,11 +24,10 @@ public class AttackTargetTypeConverter
   public AttackTargetType convertToEntity(AttackTargetTypeModel model) {
     return Optional.ofNullable(model)
         .map(
-            m ->
-                AttackTargetType.builder()
-                    .attackTargetTypeId(m.getAttackTargetTypeId())
-                    .name(m.getName())
-                    .build())
+            m -> AttackTargetType.builder()
+                .attackTargetTypeId(m.getAttackTargetTypeId())
+                .name(m.getName())
+                .build())
         .orElse(null);
   }
 

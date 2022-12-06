@@ -26,18 +26,19 @@ class AttackTypeControllerTest {
   private static final String RUN = "Run";
   private static final String ATTACK = "Attack";
   private static final ObjectMapper MAPPER = new ObjectMapper();
-  @Autowired private MockMvc mvc;
-  @MockBean private AttackTypeService attackTypeService;
+  @Autowired
+  private MockMvc mvc;
+  @MockBean
+  private AttackTypeService attackTypeService;
 
   @Test
   void getAllTest() throws Exception {
-    BDDMockito.willReturn(
-            Arrays.asList(AttackTypeModel.builder().attackTypeId(1L).name(ATTACK).build()))
+    BDDMockito
+        .willReturn(Arrays.asList(AttackTypeModel.builder().attackTypeId(1L).name(ATTACK).build()))
         .given(attackTypeService)
         .getAll();
     mvc.perform(
-            MockMvcRequestBuilders.get(V1_ATTACK_TYPES)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
+        MockMvcRequestBuilders.get(V1_ATTACK_TYPES).contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
@@ -49,8 +50,7 @@ class AttackTypeControllerTest {
         .given(attackTypeService)
         .getById(BDDMockito.anyLong());
     mvc.perform(
-            MockMvcRequestBuilders.get(V1_ATTACK_TYPES_1)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
+        MockMvcRequestBuilders.get(V1_ATTACK_TYPES_1).contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(ATTACK));
@@ -63,9 +63,9 @@ class AttackTypeControllerTest {
         .given(attackTypeService)
         .save(BDDMockito.any(AttackTypeModel.class));
     mvc.perform(
-            MockMvcRequestBuilders.post(V1_ATTACK_TYPES)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(MAPPER.writeValueAsString(model)))
+        MockMvcRequestBuilders.post(V1_ATTACK_TYPES)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(MAPPER.writeValueAsString(model)))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(RUN));
@@ -75,9 +75,9 @@ class AttackTypeControllerTest {
   void saveBadRequestTest() throws Exception {
     AttackTypeModel model = AttackTypeModel.builder().build();
     mvc.perform(
-            MockMvcRequestBuilders.post(V1_ATTACK_TYPES)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(MAPPER.writeValueAsString(model)))
+        MockMvcRequestBuilders.post(V1_ATTACK_TYPES)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(MAPPER.writeValueAsString(model)))
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
 
@@ -88,9 +88,9 @@ class AttackTypeControllerTest {
         .given(attackTypeService)
         .update(BDDMockito.anyLong(), BDDMockito.any(AttackTypeModel.class));
     mvc.perform(
-            MockMvcRequestBuilders.put(V1_ATTACK_TYPES_1)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(MAPPER.writeValueAsString(model)))
+        MockMvcRequestBuilders.put(V1_ATTACK_TYPES_1)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(MAPPER.writeValueAsString(model)))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(RUN));
@@ -103,9 +103,9 @@ class AttackTypeControllerTest {
         .given(attackTypeService)
         .update(BDDMockito.anyLong(), BDDMockito.any(AttackTypeModel.class));
     mvc.perform(
-            MockMvcRequestBuilders.put(V1_ATTACK_TYPES_1)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(MAPPER.writeValueAsString(model)))
+        MockMvcRequestBuilders.put(V1_ATTACK_TYPES_1)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(MAPPER.writeValueAsString(model)))
         .andExpect(MockMvcResultMatchers.status().isNotFound());
   }
 
@@ -116,9 +116,9 @@ class AttackTypeControllerTest {
         .given(attackTypeService)
         .patch(BDDMockito.anyLong(), BDDMockito.any(AttackTypeModel.class));
     mvc.perform(
-            MockMvcRequestBuilders.patch(V1_ATTACK_TYPES_1)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(MAPPER.writeValueAsString(model)))
+        MockMvcRequestBuilders.patch(V1_ATTACK_TYPES_1)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(MAPPER.writeValueAsString(model)))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(RUN));
@@ -131,9 +131,9 @@ class AttackTypeControllerTest {
         .given(attackTypeService)
         .patch(BDDMockito.anyLong(), BDDMockito.any(AttackTypeModel.class));
     mvc.perform(
-            MockMvcRequestBuilders.patch(V1_ATTACK_TYPES_1)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(MAPPER.writeValueAsString(model)))
+        MockMvcRequestBuilders.patch(V1_ATTACK_TYPES_1)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(MAPPER.writeValueAsString(model)))
         .andExpect(MockMvcResultMatchers.status().isNotFound());
   }
 
@@ -141,8 +141,8 @@ class AttackTypeControllerTest {
   void deleteTest() throws Exception {
     BDDMockito.willReturn(1L).given(attackTypeService).delete(BDDMockito.anyLong());
     mvc.perform(
-            MockMvcRequestBuilders.delete(V1_ATTACK_TYPES_1)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
+        MockMvcRequestBuilders.delete(V1_ATTACK_TYPES_1)
+            .contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.status().isNoContent());
   }
 
@@ -150,8 +150,8 @@ class AttackTypeControllerTest {
   void deleteNotFoundTest() throws Exception {
     BDDMockito.willReturn(null).given(attackTypeService).delete(BDDMockito.anyLong());
     mvc.perform(
-            MockMvcRequestBuilders.delete(V1_ATTACK_TYPES_1)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
+        MockMvcRequestBuilders.delete(V1_ATTACK_TYPES_1)
+            .contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.status().isNotFound());
   }
 }

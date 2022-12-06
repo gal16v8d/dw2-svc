@@ -26,18 +26,19 @@ class DigimonTypeControllerTest {
   private static final String EXTRA = "Extra";
   private static final String DATA = "Data";
   private static final ObjectMapper MAPPER = new ObjectMapper();
-  @Autowired private MockMvc mvc;
-  @MockBean private DigimonTypeService digimonTypeService;
+  @Autowired
+  private MockMvc mvc;
+  @MockBean
+  private DigimonTypeService digimonTypeService;
 
   @Test
   void getAllTest() throws Exception {
-    BDDMockito.willReturn(
-            Arrays.asList(DigimonTypeModel.builder().digimonTypeId(1L).name(DATA).build()))
+    BDDMockito
+        .willReturn(Arrays.asList(DigimonTypeModel.builder().digimonTypeId(1L).name(DATA).build()))
         .given(digimonTypeService)
         .getAll();
     mvc.perform(
-            MockMvcRequestBuilders.get(V1_DIGIMON_TYPES)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
+        MockMvcRequestBuilders.get(V1_DIGIMON_TYPES).contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
@@ -49,8 +50,8 @@ class DigimonTypeControllerTest {
         .given(digimonTypeService)
         .getById(BDDMockito.anyLong());
     mvc.perform(
-            MockMvcRequestBuilders.get(V1_DIGIMON_TYPES_1)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
+        MockMvcRequestBuilders.get(V1_DIGIMON_TYPES_1)
+            .contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(DATA));
@@ -63,9 +64,9 @@ class DigimonTypeControllerTest {
         .given(digimonTypeService)
         .save(BDDMockito.any(DigimonTypeModel.class));
     mvc.perform(
-            MockMvcRequestBuilders.post(V1_DIGIMON_TYPES)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(MAPPER.writeValueAsString(model)))
+        MockMvcRequestBuilders.post(V1_DIGIMON_TYPES)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(MAPPER.writeValueAsString(model)))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(EXTRA));
@@ -75,9 +76,9 @@ class DigimonTypeControllerTest {
   void saveBadRequestTest() throws Exception {
     DigimonTypeModel model = DigimonTypeModel.builder().build();
     mvc.perform(
-            MockMvcRequestBuilders.post(V1_DIGIMON_TYPES)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(MAPPER.writeValueAsString(model)))
+        MockMvcRequestBuilders.post(V1_DIGIMON_TYPES)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(MAPPER.writeValueAsString(model)))
         .andExpect(MockMvcResultMatchers.status().isBadRequest());
   }
 
@@ -88,9 +89,9 @@ class DigimonTypeControllerTest {
         .given(digimonTypeService)
         .update(BDDMockito.anyLong(), BDDMockito.any(DigimonTypeModel.class));
     mvc.perform(
-            MockMvcRequestBuilders.put(V1_DIGIMON_TYPES_1)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(MAPPER.writeValueAsString(model)))
+        MockMvcRequestBuilders.put(V1_DIGIMON_TYPES_1)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(MAPPER.writeValueAsString(model)))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(EXTRA));
@@ -103,9 +104,9 @@ class DigimonTypeControllerTest {
         .given(digimonTypeService)
         .update(BDDMockito.anyLong(), BDDMockito.any(DigimonTypeModel.class));
     mvc.perform(
-            MockMvcRequestBuilders.put(V1_DIGIMON_TYPES_1)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(MAPPER.writeValueAsString(model)))
+        MockMvcRequestBuilders.put(V1_DIGIMON_TYPES_1)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(MAPPER.writeValueAsString(model)))
         .andExpect(MockMvcResultMatchers.status().isNotFound());
   }
 
@@ -116,9 +117,9 @@ class DigimonTypeControllerTest {
         .given(digimonTypeService)
         .patch(BDDMockito.anyLong(), BDDMockito.any(DigimonTypeModel.class));
     mvc.perform(
-            MockMvcRequestBuilders.patch(V1_DIGIMON_TYPES_1)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(MAPPER.writeValueAsString(model)))
+        MockMvcRequestBuilders.patch(V1_DIGIMON_TYPES_1)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(MAPPER.writeValueAsString(model)))
         .andExpect(MockMvcResultMatchers.status().isOk())
         .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(EXTRA));
@@ -131,9 +132,9 @@ class DigimonTypeControllerTest {
         .given(digimonTypeService)
         .patch(BDDMockito.anyLong(), BDDMockito.any(DigimonTypeModel.class));
     mvc.perform(
-            MockMvcRequestBuilders.patch(V1_DIGIMON_TYPES_1)
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(MAPPER.writeValueAsString(model)))
+        MockMvcRequestBuilders.patch(V1_DIGIMON_TYPES_1)
+            .contentType(MediaType.APPLICATION_JSON_VALUE)
+            .content(MAPPER.writeValueAsString(model)))
         .andExpect(MockMvcResultMatchers.status().isNotFound());
   }
 
@@ -141,8 +142,8 @@ class DigimonTypeControllerTest {
   void deleteTest() throws Exception {
     BDDMockito.willReturn(1L).given(digimonTypeService).delete(BDDMockito.anyLong());
     mvc.perform(
-            MockMvcRequestBuilders.delete(V1_DIGIMON_TYPES_1)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
+        MockMvcRequestBuilders.delete(V1_DIGIMON_TYPES_1)
+            .contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.status().isNoContent());
   }
 
@@ -150,8 +151,8 @@ class DigimonTypeControllerTest {
   void deleteNotFoundTest() throws Exception {
     BDDMockito.willReturn(null).given(digimonTypeService).delete(BDDMockito.anyLong());
     mvc.perform(
-            MockMvcRequestBuilders.delete(V1_DIGIMON_TYPES_1)
-                .contentType(MediaType.APPLICATION_JSON_VALUE))
+        MockMvcRequestBuilders.delete(V1_DIGIMON_TYPES_1)
+            .contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(MockMvcResultMatchers.status().isNotFound());
   }
 }

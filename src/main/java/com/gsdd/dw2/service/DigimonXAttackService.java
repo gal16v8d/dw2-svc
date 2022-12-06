@@ -36,14 +36,12 @@ public class DigimonXAttackService {
   }
 
   public DigimonXAttackModel getById(Long digimonId, Long attackId) {
-    DigimonXAttack dxa =
-        digimonXAttackConverter.convertToEntity(
-            DigimonXAttackModel.builder().attackId(attackId).digimonId(digimonId).build());
+    DigimonXAttack dxa = digimonXAttackConverter.convertToEntity(
+        DigimonXAttackModel.builder().attackId(attackId).digimonId(digimonId).build());
     return Optional.ofNullable(dxa)
         .map(
-            data ->
-                digimonXAttackRepository.findByDigimonAndAttack(
-                    data.getId().getDigimon(), data.getId().getAttack()))
+            data -> digimonXAttackRepository
+                .findByDigimonAndAttack(data.getId().getDigimon(), data.getId().getAttack()))
         .map(digimonXAttackConverter::convertToDomain)
         .orElse(null);
   }
@@ -57,19 +55,16 @@ public class DigimonXAttackService {
   }
 
   public Long deassociate(Long digimonId, Long attackId) {
-    DigimonXAttack dxa =
-        digimonXAttackConverter.convertToEntity(
-            DigimonXAttackModel.builder().attackId(attackId).digimonId(digimonId).build());
+    DigimonXAttack dxa = digimonXAttackConverter.convertToEntity(
+        DigimonXAttackModel.builder().attackId(attackId).digimonId(digimonId).build());
     return Optional.ofNullable(dxa)
         .map(
-            d ->
-                digimonXAttackRepository.findByDigimonAndAttack(
-                    d.getId().getDigimon(), d.getId().getAttack()))
-        .map(
-            (DigimonXAttack ndxa) -> {
-              digimonXAttackRepository.delete(ndxa);
-              return attackId;
-            })
+            d -> digimonXAttackRepository
+                .findByDigimonAndAttack(d.getId().getDigimon(), d.getId().getAttack()))
+        .map((DigimonXAttack ndxa) -> {
+          digimonXAttackRepository.delete(ndxa);
+          return attackId;
+        })
         .orElse(null);
   }
 }
