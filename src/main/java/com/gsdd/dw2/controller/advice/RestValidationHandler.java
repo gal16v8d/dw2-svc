@@ -1,8 +1,8 @@
 package com.gsdd.dw2.controller.advice;
 
 import com.gsdd.dw2.model.response.ApiError;
+import jakarta.validation.ConstraintViolationException;
 import java.util.Arrays;
-import javax.validation.ConstraintViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;

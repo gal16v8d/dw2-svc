@@ -6,7 +6,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>2.7.6</version>
+		<version>3.0.0</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.gsdd</groupId>
@@ -34,8 +34,8 @@
 
 		<bucket4j.version>0.7.0</bucket4j.version>
 		<springdoc.openapi.ui.version>1.6.10</springdoc.openapi.ui.version>
-		<spring.cloud.version>2021.0.3</spring.cloud.version>
-		<spring.admin.client.version>2.7.4</spring.admin.client.version>
+		<spring.cloud.version>2022.0.0</spring.cloud.version>
+		<spring.admin.client.version>3.0.0-M7</spring.admin.client.version>
 	</properties>
 
 	<dependencies>
@@ -65,12 +65,20 @@
 			<version>${spring.admin.client.version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-sleuth</artifactId>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-tracing</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-sleuth-zipkin</artifactId>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-observation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.micrometer</groupId>
+			<artifactId>micrometer-tracing-bridge-brave</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>io.zipkin.reporter2</groupId>
+			<artifactId>zipkin-reporter-brave</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
