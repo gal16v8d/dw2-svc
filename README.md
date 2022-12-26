@@ -8,7 +8,7 @@ For further reference, please consider the following sections:
 
 ### Swagger
 
-http://localhost:8094/swagger-ui/
+http://localhost:8094/swagger-ui.html
 
 ### Spring Admin Client
 
