@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class EvolutionService extends AbstractService<Evolution, EvolutionModel> {
+public class EvolutionService implements BaseService<Evolution, EvolutionModel> {
 
   private final EvolutionRepository evolutionRepository;
   private final GenericConverter<Evolution, EvolutionModel> evolutionConverter;

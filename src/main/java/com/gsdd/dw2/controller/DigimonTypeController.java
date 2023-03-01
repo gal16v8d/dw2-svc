@@ -2,7 +2,7 @@ package com.gsdd.dw2.controller;
 
 import com.gsdd.dw2.model.DigimonTypeModel;
 import com.gsdd.dw2.persistence.entities.DigimonType;
-import com.gsdd.dw2.service.AbstractService;
+import com.gsdd.dw2.service.BaseService;
 import com.gsdd.dw2.service.DigimonTypeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RefreshScope
 @RestController
 @RequestMapping("api/digimonTypes")
-public class DigimonTypeController extends AbstractController<DigimonType, DigimonTypeModel> {
+public class DigimonTypeController implements BaseController<DigimonType, DigimonTypeModel> {
 
   private final DigimonTypeService digimonTypeService;
 
@@ -25,7 +25,7 @@ public class DigimonTypeController extends AbstractController<DigimonType, Digim
   }
 
   @Override
-  public AbstractService<DigimonType, DigimonTypeModel> getService() {
+  public BaseService<DigimonType, DigimonTypeModel> getService() {
     return digimonTypeService;
   }
 }

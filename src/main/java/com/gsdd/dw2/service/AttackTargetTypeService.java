@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Service
 public class AttackTargetTypeService
-    extends AbstractService<AttackTargetType, AttackTargetTypeModel> {
+    implements BaseService<AttackTargetType, AttackTargetTypeModel> {
 
   private final AttackTargetTypeRepository attackTargetTypeRepository;
   private final GenericConverter<AttackTargetType, AttackTargetTypeModel> attackTargetTypeConverter;

@@ -1,8 +1,8 @@
 package com.gsdd.dw2.controller.advice;
 
 import com.gsdd.dw2.model.response.ApiError;
-import jakarta.validation.ConstraintViolationException;
-import java.util.Arrays;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -11,28 +11,16 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class RestValidationHandler extends ResponseEntityExceptionHandler {
 
-  private static final String UNIQUE_INDEX_OR_PRIMARY_KEY_VIOLATION =
-      "Unique index or primary key violation";
-
-  @ExceptionHandler(ConstraintViolationException.class)
-  protected ResponseEntity<ApiError> handleConflict(ConstraintViolationException e) {
-    StringBuilder messages = new StringBuilder();
-    e.getConstraintViolations()
-        .forEach(cv -> messages.append(cv.getMessage()).append(System.lineSeparator()));
-    return ResponseEntity.badRequest()
-        .body(ApiError.builder().message(messages.toString()).build());
+  @ExceptionHandler(DataIntegrityViolationException.class)
+  protected ResponseEntity<ApiError> handleIntegrityException(Exception e) {
+    return ResponseEntity.status(HttpStatus.CONFLICT.value())
+        .body(ApiError.builder().message(e.getLocalizedMessage()).build());
   }
 
   @ExceptionHandler(Exception.class)
-  protected ResponseEntity<ApiError> handleConflict(Exception e) {
-    boolean indexViolated =
-        Arrays.toString(e.getStackTrace()).contains(UNIQUE_INDEX_OR_PRIMARY_KEY_VIOLATION);
-    if (indexViolated) {
-      return ResponseEntity.badRequest()
-          .body(ApiError.builder().message(UNIQUE_INDEX_OR_PRIMARY_KEY_VIOLATION).build());
-    } else {
-      return ResponseEntity.internalServerError()
-          .body(ApiError.builder().message(e.getLocalizedMessage()).build());
-    }
+  protected ResponseEntity<ApiError> handleException(Exception e) {
+    return ResponseEntity.internalServerError()
+        .body(ApiError.builder().message(e.getLocalizedMessage()).build());
   }
+
 }

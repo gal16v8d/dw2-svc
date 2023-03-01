@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class DigimonService extends AbstractService<Digimon, DigimonModel> {
+public class DigimonService implements BaseService<Digimon, DigimonModel> {
 
   private final DigimonRepository digimonRepository;
   private final GenericConverter<Digimon, DigimonModel> digimonConverter;

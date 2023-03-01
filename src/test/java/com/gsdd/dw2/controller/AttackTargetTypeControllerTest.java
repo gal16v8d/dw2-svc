@@ -3,6 +3,14 @@ package com.gsdd.dw2.controller;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.willReturn;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gsdd.dw2.model.AttackTargetTypeModel;
@@ -15,8 +23,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -40,11 +46,10 @@ class AttackTargetTypeControllerTest {
         Arrays.asList(AttackTargetTypeModel.builder().attackTargetTypeId(1L).name(ALL).build()))
             .given(attackTargetTypeService)
             .getAll();
-    mvc.perform(
-        MockMvcRequestBuilders.get(V1_ATTACK_TYPES).contentType(MediaType.APPLICATION_JSON_VALUE))
-        .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
-        .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
+    mvc.perform(get(V1_ATTACK_TYPES).contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(jsonPath("$").isArray());
   }
 
   @Test
@@ -52,11 +57,10 @@ class AttackTargetTypeControllerTest {
     willReturn(AttackTargetTypeModel.builder().attackTargetTypeId(1L).name(ALL).build())
         .given(attackTargetTypeService)
         .getById(anyLong());
-    mvc.perform(
-        MockMvcRequestBuilders.get(V1_ATTACK_TYPES_1).contentType(MediaType.APPLICATION_JSON_VALUE))
-        .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
-        .andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(ALL));
+    mvc.perform(get(V1_ATTACK_TYPES_1).contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(jsonPath(JSON_PATH_NAME).value(ALL));
   }
 
   @Test
@@ -65,22 +69,20 @@ class AttackTargetTypeControllerTest {
         AttackTargetTypeModel.builder().attackTargetTypeId(1L).name(RANDOM_ALLY).build();
     willReturn(model).given(attackTargetTypeService).save(any(AttackTargetTypeModel.class));
     mvc.perform(
-        MockMvcRequestBuilders.post(V1_ATTACK_TYPES)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+        post(V1_ATTACK_TYPES).contentType(MediaType.APPLICATION_JSON_VALUE)
             .content(MAPPER.writeValueAsString(model)))
-        .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
-        .andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(RANDOM_ALLY));
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(jsonPath(JSON_PATH_NAME).value(RANDOM_ALLY));
   }
 
   @Test
   void saveBadRequestTest() throws Exception {
     AttackTargetTypeModel model = AttackTargetTypeModel.builder().build();
     mvc.perform(
-        MockMvcRequestBuilders.post(V1_ATTACK_TYPES)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+        post(V1_ATTACK_TYPES).contentType(MediaType.APPLICATION_JSON_VALUE)
             .content(MAPPER.writeValueAsString(model)))
-        .andExpect(MockMvcResultMatchers.status().isBadRequest());
+        .andExpect(status().isBadRequest());
   }
 
   @Test
@@ -90,12 +92,11 @@ class AttackTargetTypeControllerTest {
     willReturn(model).given(attackTargetTypeService)
         .update(anyLong(), any(AttackTargetTypeModel.class));
     mvc.perform(
-        MockMvcRequestBuilders.put(V1_ATTACK_TYPES_1)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+        put(V1_ATTACK_TYPES_1).contentType(MediaType.APPLICATION_JSON_VALUE)
             .content(MAPPER.writeValueAsString(model)))
-        .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
-        .andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(RANDOM_ALLY));
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(jsonPath(JSON_PATH_NAME).value(RANDOM_ALLY));
   }
 
   @Test
@@ -105,10 +106,9 @@ class AttackTargetTypeControllerTest {
     willReturn(null).given(attackTargetTypeService)
         .update(anyLong(), any(AttackTargetTypeModel.class));
     mvc.perform(
-        MockMvcRequestBuilders.put(V1_ATTACK_TYPES_1)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+        put(V1_ATTACK_TYPES_1).contentType(MediaType.APPLICATION_JSON_VALUE)
             .content(MAPPER.writeValueAsString(model)))
-        .andExpect(MockMvcResultMatchers.status().isNotFound());
+        .andExpect(status().isNotFound());
   }
 
   @Test
@@ -118,12 +118,11 @@ class AttackTargetTypeControllerTest {
         .given(attackTargetTypeService)
         .patch(anyLong(), any(AttackTargetTypeModel.class));
     mvc.perform(
-        MockMvcRequestBuilders.patch(V1_ATTACK_TYPES_1)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+        patch(V1_ATTACK_TYPES_1).contentType(MediaType.APPLICATION_JSON_VALUE)
             .content(MAPPER.writeValueAsString(model)))
-        .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
-        .andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(RANDOM_ALLY));
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(jsonPath(JSON_PATH_NAME).value(RANDOM_ALLY));
   }
 
   @Test
@@ -132,27 +131,22 @@ class AttackTargetTypeControllerTest {
     willReturn(null).given(attackTargetTypeService)
         .patch(anyLong(), any(AttackTargetTypeModel.class));
     mvc.perform(
-        MockMvcRequestBuilders.patch(V1_ATTACK_TYPES_1)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+        patch(V1_ATTACK_TYPES_1).contentType(MediaType.APPLICATION_JSON_VALUE)
             .content(MAPPER.writeValueAsString(model)))
-        .andExpect(MockMvcResultMatchers.status().isNotFound());
+        .andExpect(status().isNotFound());
   }
 
   @Test
   void deleteTest() throws Exception {
     willReturn(1L).given(attackTargetTypeService).delete(anyLong());
-    mvc.perform(
-        MockMvcRequestBuilders.delete(V1_ATTACK_TYPES_1)
-            .contentType(MediaType.APPLICATION_JSON_VALUE))
-        .andExpect(MockMvcResultMatchers.status().isNoContent());
+    mvc.perform(delete(V1_ATTACK_TYPES_1).contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isNoContent());
   }
 
   @Test
   void deleteNotFoundTest() throws Exception {
     willReturn(null).given(attackTargetTypeService).delete(anyLong());
-    mvc.perform(
-        MockMvcRequestBuilders.delete(V1_ATTACK_TYPES_1)
-            .contentType(MediaType.APPLICATION_JSON_VALUE))
-        .andExpect(MockMvcResultMatchers.status().isNotFound());
+    mvc.perform(delete(V1_ATTACK_TYPES_1).contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isNotFound());
   }
 }

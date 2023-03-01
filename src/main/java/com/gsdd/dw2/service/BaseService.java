@@ -3,13 +3,12 @@ package com.gsdd.dw2.service;
 import com.gsdd.dw2.converter.GenericConverter;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public abstract class AbstractService<T, D> {
+public interface BaseService<T, D> {
 
-  abstract String getSortArg();
+  String getSortArg();
 
   /**
    * Keep old entity id for update operation.
@@ -18,24 +17,24 @@ public abstract class AbstractService<T, D> {
    * @param entityOrig, database mapped entity
    * @return entityNew fields but with entityOrig id.
    */
-  abstract T replaceId(T entityNew, T entityOrig);
+  T replaceId(T entityNew, T entityOrig);
 
-  abstract JpaRepository<T, Long> getRepo();
+  JpaRepository<T, Long> getRepo();
 
-  abstract GenericConverter<T, D> getConverter();
+  GenericConverter<T, D> getConverter();
 
-  public List<D> getAll() {
+  default List<D> getAll() {
     return getRepo().findAll(Sort.by(getSortArg()))
         .stream()
         .map(getConverter()::convertToDomain)
-        .collect(Collectors.toList());
+        .toList();
   }
 
-  public D getById(Long id) {
+  default D getById(Long id) {
     return getRepo().findById(id).map(getConverter()::convertToDomain).orElse(null);
   }
 
-  public D save(D model) {
+  default D save(D model) {
     return Optional.ofNullable(model)
         .map(getConverter()::convertToEntity)
         .map(getRepo()::saveAndFlush)
@@ -43,7 +42,7 @@ public abstract class AbstractService<T, D> {
         .orElse(null);
   }
 
-  public D update(Long id, D model) {
+  default D update(Long id, D model) {
     return getRepo().findById(id).map((T dbEntity) -> {
       T ent = getConverter().convertToEntity(model);
       return Optional.ofNullable(ent).map((T e) -> {
@@ -53,7 +52,7 @@ public abstract class AbstractService<T, D> {
     }).map(getConverter()::convertToDomain).orElse(null);
   }
 
-  public D patch(Long id, D model) {
+  default D patch(Long id, D model) {
     return getRepo().findById(id)
         .map(dbEntity -> getConverter().mapToEntity(model, dbEntity))
         .map((T e) -> getRepo().saveAndFlush(e))
@@ -61,7 +60,7 @@ public abstract class AbstractService<T, D> {
         .orElse(null);
   }
 
-  public Long delete(Long id) {
+  default Long delete(Long id) {
     return getRepo().findById(id).map((T entity) -> {
       getRepo().delete(entity);
       return id;

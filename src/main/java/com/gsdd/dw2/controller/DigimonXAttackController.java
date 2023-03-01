@@ -5,7 +5,6 @@ import com.gsdd.dw2.service.DigimonXAttackService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.Collection;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +27,7 @@ public class DigimonXAttackController {
   @GetMapping("digimons/{digimonId:[0-9]+}/attacks")
   public ResponseEntity<Collection<DigimonXAttackModel>>
       getAllAtk(@PathVariable("digimonId") Long digimonId) {
-    return ResponseEntity
-        .ok(digimonXAttackService.getAllAtk(digimonId).stream().collect(Collectors.toList()));
+    return ResponseEntity.ok(digimonXAttackService.getAllAtk(digimonId));
   }
 
   @GetMapping("digimons/{digimonId:[0-9]+}/attacks/{attackId:[0-9]+}")
@@ -38,7 +36,7 @@ public class DigimonXAttackController {
     DigimonXAttackModel dxa = digimonXAttackService.getById(digimonId, attackId);
     return Optional.ofNullable(dxa)
         .map(ResponseEntity::ok)
-        .orElseGet(() -> ResponseEntity.notFound().build());
+        .orElseGet(ResponseEntity.notFound()::build);
   }
 
   @PostMapping("digimons/{digimonId:[0-9]+}/attacks/{attackId:[0-9]+}")
@@ -46,7 +44,7 @@ public class DigimonXAttackController {
       @PathVariable("attackId") Long attackId) {
     return Optional.ofNullable(digimonXAttackService.associate(digimonId, attackId))
         .map(ResponseEntity::ok)
-        .orElseGet(() -> ResponseEntity.badRequest().build());
+        .orElseGet(ResponseEntity.badRequest()::build);
   }
 
   @DeleteMapping("digimons/{digimonId:[0-9]+}/attacks/{attackId:[0-9]+}")
@@ -54,6 +52,6 @@ public class DigimonXAttackController {
       @PathVariable("attackId") Long attackId) {
     return Optional.ofNullable(digimonXAttackService.deassociate(digimonId, attackId))
         .map(result -> ResponseEntity.noContent().build())
-        .orElseGet(() -> ResponseEntity.notFound().build());
+        .orElseGet(ResponseEntity.notFound()::build);
   }
 }

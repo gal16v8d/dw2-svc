@@ -2,7 +2,7 @@ package com.gsdd.dw2.controller;
 
 import com.gsdd.dw2.model.EvolutionModel;
 import com.gsdd.dw2.persistence.entities.Evolution;
-import com.gsdd.dw2.service.AbstractService;
+import com.gsdd.dw2.service.BaseService;
 import com.gsdd.dw2.service.EvolutionService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RefreshScope
 @RestController
 @RequestMapping("api/evolutions")
-public class EvolutionController extends AbstractController<Evolution, EvolutionModel> {
+public class EvolutionController implements BaseController<Evolution, EvolutionModel> {
 
   private final EvolutionService evolutionService;
 
@@ -25,7 +25,7 @@ public class EvolutionController extends AbstractController<Evolution, Evolution
   }
 
   @Override
-  public AbstractService<Evolution, EvolutionModel> getService() {
+  public BaseService<Evolution, EvolutionModel> getService() {
     return evolutionService;
   }
 }

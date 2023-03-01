@@ -12,7 +12,6 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication
 @EnableCaching
 @EnableDiscoveryClient
-//@EnableEurekaClient
 @ComponentScan({
     Dw2Application.BASE_PACKAGE + "config",
     Dw2Application.BASE_PACKAGE + "controller",

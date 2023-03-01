@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class ElementService extends AbstractService<Element, ElementModel> {
+public class ElementService implements BaseService<Element, ElementModel> {
 
   private final ElementRepository elementRepository;
   private final GenericConverter<Element, ElementModel> elementConverter;

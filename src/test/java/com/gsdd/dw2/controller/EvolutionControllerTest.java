@@ -1,19 +1,28 @@
 package com.gsdd.dw2.controller;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.willReturn;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gsdd.dw2.model.EvolutionModel;
 import com.gsdd.dw2.service.EvolutionService;
 import java.util.Arrays;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -33,134 +42,114 @@ class EvolutionControllerTest {
 
   @Test
   void getAllTest() throws Exception {
-    BDDMockito.willReturn(
+    willReturn(
         Arrays.asList(
             EvolutionModel.builder()
                 .baseDigimonId(1L)
                 .evolvedDigimonId(2L)
                 .dnaTimes(MIN_DNA)
-                .build()))
-        .given(evolutionService)
-        .getAll();
-    mvc.perform(
-        MockMvcRequestBuilders.get(V1_EVOLUTIONS).contentType(MediaType.APPLICATION_JSON_VALUE))
-        .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
-        .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
+                .build())).given(evolutionService).getAll();
+    mvc.perform(get(V1_EVOLUTIONS).contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(jsonPath("$").isArray());
   }
 
   @Test
   void getByIdTest() throws Exception {
-    BDDMockito.willReturn(
+    willReturn(
         EvolutionModel.builder().baseDigimonId(1L).evolvedDigimonId(2L).dnaTimes(MIN_DNA).build())
-        .given(evolutionService)
-        .getById(BDDMockito.anyLong());
-    mvc.perform(
-        MockMvcRequestBuilders.get(V1_EVOLUTIONS_1).contentType(MediaType.APPLICATION_JSON_VALUE))
-        .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
-        .andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(MIN_DNA));
+            .given(evolutionService)
+            .getById(anyLong());
+    mvc.perform(get(V1_EVOLUTIONS_1).contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(jsonPath(JSON_PATH_NAME).value(MIN_DNA));
   }
 
   @Test
   void saveTest() throws Exception {
     EvolutionModel model =
         EvolutionModel.builder().baseDigimonId(1L).evolvedDigimonId(2L).dnaTimes(MAX_DNA).build();
-    BDDMockito.willReturn(model).given(evolutionService).save(BDDMockito.any(EvolutionModel.class));
+    willReturn(model).given(evolutionService).save(any(EvolutionModel.class));
     mvc.perform(
-        MockMvcRequestBuilders.post(V1_EVOLUTIONS)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+        post(V1_EVOLUTIONS).contentType(MediaType.APPLICATION_JSON_VALUE)
             .content(MAPPER.writeValueAsString(model)))
-        .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
-        .andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(MAX_DNA));
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(jsonPath(JSON_PATH_NAME).value(MAX_DNA));
   }
 
   @Test
   void saveBadRequestTest() throws Exception {
     EvolutionModel model = EvolutionModel.builder().build();
     mvc.perform(
-        MockMvcRequestBuilders.post(V1_EVOLUTIONS)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+        post(V1_EVOLUTIONS).contentType(MediaType.APPLICATION_JSON_VALUE)
             .content(MAPPER.writeValueAsString(model)))
-        .andExpect(MockMvcResultMatchers.status().isBadRequest());
+        .andExpect(status().isBadRequest());
   }
 
   @Test
   void updateTest() throws Exception {
     EvolutionModel model =
         EvolutionModel.builder().baseDigimonId(1L).evolvedDigimonId(2L).dnaTimes(MAX_DNA).build();
-    BDDMockito.willReturn(model)
-        .given(evolutionService)
-        .update(BDDMockito.anyLong(), BDDMockito.any(EvolutionModel.class));
+    willReturn(model).given(evolutionService).update(anyLong(), any(EvolutionModel.class));
     mvc.perform(
-        MockMvcRequestBuilders.put(V1_EVOLUTIONS_1)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+        put(V1_EVOLUTIONS_1).contentType(MediaType.APPLICATION_JSON_VALUE)
             .content(MAPPER.writeValueAsString(model)))
-        .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
-        .andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(MAX_DNA));
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(jsonPath(JSON_PATH_NAME).value(MAX_DNA));
   }
 
   @Test
   void updateNotFoundTest() throws Exception {
     EvolutionModel model =
         EvolutionModel.builder().baseDigimonId(1L).evolvedDigimonId(2L).dnaTimes(MAX_DNA).build();
-    BDDMockito.willReturn(null)
-        .given(evolutionService)
-        .update(BDDMockito.anyLong(), BDDMockito.any(EvolutionModel.class));
+    willReturn(null).given(evolutionService).update(anyLong(), any(EvolutionModel.class));
     mvc.perform(
-        MockMvcRequestBuilders.put(V1_EVOLUTIONS_1)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+        put(V1_EVOLUTIONS_1).contentType(MediaType.APPLICATION_JSON_VALUE)
             .content(MAPPER.writeValueAsString(model)))
-        .andExpect(MockMvcResultMatchers.status().isNotFound());
+        .andExpect(status().isNotFound());
   }
 
   @Test
   void patchTest() throws Exception {
     EvolutionModel model = EvolutionModel.builder().dnaTimes(MAX_DNA).build();
-    BDDMockito.willReturn(
+    willReturn(
         EvolutionModel.builder().baseDigimonId(1L).evolvedDigimonId(2L).dnaTimes(MAX_DNA).build())
-        .given(evolutionService)
-        .patch(BDDMockito.anyLong(), BDDMockito.any(EvolutionModel.class));
+            .given(evolutionService)
+            .patch(anyLong(), any(EvolutionModel.class));
     mvc.perform(
-        MockMvcRequestBuilders.patch(V1_EVOLUTIONS_1)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+        patch(V1_EVOLUTIONS_1).contentType(MediaType.APPLICATION_JSON_VALUE)
             .content(MAPPER.writeValueAsString(model)))
-        .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
-        .andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(MAX_DNA));
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(jsonPath(JSON_PATH_NAME).value(MAX_DNA));
   }
 
   @Test
   void patchNotFoundTest() throws Exception {
     EvolutionModel model =
         EvolutionModel.builder().baseDigimonId(1L).evolvedDigimonId(2L).dnaTimes(MAX_DNA).build();
-    BDDMockito.willReturn(null)
-        .given(evolutionService)
-        .patch(BDDMockito.anyLong(), BDDMockito.any(EvolutionModel.class));
+    willReturn(null).given(evolutionService).patch(anyLong(), any(EvolutionModel.class));
     mvc.perform(
-        MockMvcRequestBuilders.patch(V1_EVOLUTIONS_1)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+        patch(V1_EVOLUTIONS_1).contentType(MediaType.APPLICATION_JSON_VALUE)
             .content(MAPPER.writeValueAsString(model)))
-        .andExpect(MockMvcResultMatchers.status().isNotFound());
+        .andExpect(status().isNotFound());
   }
 
   @Test
   void deleteTest() throws Exception {
-    BDDMockito.willReturn(1L).given(evolutionService).delete(BDDMockito.anyLong());
-    mvc.perform(
-        MockMvcRequestBuilders.delete(V1_EVOLUTIONS_1)
-            .contentType(MediaType.APPLICATION_JSON_VALUE))
-        .andExpect(MockMvcResultMatchers.status().isNoContent());
+    willReturn(1L).given(evolutionService).delete(anyLong());
+    mvc.perform(delete(V1_EVOLUTIONS_1).contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isNoContent());
   }
 
   @Test
   void deleteNotFoundTest() throws Exception {
-    BDDMockito.willReturn(null).given(evolutionService).delete(BDDMockito.anyLong());
-    mvc.perform(
-        MockMvcRequestBuilders.delete(V1_EVOLUTIONS_1)
-            .contentType(MediaType.APPLICATION_JSON_VALUE))
-        .andExpect(MockMvcResultMatchers.status().isNotFound());
+    willReturn(null).given(evolutionService).delete(anyLong());
+    mvc.perform(delete(V1_EVOLUTIONS_1).contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isNotFound());
   }
 }

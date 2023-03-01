@@ -2,8 +2,8 @@ package com.gsdd.dw2.controller;
 
 import com.gsdd.dw2.model.AttackTargetTypeModel;
 import com.gsdd.dw2.persistence.entities.AttackTargetType;
-import com.gsdd.dw2.service.AbstractService;
 import com.gsdd.dw2.service.AttackTargetTypeService;
+import com.gsdd.dw2.service.BaseService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("api/attackTargetTypes")
 public class AttackTargetTypeController
-    extends AbstractController<AttackTargetType, AttackTargetTypeModel> {
+    implements BaseController<AttackTargetType, AttackTargetTypeModel> {
 
   private final AttackTargetTypeService attackTargetTypeService;
 
@@ -26,7 +26,7 @@ public class AttackTargetTypeController
   }
 
   @Override
-  public AbstractService<AttackTargetType, AttackTargetTypeModel> getService() {
+  public BaseService<AttackTargetType, AttackTargetTypeModel> getService() {
     return attackTargetTypeService;
   }
 }

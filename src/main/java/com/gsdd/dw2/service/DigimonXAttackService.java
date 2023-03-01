@@ -8,7 +8,6 @@ import com.gsdd.dw2.repository.DigimonXAttackRepository;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +31,7 @@ public class DigimonXAttackService {
         .orElseGet(Collections::emptyList)
         .stream()
         .map(digimonXAttackConverter::convertToDomain)
-        .collect(Collectors.toList());
+        .toList();
   }
 
   public DigimonXAttackModel getById(Long digimonId, Long attackId) {

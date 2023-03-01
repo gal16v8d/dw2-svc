@@ -1,19 +1,28 @@
 package com.gsdd.dw2.controller;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.BDDMockito.willReturn;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gsdd.dw2.model.ElementModel;
 import com.gsdd.dw2.service.ElementService;
 import java.util.Arrays;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -33,120 +42,102 @@ class ElementControllerTest {
 
   @Test
   void getAllTest() throws Exception {
-    BDDMockito.willReturn(Arrays.asList(ElementModel.builder().elementId(1L).name(NONE).build()))
+    willReturn(Arrays.asList(ElementModel.builder().elementId(1L).name(NONE).build()))
         .given(elementService)
         .getAll();
-    mvc.perform(
-        MockMvcRequestBuilders.get(V1_ELEMENTS).contentType(MediaType.APPLICATION_JSON_VALUE))
-        .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
-        .andExpect(MockMvcResultMatchers.jsonPath("$").isArray());
+    mvc.perform(get(V1_ELEMENTS).contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(jsonPath("$").isArray());
   }
 
   @Test
   void getByIdTest() throws Exception {
-    BDDMockito.willReturn(ElementModel.builder().elementId(1L).name(NONE).build())
-        .given(elementService)
-        .getById(BDDMockito.anyLong());
-    mvc.perform(
-        MockMvcRequestBuilders.get(V1_ELEMENTS_1).contentType(MediaType.APPLICATION_JSON_VALUE))
-        .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
-        .andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(NONE));
+    willReturn(ElementModel.builder().elementId(1L).name(NONE).build()).given(elementService)
+        .getById(anyLong());
+    mvc.perform(get(V1_ELEMENTS_1).contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(jsonPath(JSON_PATH_NAME).value(NONE));
   }
 
   @Test
   void saveTest() throws Exception {
     ElementModel model = ElementModel.builder().elementId(1L).name(AIR).build();
-    BDDMockito.willReturn(model).given(elementService).save(BDDMockito.any(ElementModel.class));
+    willReturn(model).given(elementService).save(any(ElementModel.class));
     mvc.perform(
-        MockMvcRequestBuilders.post(V1_ELEMENTS)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+        post(V1_ELEMENTS).contentType(MediaType.APPLICATION_JSON_VALUE)
             .content(MAPPER.writeValueAsString(model)))
-        .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
-        .andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(AIR));
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(jsonPath(JSON_PATH_NAME).value(AIR));
   }
 
   @Test
   void saveBadRequestTest() throws Exception {
     ElementModel model = ElementModel.builder().build();
     mvc.perform(
-        MockMvcRequestBuilders.post(V1_ELEMENTS)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+        post(V1_ELEMENTS).contentType(MediaType.APPLICATION_JSON_VALUE)
             .content(MAPPER.writeValueAsString(model)))
-        .andExpect(MockMvcResultMatchers.status().isBadRequest());
+        .andExpect(status().isBadRequest());
   }
 
   @Test
   void updateTest() throws Exception {
     ElementModel model = ElementModel.builder().elementId(1L).name(AIR).build();
-    BDDMockito.willReturn(model)
-        .given(elementService)
-        .update(BDDMockito.anyLong(), BDDMockito.any(ElementModel.class));
+    willReturn(model).given(elementService).update(anyLong(), any(ElementModel.class));
     mvc.perform(
-        MockMvcRequestBuilders.put(V1_ELEMENTS_1)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+        put(V1_ELEMENTS_1).contentType(MediaType.APPLICATION_JSON_VALUE)
             .content(MAPPER.writeValueAsString(model)))
-        .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
-        .andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(AIR));
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(jsonPath(JSON_PATH_NAME).value(AIR));
   }
 
   @Test
   void updateNotFoundTest() throws Exception {
     ElementModel model = ElementModel.builder().name(AIR).build();
-    BDDMockito.willReturn(null)
-        .given(elementService)
-        .update(BDDMockito.anyLong(), BDDMockito.any(ElementModel.class));
+    willReturn(null).given(elementService).update(anyLong(), any(ElementModel.class));
     mvc.perform(
-        MockMvcRequestBuilders.put(V1_ELEMENTS_1)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+        put(V1_ELEMENTS_1).contentType(MediaType.APPLICATION_JSON_VALUE)
             .content(MAPPER.writeValueAsString(model)))
-        .andExpect(MockMvcResultMatchers.status().isNotFound());
+        .andExpect(status().isNotFound());
   }
 
   @Test
   void patchTest() throws Exception {
     ElementModel model = ElementModel.builder().name(AIR).build();
-    BDDMockito.willReturn(ElementModel.builder().elementId(1L).name(AIR).build())
-        .given(elementService)
-        .patch(BDDMockito.anyLong(), BDDMockito.any(ElementModel.class));
+    willReturn(ElementModel.builder().elementId(1L).name(AIR).build()).given(elementService)
+        .patch(anyLong(), any(ElementModel.class));
     mvc.perform(
-        MockMvcRequestBuilders.patch(V1_ELEMENTS_1)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+        patch(V1_ELEMENTS_1).contentType(MediaType.APPLICATION_JSON_VALUE)
             .content(MAPPER.writeValueAsString(model)))
-        .andExpect(MockMvcResultMatchers.status().isOk())
-        .andExpect(MockMvcResultMatchers.content().contentType(MediaType.APPLICATION_JSON_VALUE))
-        .andExpect(MockMvcResultMatchers.jsonPath(JSON_PATH_NAME).value(AIR));
+        .andExpect(status().isOk())
+        .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(jsonPath(JSON_PATH_NAME).value(AIR));
   }
 
   @Test
   void patchNotFoundTest() throws Exception {
     ElementModel model = ElementModel.builder().name(AIR).build();
-    BDDMockito.willReturn(null)
-        .given(elementService)
-        .patch(BDDMockito.anyLong(), BDDMockito.any(ElementModel.class));
+    willReturn(null).given(elementService).patch(anyLong(), any(ElementModel.class));
     mvc.perform(
-        MockMvcRequestBuilders.patch(V1_ELEMENTS_1)
-            .contentType(MediaType.APPLICATION_JSON_VALUE)
+        patch(V1_ELEMENTS_1).contentType(MediaType.APPLICATION_JSON_VALUE)
             .content(MAPPER.writeValueAsString(model)))
-        .andExpect(MockMvcResultMatchers.status().isNotFound());
+        .andExpect(status().isNotFound());
   }
 
   @Test
   void deleteTest() throws Exception {
-    BDDMockito.willReturn(1L).given(elementService).delete(BDDMockito.anyLong());
-    mvc.perform(
-        MockMvcRequestBuilders.delete(V1_ELEMENTS_1).contentType(MediaType.APPLICATION_JSON_VALUE))
-        .andExpect(MockMvcResultMatchers.status().isNoContent());
+    willReturn(1L).given(elementService).delete(anyLong());
+    mvc.perform(delete(V1_ELEMENTS_1).contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isNoContent());
   }
 
   @Test
   void deleteNotFoundTest() throws Exception {
-    BDDMockito.willReturn(null).given(elementService).delete(BDDMockito.anyLong());
-    mvc.perform(
-        MockMvcRequestBuilders.delete(V1_ELEMENTS_1).contentType(MediaType.APPLICATION_JSON_VALUE))
-        .andExpect(MockMvcResultMatchers.status().isNotFound());
+    willReturn(null).given(elementService).delete(anyLong());
+    mvc.perform(delete(V1_ELEMENTS_1).contentType(MediaType.APPLICATION_JSON_VALUE))
+        .andExpect(status().isNotFound());
   }
 }

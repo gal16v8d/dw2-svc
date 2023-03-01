@@ -2,7 +2,7 @@ package com.gsdd.dw2.controller;
 
 import com.gsdd.dw2.model.LevelModel;
 import com.gsdd.dw2.persistence.entities.Level;
-import com.gsdd.dw2.service.AbstractService;
+import com.gsdd.dw2.service.BaseService;
 import com.gsdd.dw2.service.LevelService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RefreshScope
 @RestController
 @RequestMapping("api/levels")
-public class LevelController extends AbstractController<Level, LevelModel> {
+public class LevelController implements BaseController<Level, LevelModel> {
 
   private final LevelService levelService;
 
@@ -25,7 +25,7 @@ public class LevelController extends AbstractController<Level, LevelModel> {
   }
 
   @Override
-  public AbstractService<Level, LevelModel> getService() {
+  public BaseService<Level, LevelModel> getService() {
     return levelService;
   }
 }

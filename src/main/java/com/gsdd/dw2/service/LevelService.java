@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
 @Service
-public class LevelService extends AbstractService<Level, LevelModel> {
+public class LevelService implements BaseService<Level, LevelModel> {
 
   private final LevelRepository levelRepository;
   private final GenericConverter<Level, LevelModel> levelConverter;
