@@ -1,0 +1,58 @@
+bucket4j:
+  enabled: true
+  filters:
+    - cache-name: dw2-rate-limit
+      url: /api.*
+      http-response-body: "{ \"message\" : \"You have exhausted your API request limit\" }"
+      rate-limits:
+      - bandwidths:
+        - capacity: 100
+          time: 1
+          unit: seconds
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  tracing:
+    baggage:
+      correlation:
+        enabled: true
+    sampling:
+      probability: 1.0
+
+service:
+  welcome:
+    message: Hello from local dw2-svc
+    
+server:
+  port: 8094
+
+spring:
+  application:
+    name: dw2-svc
+  boot:
+    admin:
+      client:
+        url: http://localhost:8763
+  cache:
+    jcache:
+      provider: com.github.benmanes.caffeine.jcache.spi.CaffeineCachingProvider
+    cache-names: dw2-rate-limit
+  config:
+    import: "optional:configserver:http://localhost:8088"
+  datasource:
+    url: jdbc:h2:file:./dw2
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: test-dw2
+  h2:
+    console:
+      enabled: true
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: update
+      naming.physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true

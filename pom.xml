@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.0.0</version>
+		<version>3.0.6</version>
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.gsdd</groupId>
@@ -17,11 +17,11 @@
 		<java.version>17</java.version>
 
 		<mvn.jacoco.plugin.version>0.8.8</mvn.jacoco.plugin.version>
-		<mvn.failsafe.plugin.version>3.0.0-M5</mvn.failsafe.plugin.version>
-		<mvn.surefire.plugin.version>3.0.0-M5</mvn.surefire.plugin.version>
-		<mvn.spotless.plugin.version>2.22.1</mvn.spotless.plugin.version>
-		<mvn.checkstyle.plugin.version>3.1.2</mvn.checkstyle.plugin.version>
-		<mvn.dependency-check.plugin.version>7.1.0</mvn.dependency-check.plugin.version>
+		<mvn.failsafe.plugin.version>3.0.0-M8</mvn.failsafe.plugin.version>
+		<mvn.surefire.plugin.version>3.0.0-M8</mvn.surefire.plugin.version>
+		<mvn.spotless.plugin.version>2.33.0</mvn.spotless.plugin.version>
+		<mvn.checkstyle.plugin.version>3.2.1</mvn.checkstyle.plugin.version>
+		<mvn.dependency-check.plugin.version>8.0.2</mvn.dependency-check.plugin.version>
 
 		<!-- If true skips UT test execution -->
 		<skip.unit.tests>false</skip.unit.tests>
@@ -32,14 +32,18 @@
 
 		<bucket4j.version>0.7.0</bucket4j.version>
 		<springdoc.openapi.ui.version>2.0.2</springdoc.openapi.ui.version>
-		<spring.cloud.version>2022.0.0</spring.cloud.version>
-		<spring.admin.client.version>3.0.0-M7</spring.admin.client.version>
+		<spring.cloud.version>2022.0.2</spring.cloud.version>
+		<spring.admin.client.version>3.0.3</spring.admin.client.version>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-bootstrap</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
