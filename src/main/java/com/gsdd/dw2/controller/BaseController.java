@@ -17,9 +17,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 public interface BaseController<T, D> {
 
-  public abstract Long getId(D model);
+  Long getId(D model);
 
-  public abstract BaseService<T, D> getService();
+  BaseService<T, D> getService();
 
   @Operation(summary = "Allows to retrieve all")
   @GetMapping
