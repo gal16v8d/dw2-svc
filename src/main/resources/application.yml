@@ -21,13 +21,13 @@ management:
         enabled: true
     sampling:
       probability: 1.0
+    
+server:
+  port: 8094
 
 service:
   welcome:
     message: Hello from local dw2-svc
-    
-server:
-  port: 8094
 
 spring:
   application:
