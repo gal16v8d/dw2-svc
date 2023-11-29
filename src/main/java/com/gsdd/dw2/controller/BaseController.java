@@ -35,7 +35,7 @@ public interface BaseController<T, D> {
   default ResponseEntity<D> getById(@PathVariable("id") Long id) {
     return Optional.ofNullable(getService().getById(id))
         .map(ResponseEntity::ok)
-        .orElseGet(ResponseEntity.notFound()::build);
+        .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
   @Operation(summary = "Store given data",
@@ -47,7 +47,7 @@ public interface BaseController<T, D> {
   default ResponseEntity<D> save(@Valid @RequestBody D model) {
     return Optional.ofNullable(getService().save(model))
         .map(ResponseEntity::ok)
-        .orElseGet(ResponseEntity.badRequest()::build);
+        .orElseGet(() -> ResponseEntity.badRequest().build());
   }
 
   @Operation(summary = "Fully updates matching data",
@@ -59,7 +59,7 @@ public interface BaseController<T, D> {
   default ResponseEntity<D> update(@PathVariable("id") Long id, @Valid @RequestBody D model) {
     return Optional.ofNullable(getService().update(id, model))
         .map(ResponseEntity::ok)
-        .orElseGet(ResponseEntity.notFound()::build);
+        .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
   @Operation(summary = "Partial update matching data",
@@ -71,7 +71,7 @@ public interface BaseController<T, D> {
   default ResponseEntity<D> patch(@PathVariable("id") Long id, @RequestBody D model) {
     return Optional.ofNullable(getService().patch(id, model))
         .map(ResponseEntity::ok)
-        .orElseGet(ResponseEntity.notFound()::build);
+        .orElseGet(() -> ResponseEntity.notFound().build());
   }
 
   @Operation(summary = "Delete matching data",
@@ -82,6 +82,6 @@ public interface BaseController<T, D> {
   default ResponseEntity<Object> delete(@PathVariable("id") Long id) {
     return Optional.ofNullable(getService().delete(id))
         .map(result -> ResponseEntity.noContent().build())
-        .orElseGet(ResponseEntity.notFound()::build);
+        .orElseGet(() -> ResponseEntity.notFound().build());
   }
 }
