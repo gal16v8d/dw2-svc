@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gsdd.dw2.model.ElementModel;
 import com.gsdd.dw2.service.ElementService;
-import java.util.Arrays;
+import java.util.Collections;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -42,7 +42,7 @@ class ElementControllerTest {
 
   @Test
   void getAllTest() throws Exception {
-    willReturn(Arrays.asList(ElementModel.builder().elementId(1L).name(NONE).build()))
+    willReturn(Collections.singletonList(ElementModel.builder().elementId(1L).name(NONE).build()))
         .given(elementService)
         .getAll();
     mvc.perform(get(V1_ELEMENTS).contentType(MediaType.APPLICATION_JSON_VALUE))

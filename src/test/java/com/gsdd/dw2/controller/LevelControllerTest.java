@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gsdd.dw2.model.LevelModel;
 import com.gsdd.dw2.service.LevelService;
-import java.util.Arrays;
+import java.util.Collections;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -42,7 +42,7 @@ class LevelControllerTest {
 
   @Test
   void getAllTest() throws Exception {
-    willReturn(Arrays.asList(LevelModel.builder().levelId(1L).name(ROOKIE).build()))
+    willReturn(Collections.singletonList(LevelModel.builder().levelId(1L).name(ROOKIE).build()))
         .given(levelService)
         .getAll();
     mvc.perform(get(V1_LEVELS).contentType(MediaType.APPLICATION_JSON_VALUE))

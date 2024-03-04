@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gsdd.dw2.model.AttackTargetTypeModel;
 import com.gsdd.dw2.service.AttackTargetTypeService;
-import java.util.Arrays;
+import java.util.Collections;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -43,9 +43,10 @@ class AttackTargetTypeControllerTest {
   @Test
   void getAllTest() throws Exception {
     willReturn(
-        Arrays.asList(AttackTargetTypeModel.builder().attackTargetTypeId(1L).name(ALL).build()))
-            .given(attackTargetTypeService)
-            .getAll();
+        Collections.singletonList(
+            AttackTargetTypeModel.builder().attackTargetTypeId(1L).name(ALL).build()))
+                .given(attackTargetTypeService)
+                .getAll();
     mvc.perform(get(V1_ATTACK_TYPES).contentType(MediaType.APPLICATION_JSON_VALUE))
         .andExpect(status().isOk())
         .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))

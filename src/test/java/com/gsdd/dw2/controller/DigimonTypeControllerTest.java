@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gsdd.dw2.model.DigimonTypeModel;
 import com.gsdd.dw2.service.DigimonTypeService;
-import java.util.Arrays;
+import java.util.Collections;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,8 +43,8 @@ class DigimonTypeControllerTest {
 
   @Test
   void getAllTest() throws Exception {
-    BDDMockito
-        .willReturn(Arrays.asList(DigimonTypeModel.builder().digimonTypeId(1L).name(DATA).build()))
+    BDDMockito.willReturn(
+        Collections.singletonList(DigimonTypeModel.builder().digimonTypeId(1L).name(DATA).build()))
         .given(digimonTypeService)
         .getAll();
     mvc.perform(get(V1_DIGIMON_TYPES).contentType(MediaType.APPLICATION_JSON_VALUE))

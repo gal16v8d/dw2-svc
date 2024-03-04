@@ -11,7 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import com.gsdd.dw2.model.DigimonXAttackModel;
 import com.gsdd.dw2.service.DigimonXAttackService;
-import java.util.Arrays;
+import java.util.Collections;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.mockito.BDDMockito;
@@ -34,8 +34,8 @@ class DigimonXAttackControllerTest {
 
   @Test
   void getAllAtkTest() throws Exception {
-    BDDMockito
-        .willReturn(Arrays.asList(DigimonXAttackModel.builder().attackId(1L).digimonId(1L).build()))
+    BDDMockito.willReturn(
+        Collections.singletonList(DigimonXAttackModel.builder().attackId(1L).digimonId(1L).build()))
         .given(service)
         .getAllAtk(anyLong());
     mvc.perform(get("/api/digimons/1/attacks").contentType(MediaType.APPLICATION_JSON_VALUE))

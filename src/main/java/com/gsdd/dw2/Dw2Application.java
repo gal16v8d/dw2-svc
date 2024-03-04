@@ -7,20 +7,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
-import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @EnableCaching
 @EnableDiscoveryClient
-@ComponentScan({
-    Dw2Application.BASE_PACKAGE + "config",
-    Dw2Application.BASE_PACKAGE + "controller",
-    Dw2Application.BASE_PACKAGE + "converter",
-    Dw2Application.BASE_PACKAGE + "repository",
-    Dw2Application.BASE_PACKAGE + "service"})
-@OpenAPIDefinition(
-    info = @Info(title = "DW2 API", version = "2.0", description = "REST with Spring-Boot & H2",
-        contact = @Contact(email = "alex.galvis.sistemas@gmail.com")))
+@OpenAPIDefinition(info = @Info(title = "DW2 API", version = "2.0",
+    description = "REST with Spring-Boot & PostgreSQL",
+    contact = @Contact(email = "alex.galvis.sistemas@gmail.com")))
 public class Dw2Application {
 
   public static final String BASE_PACKAGE = "com.gsdd.dw2.";

@@ -11,7 +11,7 @@ import com.gsdd.dw2.model.AttackModel;
 import com.gsdd.dw2.persistence.entities.Attack;
 import com.gsdd.dw2.persistence.entities.AttackType;
 import com.gsdd.dw2.repository.AttackRepository;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
@@ -19,7 +19,6 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.Sort;
 
@@ -35,7 +34,6 @@ class AttackServiceTest {
 
   @BeforeEach
   void setUp() {
-    MockitoAnnotations.openMocks(this);
     service = spy(new AttackService(attackRepository, attackConverter));
   }
 
@@ -53,7 +51,8 @@ class AttackServiceTest {
 
   @Test
   void getAllTest() {
-    willReturn(Arrays.asList(Attack.builder().attackId(2L).build())).given(attackRepository)
+    willReturn(Collections.singletonList(Attack.builder().attackId(2L).build()))
+        .given(attackRepository)
         .findAll(any(Sort.class));
     willReturn(AttackModel.builder().attackId(2L).build()).given(attackConverter)
         .convertToDomain(any(Attack.class));
@@ -80,7 +79,7 @@ class AttackServiceTest {
 
   @Test
   void getByIdNotFoundTest() {
-    willReturn(Optional.ofNullable(null)).given(attackRepository).findById(anyLong());
+    willReturn(Optional.empty()).given(attackRepository).findById(anyLong());
     AttackModel result = service.getById(2L);
     Assertions.assertNull(result);
   }
@@ -112,19 +111,19 @@ class AttackServiceTest {
 
   @Test
   void updateNotFoundTest() {
-    willReturn(Optional.ofNullable(null)).given(attackRepository).findById(anyLong());
+    willReturn(Optional.empty()).given(attackRepository).findById(anyLong());
     Assertions.assertNull(service.update(1L, AttackModel.builder().build()));
   }
 
   @Test
   void patchNotFoundTest() {
-    willReturn(Optional.ofNullable(null)).given(attackRepository).findById(anyLong());
+    willReturn(Optional.empty()).given(attackRepository).findById(anyLong());
     Assertions.assertNull(service.patch(1L, AttackModel.builder().build()));
   }
 
   @Test
   void deleteNotFoundTest() {
-    willReturn(Optional.ofNullable(null)).given(attackRepository).findById(anyLong());
+    willReturn(Optional.empty()).given(attackRepository).findById(anyLong());
     Assertions.assertNull(service.delete(1L));
   }
 

@@ -31,12 +31,10 @@ public class EvolutionConverter implements GenericConverter<Evolution, Evolution
   public Evolution convertToEntity(EvolutionModel model) {
     Optional<Digimon> baseOp = Optional.ofNullable(model)
         .map(EvolutionModel::getBaseDigimonId)
-        .map(digimonRepository::findById)
-        .orElseGet(Optional::empty);
+        .flatMap(digimonRepository::findById);
     Optional<Digimon> evolvedOp = Optional.ofNullable(model)
         .map(EvolutionModel::getEvolvedDigimonId)
-        .map(digimonRepository::findById)
-        .orElseGet(Optional::empty);
+        .flatMap(digimonRepository::findById);
     if (baseOp.isPresent() && evolvedOp.isPresent()) {
       return Optional.ofNullable(model)
           .map(
@@ -54,12 +52,10 @@ public class EvolutionConverter implements GenericConverter<Evolution, Evolution
   public Evolution mapToEntity(EvolutionModel model, Evolution oldEntity) {
     Evolution newEntity = Evolution.builder().evolutionId(oldEntity.getEvolutionId()).build();
     Optional<EvolutionModel> modelOp = Optional.ofNullable(model);
-    Optional<Digimon> baseOp = modelOp.map(EvolutionModel::getBaseDigimonId)
-        .map(digimonRepository::findById)
-        .orElseGet(Optional::empty);
-    Optional<Digimon> evolvedOp = modelOp.map(EvolutionModel::getEvolvedDigimonId)
-        .map(digimonRepository::findById)
-        .orElseGet(Optional::empty);
+    Optional<Digimon> baseOp =
+        modelOp.map(EvolutionModel::getBaseDigimonId).flatMap(digimonRepository::findById);
+    Optional<Digimon> evolvedOp =
+        modelOp.map(EvolutionModel::getEvolvedDigimonId).flatMap(digimonRepository::findById);
     newEntity.setBaseDigimon(baseOp.orElseGet(oldEntity::getBaseDigimon));
     newEntity.setEvolvedDigimon(evolvedOp.orElseGet(oldEntity::getEvolvedDigimon));
     newEntity

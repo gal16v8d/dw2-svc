@@ -15,7 +15,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.gsdd.dw2.model.EvolutionModel;
 import com.gsdd.dw2.service.EvolutionService;
-import java.util.Arrays;
+import java.util.Collections;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -43,7 +43,7 @@ class EvolutionControllerTest {
   @Test
   void getAllTest() throws Exception {
     willReturn(
-        Arrays.asList(
+        Collections.singletonList(
             EvolutionModel.builder()
                 .baseDigimonId(1L)
                 .evolvedDigimonId(2L)
