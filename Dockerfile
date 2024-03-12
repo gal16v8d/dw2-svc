@@ -10,8 +10,10 @@ ARG DW2_USER
 ARG DW2_PASS
 ARG PORT
 ENV PORT=${PORT}
+ENV DW2_DB_URL=${DW2_DB_URL}
+ENV DW2_USER=${DW2_USER}
+ENV DW2_PASS=${DW2_PASS}
 COPY --from=build /app/app.jar .
 RUN useradd runtime
-RUN echo ${DW2_DB_URL}
 USER runtime
 ENTRYPOINT [ "java", "-Dserver.port=${PORT}", "-jar", "app.jar" ]
