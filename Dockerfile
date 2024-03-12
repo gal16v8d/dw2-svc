@@ -12,5 +12,6 @@ ARG PORT
 ENV PORT=${PORT}
 COPY --from=build /app/app.jar .
 RUN useradd runtime
+RUN echo ${DW2_DB_URL}
 USER runtime
 ENTRYPOINT [ "java", "-Dserver.port=${PORT}", "-jar", "app.jar" ]
